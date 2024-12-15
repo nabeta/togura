@@ -1,0 +1,795 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "JPCOARスキーマ2.0のJSON Schema（非公式）",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "lang": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "alternative": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "lang": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "creator": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "name_identifier": {
+          "type": "array",
+          "items": {
+            "properties": {
+              "identifier": {
+                "type": "string"
+              }
+            }
+          },
+          "creaotr_name": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "lang": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "family_name": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "lang": {
+                "type": "string"
+              }
+            }
+          },
+          "given_name": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "lang": {
+                "type": "string"
+              }
+            }
+          },
+          "creator_alternative": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "lang": {
+                "type": "string"
+              }
+            }
+          },
+          "affiliation": {
+            "type": "array"
+          }
+        }
+      }
+    },
+    "contributor": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name_identifier": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "identifier": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "creator_name": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "lang": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "access_rights": {
+      "type": "string"
+    },
+    "rights": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "rights": {
+            "type": "string"
+          },
+          "lang": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "rights_holder": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name_identifier": {
+            "type": "string"
+          },
+          "rights_holder_name": {
+            "type": "string"
+          },
+          "lang": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "subject": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "subject": {
+            "type": "object",
+            "properties": {
+              "subject": {
+                "type": "string"
+              },
+              "subject_scheme": {
+                "type": "string"
+              },
+              "subject_uri": {
+                "type": "string"
+              },
+              "lang": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "description": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "lang": {
+            "type": "string"
+          },
+          "description_type": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "publisher": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "publisher": {
+            "type": "string"
+          },
+          "lang": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "jpcoar_publisher": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "publisher_name": {
+            "type": "object",
+            "properties": {
+              "publisher_name": {
+                "type": "string"
+              },
+              "lang": {
+                "type": "string"
+              }
+            }
+          },
+          "publisher_description": {
+            "type": "object",
+            "properties": {
+              "publisher_name": {
+                "type": "string"
+              },
+              "lang": {
+                "type": "string"
+              }
+            }
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "publisher_name": {
+                "type": "string"
+              },
+              "lang": {
+                "type": "string"
+              }
+            }
+          },
+          "publication_place": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "date": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "date_type": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "dcterms_date": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "lang": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "language": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "type": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "text_version": {
+      "type": "string"
+    },
+    "identifier": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string"
+          },
+          "identifier_type": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "identifier_registration": {
+      "type": "object",
+      "properties": {
+        "identifier": {
+          "type": "string"
+        },
+        "identifier_type": {
+          "type": "string"
+        }
+      }
+    },
+    "relation": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "related_identifier": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "related_title": {
+            "type": "object",
+            "properties": {
+              "related_title": {
+                "type": "string"
+              },
+              "lang": {
+                "type": "string"
+              }
+            }
+          },
+          "lang": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "temporal": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "temporal": {
+            "type": "string"
+          },
+          "lang": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "geo_location": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "geo_location_point": {
+            "type": "object",
+            "properties": {
+              "pointLongitude": {
+                "type": "number"
+              },
+              "pointLatitude": {
+                "type": "number"
+              }
+            }
+          },
+          "geo_location_box": {
+            "type": "object",
+            "properties": {
+              "westBoundLongitude": {
+                "type": "number"
+              },
+              "eastBoundLongitude": {
+                "type": "number"
+              },
+              "southBoundLatitude": {
+                "type": "number"
+              },
+              "northBoundLatitude": {
+                "type": "number"
+              }
+            }
+          },
+          "geo_location_place": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "funding_reference": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "funder_identifier": {
+            "type": "string"
+          },
+          "funder_name": {
+            "type": "string"
+          },
+          "fundeing_stream_identifier": {
+            "type": "object",
+            "properties": {
+              "funding_stream_identifier": {
+                "type": "string"
+              },
+              "funding_stream_identifier_type": {
+                "type": "string"
+              }
+            }
+          },
+          "funding_stream": {
+            "type": "object",
+            "properties": {
+              "funding_stream": {
+                "type": "string"
+              },
+              "lang": {
+                "type": "string"
+              }
+            }
+          },
+          "award_number": {
+            "type": "object",
+            "properties": {
+              "award_number": {
+                "type": "string"
+              },
+              "award_number_uri": {
+                "type": "string"
+              },
+              "award_number_type": {
+                "type": "string"
+              }
+            }
+          },
+          "award_title": {
+            "type": "object",
+            "properties": {
+              "award_title": {
+                "type": "string"
+              },
+              "lang": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "source_identifier": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_identifier": {
+            "type": "string"
+          },
+          "identifier_type": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "source_title": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_title": {
+            "type": "string"
+          },
+          "lang": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "volume": {
+      "type": "string"
+    },
+    "issue": {
+      "type": "string"
+    },
+    "num_pages": {
+      "type": "integer"
+    },
+    "page_start": {
+      "type": "string"
+    },
+    "page_end": {
+      "type": "string"
+    },
+    "dissertation_number": {
+      "type": "string"
+    },
+    "degree_name": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "degree_name": {
+            "type": "string"
+          },
+          "lang": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "date_granted": {
+      "type": "string"
+    },
+    "degree_grantor": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name_identifier": {
+            "type": "string"
+          },
+          "degree_grantor_name": {
+            "type": "object",
+            "properties": {
+              "degree_grantor_name": {
+                "type": "string"
+              },
+              "lang": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "conference": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "conference_name": {
+            "type": "object",
+            "properties": {
+              "conference_name": {
+                "type": "string"
+              },
+              "lang": {
+                "type": "string"
+              }
+            }
+          },
+          "conference_sequence": {
+            "type": "integer"
+          },
+          "conference_sponsor": {
+            "type": "object",
+            "properties": {
+              "conference_sponsor": {
+                "type": "string"
+              },
+              "lang": {
+                "type": "string"
+              }
+            }
+          },
+          "conference_date": {
+            "type": "object",
+            "properties": {
+              "start_date": {
+                "type": "string"
+              },
+              "end_date": {
+                "type": "string"
+              }
+            }
+          },
+          "conference_venue": {
+            "type": "object",
+            "properties": {
+              "conference_venue": {
+                "type": "string"
+              },
+              "lang": {
+                "type": "string"
+              }
+            }
+          },
+          "conference_place": {
+            "type": "object",
+            "properties": {
+              "conference_place": {
+                "type": "string"
+              },
+              "lang": {
+                "type": "string"
+              }
+            }
+          },
+          "conference_country": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "edition": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "edition": {
+            "type": "string"
+          },
+          "lang": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "volume_title": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "volume_title": {
+            "type": "string"
+          },
+          "lang": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "original_language": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "extent": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "extent": {
+            "type": "string"
+          },
+          "lang": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "format": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "format": {
+            "type": "string"
+          },
+          "lang": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "holding_agent": {
+      "type": "object",
+      "properties": {
+        "holding_agent_name_identifier": {
+          "type": "string"
+        },
+        "holding_agent_name": {
+          "type": "object",
+          "properties": {
+            "holding_agent_name": {
+              "type": "string"
+            },
+            "lang": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "dataset_series": {
+      "type": "boolean"
+    },
+    "file": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "uri": {
+            "type": "object",
+            "properties": {
+              "uri": {
+                "type": "string"
+              },
+              "object_type": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              }
+            }
+          },
+          "mime_type": {
+            "type": "string"
+          },
+          "extent": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "date": {
+            "type": "object",
+            "properties": {
+              "date": {
+                "type": "string"
+              },
+              "date_type": {
+                "type": "string"
+              }
+            }
+          },
+          "version": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "catalog": {
+      "type": "object",
+      "properties": {
+        "contributor": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "identifier": {
+          "type": "array"
+        },
+        "title": {
+          "type": "array"
+        },
+        "description": {
+          "type": "array"
+        },
+        "subject": {
+          "type": "array"
+        },
+        "license": {
+          "type": "array"
+        },
+        "access_rights": {
+          "type": "array"
+        },
+        "file": {
+          "type": "array"
+        }
+      }
+    }
+  }
+}
