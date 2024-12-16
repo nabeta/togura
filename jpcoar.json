@@ -2,11 +2,13 @@
   "$schema": "http://json-schema.org/draft-07/schema",
   "title": "JPCOARスキーマ2.0のJSON Schema（非公式）",
   "type": "object",
+  "additionalProperties": false,
   "properties": {
     "title": {
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "title": {
             "type": "string"
@@ -21,6 +23,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "title": {
             "type": "string"
@@ -35,19 +38,26 @@
       "type": "array",
       "items": {
         "type": "object",
-        "name_identifier": {
-          "type": "array",
-          "items": {
-            "properties": {
-              "identifier": {
-                "type": "string"
+        "additionalProperties": false,
+        "properties": {
+          "creator_type": {
+            "type": "string"
+          },
+          "name_identifier": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "identifier": {
+                  "type": "string"
+                }
               }
             }
           },
-          "creaotr_name": {
+          "creator_name": {
             "type": "array",
             "items": {
               "type": "object",
+              "additionalProperties": false,
               "properties": {
                 "name": {
                   "type": "string"
@@ -60,6 +70,7 @@
           },
           "family_name": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "name": {
                 "type": "string"
@@ -71,6 +82,7 @@
           },
           "given_name": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "name": {
                 "type": "string"
@@ -82,6 +94,7 @@
           },
           "creator_alternative": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "name": {
                 "type": "string"
@@ -101,6 +114,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "name_identifier": {
             "type": "array",
@@ -116,6 +130,7 @@
             "type": "array",
             "items": {
               "type": "object",
+              "additionalProperties": false,
               "properties": {
                 "name": {
                   "type": "string"
@@ -136,6 +151,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "rights": {
             "type": "string"
@@ -150,6 +166,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "name_identifier": {
             "type": "string"
@@ -167,9 +184,11 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "subject": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "subject": {
                 "type": "string"
@@ -192,6 +211,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "description": {
             "type": "string"
@@ -209,6 +229,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "publisher": {
             "type": "string"
@@ -223,9 +244,11 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "publisher_name": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "publisher_name": {
                 "type": "string"
@@ -237,6 +260,7 @@
           },
           "publisher_description": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "publisher_name": {
                 "type": "string"
@@ -248,6 +272,7 @@
           },
           "location": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "publisher_name": {
                 "type": "string"
@@ -267,6 +292,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "date": {
             "type": "string"
@@ -281,6 +307,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "date": {
             "type": "string"
@@ -310,6 +337,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "identifier": {
             "type": "string"
@@ -322,6 +350,7 @@
     },
     "identifier_registration": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "identifier": {
           "type": "string"
@@ -335,6 +364,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "related_identifier": {
             "type": "array",
@@ -344,6 +374,7 @@
           },
           "related_title": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "related_title": {
                 "type": "string"
@@ -363,6 +394,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "temporal": {
             "type": "string"
@@ -377,9 +409,11 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "geo_location_point": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "pointLongitude": {
                 "type": "number"
@@ -391,6 +425,7 @@
           },
           "geo_location_box": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "westBoundLongitude": {
                 "type": "number"
@@ -419,6 +454,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "funder_identifier": {
             "type": "string"
@@ -428,6 +464,7 @@
           },
           "fundeing_stream_identifier": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "funding_stream_identifier": {
                 "type": "string"
@@ -439,6 +476,7 @@
           },
           "funding_stream": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "funding_stream": {
                 "type": "string"
@@ -450,6 +488,7 @@
           },
           "award_number": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "award_number": {
                 "type": "string"
@@ -464,6 +503,7 @@
           },
           "award_title": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "award_title": {
                 "type": "string"
@@ -480,6 +520,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "source_identifier": {
             "type": "string"
@@ -494,6 +535,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "source_title": {
             "type": "string"
@@ -526,6 +568,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "degree_name": {
             "type": "string"
@@ -543,12 +586,14 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "name_identifier": {
             "type": "string"
           },
           "degree_grantor_name": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "degree_grantor_name": {
                 "type": "string"
@@ -565,9 +610,11 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "conference_name": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "conference_name": {
                 "type": "string"
@@ -582,6 +629,7 @@
           },
           "conference_sponsor": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "conference_sponsor": {
                 "type": "string"
@@ -593,6 +641,7 @@
           },
           "conference_date": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "start_date": {
                 "type": "string"
@@ -604,6 +653,7 @@
           },
           "conference_venue": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "conference_venue": {
                 "type": "string"
@@ -615,6 +665,7 @@
           },
           "conference_place": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "conference_place": {
                 "type": "string"
@@ -634,6 +685,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "edition": {
             "type": "string"
@@ -648,6 +700,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "volume_title": {
             "type": "string"
@@ -668,6 +721,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "extent": {
             "type": "string"
@@ -682,6 +736,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "format": {
             "type": "string"
@@ -694,6 +749,7 @@
     },
     "holding_agent": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "holding_agent_name_identifier": {
           "type": "string"
@@ -718,9 +774,11 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "uri": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "uri": {
                 "type": "string"
@@ -761,6 +819,7 @@
     },
     "catalog": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "contributor": {
           "type": "array",

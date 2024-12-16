@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=/home/kosuke/jpcoar-json-schema/jpcoar.json
+
+title:
+  - title: 情報爆発時代の研究基盤構想
+    lang: ja
+  - title: Research Project on Cyber Infrastructure for Information-explosion Era
+    lang: en
+  - title: ジョウホウ バクハツ ジダイ ノ ケンキュウ キバン コウソウ
+    lang: ja-Kana
+  - title: Joho bakuhatsu jidai no kenkyu kiban koso
+    lang: ja-Latn
+
+creator:
+  - creator_type: 著
+  - name_identifier:
+    - identifier: 0000-0001-0002-0003
+      name_identifier_scheme: ORCID
+      name_identifier_uri: https://orcid.org/0000-0001-0002-0003
+  - creator_name:
+    - name: 安達, 淳
+      lang: ja
+    - name: Adachi, Jun
+      lang: en
+    - name: アダチ, ジュン
+      lang: ja-Kana
+  - affiliation:
+    - name_identifier:
+        identifier: 0000000121691048
+        name_identifier_scheme: ISNI
+        name_identifier_uri: http://www.isni.org/isni/0000000121691048
+    - affiliation_name:
+        name: 東京大学
+        lang: ja
+    - affiliation_name:
+        name: The University of Tokyo
+        lang: en
+
+access_rights: http://purl.org/coar/access_right/c_abf2
+
+rights:
+  - rights: https://creativecommons.org/licenses/by/4.0/deed.en
+    lang: en
