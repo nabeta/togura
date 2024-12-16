@@ -5,6 +5,7 @@
   "additionalProperties": false,
   "properties": {
     "title": {
+      "$comment": "タイトル",
       "type": "array",
       "items": {
         "type": "object",
@@ -23,6 +24,7 @@
       }
     },
     "alternative": {
+      "$comment": "その他のタイトル",
       "type": "array",
       "items": {
         "type": "object",
@@ -432,6 +434,9 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "relation_type": {
+            "type": "string"
+          },
           "related_identifier": {
             "type": "array",
             "items": {
