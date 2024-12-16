@@ -7,6 +7,7 @@
 
 - テキストエディタでJPCOARスキーマのメタデータを書けるようにしたい
 - Pythonなどのプログラミング言語でJPCOARスキーマのメタデータを書けるようにしたい
+- [JAIRO Cloud](https://jpcoar.repo.nii.ac.jp/page/42)以外の環境からメタデータを[IRDB](https://irdb.nii.ac.jp/)に送付したい
 
 ## 想定する作業フロー
 
@@ -16,7 +17,7 @@
     - フォルダ内のメタデータファイルをJPCOARスキーマのXMLファイルに変換する
     - 複数のフォルダ内のメタデータファイルに対して、[ResourceSync](https://www.openarchives.org/rs/1.1/resourcesync)のXMLファイルを作成する
 1. フォルダとResourceSyncのXMLファイルをWebサーバにアップロードする
-1. [IRDB](https://irdb.nii.ac.jp/)がResourceSyncのXMLファイルとメタデータファイルを収集できるようにようにする
+1. IRDBがResourceSyncのXMLファイルとメタデータファイルを収集できるようにようにする
 
 ## 作者
 
