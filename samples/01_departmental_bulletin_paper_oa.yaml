@@ -15,9 +15,8 @@ title:
 creator:
   - creator_type: 著
     name_identifier:
-      - identifier: 0000-0001-0002-0003
-        name_identifier_scheme: ORCID
-        name_identifier_uri: https://orcid.org/0000-0001-0002-0003
+      - identifier_scheme: ORCID
+        identifier: https://orcid.org/0000-0001-0002-0003
     creator_name:
       - name: 安達, 淳
         lang: ja
@@ -26,16 +25,13 @@ creator:
       - name: アダチ, ジュン
         lang: ja-Kana
     affiliation:
-      - name_identifier:
-          identifier: 0000000121691048
-          name_identifier_scheme: ISNI
-          name_identifier_uri: http://www.isni.org/isni/0000000121691048
-      - affiliation_name:
-          name: 東京大学
-          lang: ja
-      - affiliation_name:
-          name: The University of Tokyo
-          lang: en
+      - identifier_scheme: ISNI
+        identifier: http://www.isni.org/isni/0000000121691048
+        affiliation_name:
+          - name: 東京大学
+            lang: ja
+          - name: The University of Tokyo
+            lang: en
 
 access_rights: http://purl.org/coar/access_right/c_abf2
 
@@ -65,10 +61,8 @@ type: http://purl.org/coar/resource_type/c_6501
 version: http://purl.org/coar/version/c_970fb48d4fbd8a85
 
 identifier:
-  - identifier: https://doi.org/10.15017/64495
-    identifier_type: DOI
-  - identifier: http://hdl.handle.net/2115/64495
-    identifier_type: HDL
+  - https://doi.org/10.15017/64495
+  - http://hdl.handle.net/2115/64495
 
 identifier_registration:
   identifier: 10.15017/64495
@@ -117,5 +111,5 @@ file:
       - 3MB
       - 24 pages
     date:
-      date_type: Issued
-      date: 2015-10-01
+      type: Issued
+      date_date: 2015-10-01
