@@ -376,6 +376,8 @@ properties:
       properties: 
         funder_identifier: 
           type: string
+        funder_identifier_type:
+          type: string
         funder_name:
           type: string
         fundeing_stream_identifier:
@@ -400,7 +402,7 @@ properties:
           properties: 
             award_number:
               type: string
-            award_number_uri:
+            award_uri:
               type: string
             award_number_type:
               type: string

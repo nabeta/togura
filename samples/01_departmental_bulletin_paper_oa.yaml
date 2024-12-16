@@ -1,5 +1,7 @@
 # yaml-language-server: $schema=/home/kosuke/jpcoar-json-schema/jpcoar.json
 
+# https://github.com/JPCOAR/schema/blob/master/2.0/samples/01_departmental_bulletin_paper_oa.xml
+
 title:
   - title: 情報爆発時代の研究基盤構想
     lang: ja
@@ -12,31 +14,94 @@ title:
 
 creator:
   - creator_type: 著
-  - name_identifier:
-    - identifier: 0000-0001-0002-0003
-      name_identifier_scheme: ORCID
-      name_identifier_uri: https://orcid.org/0000-0001-0002-0003
-  - creator_name:
-    - name: 安達, 淳
-      lang: ja
-    - name: Adachi, Jun
-      lang: en
-    - name: アダチ, ジュン
-      lang: ja-Kana
-  - affiliation:
-    - name_identifier:
-        identifier: 0000000121691048
-        name_identifier_scheme: ISNI
-        name_identifier_uri: http://www.isni.org/isni/0000000121691048
-    - affiliation_name:
-        name: 東京大学
+    name_identifier:
+      - identifier: 0000-0001-0002-0003
+        name_identifier_scheme: ORCID
+        name_identifier_uri: https://orcid.org/0000-0001-0002-0003
+    creator_name:
+      - name: 安達, 淳
         lang: ja
-    - affiliation_name:
-        name: The University of Tokyo
+      - name: Adachi, Jun
         lang: en
+      - name: アダチ, ジュン
+        lang: ja-Kana
+    affiliation:
+      - name_identifier:
+          identifier: 0000000121691048
+          name_identifier_scheme: ISNI
+          name_identifier_uri: http://www.isni.org/isni/0000000121691048
+      - affiliation_name:
+          name: 東京大学
+          lang: ja
+      - affiliation_name:
+          name: The University of Tokyo
+          lang: en
 
 access_rights: http://purl.org/coar/access_right/c_abf2
 
 rights:
   - rights: https://creativecommons.org/licenses/by/4.0/deed.en
     lang: en
+
+language:
+  - jpn
+
+type: http://purl.org/coar/resource_type/c_6501
+
+version: http://purl.org/coar/version/c_970fb48d4fbd8a85
+
+identifier:
+  - identifier: https://doi.org/10.15017/64495
+    identifier_type: DOI
+  - identifier: http://hdl.handle.net/2115/64495
+    identifier_type: HDL
+
+identifier_registration:
+  identifier: 10.15017/64495
+  identifier_type: JaLC
+
+funding_reference:
+  - funder_identifier: "1025"
+    funder_identifier_type: e-Rad_funder
+    funder_name: 日本学術振興会
+    funding_stream:
+      funding_stream: 科学研究費助成事業
+      lang: ja
+    award_number:
+      award_uri: https://kaken.nii.ac.jp/ja/grant/KAKENHI-PLANNED-18049069/
+      award_number_type: JGN
+      award_number: JP18049069
+    award_title:
+      award_title: 情報爆発時代の情報検索基盤技術
+      lang: ja
+
+source_identifier:
+  - identifier_type: PISSN
+    source_identifier: 1880-697X
+  - identifier_type: NCID
+    source_identifier: AA12032633
+
+source_title:
+  - source_title: 東京大学大学院情報学環紀要 情報学研究
+    lang: ja
+  - source_title: Journal of information studies
+    lang: en
+
+volume: "12"
+issue: "3"
+num_pages: 24
+page_start: "34"
+page_end: "57"
+
+file:
+  - uri:
+      object_type: fulltext
+      label: JIS_12_3_34-57.pdf
+      uri: http://repository.dl.itc.u-tokyo.ac.jp/files/64495/JIS_12_3_34-57.pdf
+    mime_type: application/pdf
+    extent:
+      - 3MB
+      - 24 pages
+    date:
+      date_type: Issued
+      date: 2015-10-01
