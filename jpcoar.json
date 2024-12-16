@@ -55,10 +55,21 @@
               "additionalProperties": false,
               "properties": {
                 "identifier": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "uri"
                 },
                 "identifier_scheme": {
-                  "type": "string"
+                  "type": "string",
+                  "enum": [
+                    "e-Rad_Researcher",
+                    "ORCID",
+                    "ISNI",
+                    "VIAF",
+                    "AID",
+                    "kakenhi",
+                    "Ringgold",
+                    "ROR"
+                  ]
                 }
               }
             }
@@ -227,10 +238,26 @@
             "type": "string"
           },
           "subject_scheme": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "BSH",
+              "DDC",
+              "e-Rad_field",
+              "JEL",
+              "LCC",
+              "LCSH",
+              "MeSH",
+              "NDC",
+              "NDLC",
+              "NDLSH",
+              "SciVal",
+              "UDC",
+              "Other"
+            ]
           },
           "subject_uri": {
-            "type": "string"
+            "type": "string",
+            "format": "uri"
           },
           "lang": {
             "type": "string"
@@ -373,7 +400,12 @@
           "identifier"
         ],
         "identifier": {
-          "type": "string"
+          "type": "string",
+          "enum": [
+            "DOI",
+            "HDL",
+            "URI"
+          ]
         }
       }
     },
@@ -385,7 +417,12 @@
           "type": "string"
         },
         "identifier_type": {
-          "type": "string"
+          "type": "string",
+          "enum": [
+            "JaLC",
+            "Crossref",
+            "DataCite"
+          ]
         }
       }
     },
@@ -526,7 +563,8 @@
                 "type": "string"
               },
               "award_uri": {
-                "type": "string"
+                "type": "string",
+                "format": "uri"
               },
               "award_number_type": {
                 "type": "string"
@@ -813,7 +851,8 @@
             "additionalProperties": false,
             "properties": {
               "uri": {
-                "type": "string"
+                "type": "string",
+                "format": "uri"
               },
               "object_type": {
                 "type": "string"
