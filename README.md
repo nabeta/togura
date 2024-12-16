@@ -1,7 +1,7 @@
 # JPCOARスキーマの非公式JSON Schemaファイル
 
 [JPCOARスキーマ](https://schema.irdb.nii.ac.jp/ja/schema) 2.0のメタデータをYAMLやJSONで記述するための、JSON Schemaファイルを提供することを目標とします。  
-記述のしやすさを優先するため、[XML Schema](https://github.com/JPCOAR/schema/blob/master/2.0/jpcoar_scm.xsd)をそのままJSON Schemaに変換するのではなく、簡略化した書式でJPCOARスキーマ準拠のメタデータを作成できるよう、新規にスキーマファイルを作成しています。
+記述のしやすさを優先し、簡略化した書式でJPCOARスキーマ準拠のメタデータを作成できるよう、[XML Schema](https://github.com/JPCOAR/schema/blob/master/2.0/jpcoar_scm.xsd)をそのままJSON Schemaに変換するのではなく、新規にスキーマファイルを作成しています。
 
 ## 作成の背景
 
