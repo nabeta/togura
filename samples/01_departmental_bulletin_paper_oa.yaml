@@ -43,6 +43,20 @@ rights:
   - rights: https://creativecommons.org/licenses/by/4.0/deed.en
     lang: en
 
+subject:
+  - subject: 情報爆発
+    subject_scheme: Other
+  - subject: データマイニング
+    subject_scheme: Other
+
+publisher:
+  - publisher: 東京大学大学院情報学環
+    lang: ja
+
+date:
+  - date: 2025-10-01
+    date_type: Issued
+
 language:
   - jpn
 

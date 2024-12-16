@@ -9,6 +9,9 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "title"
+        ],
         "properties": {
           "title": {
             "type": "string"
@@ -24,6 +27,9 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "title"
+        ],
         "properties": {
           "title": {
             "type": "string"
@@ -187,22 +193,16 @@
         "additionalProperties": false,
         "properties": {
           "subject": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "subject": {
-                "type": "string"
-              },
-              "subject_scheme": {
-                "type": "string"
-              },
-              "subject_uri": {
-                "type": "string"
-              },
-              "lang": {
-                "type": "string"
-              }
-            }
+            "type": "string"
+          },
+          "subject_scheme": {
+            "type": "string"
+          },
+          "subject_uri": {
+            "type": "string"
+          },
+          "lang": {
+            "type": "string"
           }
         }
       }
