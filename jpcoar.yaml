@@ -539,7 +539,15 @@ properties:
             - ROR
             - Other
         funder_name:
-          type: string
+          type: object
+          additionalProperties: false
+          required:
+            - funder_name
+          properties:
+            funder_name:
+              type: string
+            lang:
+              type: string
         fundeing_stream_identifier:
           type: object
           additionalProperties: false
@@ -822,25 +830,21 @@ properties:
       additionalProperties: false
       properties:
         uri:
-          type: object
-          additionalProperties: false
-          properties:
-            uri:
-              type: string
-              format: uri
-            object_type:
-              type: string
-              enum:
-                - abstract
-                - dataset
-                - fulltext
-                - iiif
-                - software
-                - summary
-                - thumbnail
-                - other
-            label:
-              type: string
+          type: string
+          format: uri
+        object_type:
+          type: string
+          enum:
+            - abstract
+            - dataset
+            - fulltext
+            - iiif
+            - software
+            - summary
+            - thumbnail
+            - other
+        label:
+          type: string
         mime_type:
           type: string
         extent:
