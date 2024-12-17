@@ -84,6 +84,23 @@ elem_resource_type.text = entry["type"]
 elem_text_version = ET.SubElement(root, ET.QName(ns["oaire"], "version"))
 elem_text_version.text = entry["text_version"]
 
+for identifier in entry["identifier"]:
+  elem_identifier = ET.SubElement(root, ET.QName(ns["jpcoar"], "identifier"))
+  elem_identifier.text = identifier
+
+elem_identifier_registration = ET.SubElement(root, ET.QName(ns["jpcoar"], "identifierRegistration"), {
+  "identifierType": entry["identifier_registration"]["identifier_type"]
+})
+elem_identifier_registration.text = entry["identifier_registration"]["identifier"]
+
+if entry.get("relation"):
+  for relation in entry["relation"]:
+    elem_relation = ET.SubElement(root, ET.QName(ns["jpcoar"], "relation"), {
+      "relationType": relation["relation_type"]
+    })
+    elem_related_identifier = ET.SubElement(elem_relation, ET.QName(ns["jpcoar"], "relatedIdentifier"))
+    elem_related_identifier.text = relation["related_identifier"]
+
 for funding_reference in entry["funding_reference"]:
   elem_funding_reference = ET.SubElement(root, ET.QName(ns["jpcoar"], "fundingReference"))
   elem_funder_identifier = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "funderIdentifier"), {
