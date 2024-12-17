@@ -64,6 +64,7 @@
                   "type": "string",
                   "enum": [
                     "e-Rad_Researcher",
+                    "NRID",
                     "ORCID",
                     "ISNI",
                     "VIAF",
@@ -166,6 +167,29 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "contributor_type": {
+            "type": "string",
+            "enum": [
+              "ContactPerson",
+              "DataCollector",
+              "DataCurator",
+              "DataManager",
+              "Distributor",
+              "Editor",
+              "HostingInstitution",
+              "Producer",
+              "ProjectLeader",
+              "ProjectManager",
+              "ProjectMember",
+              "RelatedPerson",
+              "Researcher",
+              "ResearchGroup",
+              "Sponsor",
+              "Supervisor",
+              "WorkPackageLeader",
+              "Other"
+            ]
+          },
           "name_identifier": {
             "type": "array",
             "items": {
@@ -176,7 +200,7 @@
               }
             }
           },
-          "creator_name": {
+          "contributor_name": {
             "type": "array",
             "items": {
               "type": "object",
@@ -195,7 +219,13 @@
       }
     },
     "access_rights": {
-      "type": "string"
+      "type": "string",
+      "enum": [
+        "embargoed access",
+        "metadata only access",
+        "open access",
+        "restricted access"
+      ]
     },
     "rights": {
       "type": "array",
@@ -219,7 +249,19 @@
         "additionalProperties": false,
         "properties": {
           "name_identifier": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "e-Rad_Researcher",
+              "NRID",
+              "ORCID",
+              "ISNI",
+              "VIAF",
+              "AID",
+              "kakenhi",
+              "Ringgold",
+              "GRID",
+              "ROR"
+            ]
           },
           "rights_holder_name": {
             "type": "string"
@@ -280,7 +322,14 @@
             "type": "string"
           },
           "description_type": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "Abstract",
+              "Methods",
+              "TableOfContents",
+              "TechnicalInfo",
+              "Other"
+            ]
           }
         }
       }
@@ -358,7 +407,18 @@
             "type": "string"
           },
           "date_type": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "Accepted",
+              "Available",
+              "Collected",
+              "Copyrighted",
+              "Created",
+              "Issued",
+              "Submitted",
+              "Updated",
+              "Valid"
+            ]
           }
         }
       }
@@ -385,13 +445,36 @@
       }
     },
     "type": {
-      "type": "string"
+      "type": "string",
+      "enum": [
+        "conference paper",
+        "data paper",
+        "departmental bulletin paper",
+        "editorial",
+        "journal",
+        "journal article",
+        "newspaper",
+        "review article",
+        "other periodical",
+        "software paper",
+        "article"
+      ]
     },
     "version": {
       "type": "string"
     },
     "text_version": {
-      "type": "string"
+      "type": "string",
+      "enum": [
+        "AO",
+        "SMUR",
+        "AM",
+        "P",
+        "VoR",
+        "CVoR",
+        "EVoR",
+        "NA"
+      ]
     },
     "identifier": {
       "type": "array",
@@ -435,7 +518,29 @@
         "additionalProperties": false,
         "properties": {
           "relation_type": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "inSeries",
+              "isCitedBy",
+              "Cites",
+              "isVersionOf",
+              "hasVersion",
+              "isPartOf",
+              "hasPart",
+              "isReferencedBy",
+              "references",
+              "isFormatOf",
+              "hasFormat",
+              "isReplacedBy",
+              "replaces",
+              "isRequiredBy",
+              "requires",
+              "isSupplementedBy",
+              "isSupplementTo",
+              "isIdenticalTo",
+              "isDerivedFrom",
+              "isSourceOf"
+            ]
           },
           "related_identifier": {
             "type": "array",
@@ -531,7 +636,15 @@
             "type": "string"
           },
           "funder_identifier_type": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "Crossref Funder",
+              "e-Rad_funder",
+              "GRID",
+              "ISNI",
+              "ROR",
+              "Other"
+            ]
           },
           "funder_name": {
             "type": "string"
@@ -544,7 +657,15 @@
                 "type": "string"
               },
               "funding_stream_identifier_type": {
-                "type": "string"
+                "type": "string",
+                "enum": [
+                  "Crossref Funder",
+                  "JGN_fundingStream"
+                ]
+              },
+              "funding_stream_identifier_type_uri": {
+                "type": "string",
+                "format": "uri"
               }
             }
           },
@@ -601,7 +722,13 @@
             "type": "string"
           },
           "identifier_type": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "PISSN",
+              "EISSN",
+              "ISSN",
+              "NCID"
+            ]
           }
         }
       }
@@ -860,7 +987,17 @@
                 "format": "uri"
               },
               "object_type": {
-                "type": "string"
+                "type": "string",
+                "enum": [
+                  "abstract",
+                  "dataset",
+                  "fulltext",
+                  "iiif",
+                  "software",
+                  "summary",
+                  "thumbnail",
+                  "other"
+                ]
               },
               "label": {
                 "type": "string"
@@ -877,13 +1014,28 @@
             }
           },
           "date": {
-            "type": "object",
-            "properties": {
-              "date": {
-                "type": "string"
-              },
-              "date_type": {
-                "type": "string"
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "date": {
+                  "type": "string"
+                },
+                "date_type": {
+                  "type": "string",
+                  "enum": [
+                    "Accepted",
+                    "Available",
+                    "Collected",
+                    "Copyrighted",
+                    "Created",
+                    "Issued",
+                    "Submitted",
+                    "Updated",
+                    "Valid"
+                  ]
+                }
               }
             }
           },
@@ -904,10 +1056,28 @@
           }
         },
         "identifier": {
-          "type": "array"
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "title": {
-          "type": "array"
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "title"
+            ],
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "lang": {
+                "type": "string"
+              }
+            }
+          }
         },
         "description": {
           "type": "array"
