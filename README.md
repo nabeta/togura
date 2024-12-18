@@ -4,14 +4,21 @@
 
 ## 使い方
 
-### メタデータの書き方
+### 準備
 
 1. [Visual Studio Code](https://code.visualstudio.com/)(VSCode)をインストールします。
+1. VSCodeのユーザインターフェースを日本語で表示するため、[Japanese Language Pack for VS Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja)をインストールします。VSCodeを起動してCtrlキーとPキーを同時に押し、表示される入力欄に以下の文字列を入力して、Enterキーを押します。
+    ```
+    ext install MS-CEINTL.vscode-language-pack-ja
+    ```
 1. VSCodeの[YAML拡張機能](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)をインストールします。
-1. GitHubリポジトリの"Code"から"Download ZIP"を選択し、ツールのファイル一式をダウンロードして、適当なフォルダに展開します。
+1. このGitHubリポジトリの画面上部にある"Code"ボタンから"Download ZIP"を選択し、ツールのファイル一式をダウンロードして、適当なフォルダに展開します。
+
+### メタデータの書き方
+
 1. samplesフォルダの中にあるサンプルのメタデータファイルを、workフォルダにコピーします。ファイル名は半角英数文字とし、拡張子は".yaml"のままにしておいてください。
 1. VSCodeで上記のフォルダを開きます。
-1. VSCodeのファイル一覧から、workフォルダにコピーしたメタデータファイルを開き、編集と保存を行います。
+1. VSCodeのファイル一覧から、workフォルダにコピーしたメタデータファイルを開き、メタデータの編集と保存を行ってください。
 
 ### JPCOARスキーマのXMLへの変換　
 
@@ -19,7 +26,7 @@
     ```sh
     pip install pyyaml
     ```
-1. VSCodeのメニューから"Terminal"を選びます。ターミナルのウインドウが画面下部に開きます。
+1. VSCodeの画面上部のメニューから"ターミナル"を選びます。ターミナルのウインドウが画面下部に開きます。
 1. ターミナルで`jpcoar.py`スクリプトを実行し、YAMLで作成したメタデータファイルをJPCOARスキーマのXMLファイルに変換します。まずテストとして、以下のコマンドで、サンプルのメタデータファイルがXMLに変換され、表示されることを確認してください。
     ```sh
     ./jpcoar.py samples/01_departmental_bulletin_paper_oa.yaml
