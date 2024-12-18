@@ -289,7 +289,7 @@ if entry.get("relation"):
       "relationType": relation["relation_type"]
     })
     for related_identifier in relation["related_identifier"]:
-      elem_related_identifier = ET.SubElement(elem_relation, ET.QName(ns["jpcoar"], "relatedIdentifier"))
+      elem_related_identifier = ET.SubElement(elem_relation, ET.QName(ns["jpcoar"], "relatedIdentifier"), {"identifierType": jpcoar_identifier_type(related_identifier)})
       elem_related_identifier.text = related_identifier
 
 for funding_reference in entry["funding_reference"]:
