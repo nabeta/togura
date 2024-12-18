@@ -4,14 +4,29 @@
 
 ## 使い方
 
+### メタデータの書き方
+
+1. [Visual Studio Code](https://code.visualstudio.com/)(VSCode)をインストールします。
+1. VSCodeの[YAML拡張機能](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)をインストールします。
+1. GitHubリポジトリの"Code"から"Download ZIP"を選択し、ツールのファイル一式をダウンロードして、適当なフォルダに展開します。
+1. samplesフォルダの中にあるサンプルのメタデータファイルを、workフォルダにコピーします。ファイル名は半角英数文字とし、拡張子は".yaml"のままにしておいてください。
+1. VSCodeで上記のフォルダを開きます。
+1. VSCodeのファイル一覧から、workフォルダにコピーしたメタデータファイルを開き、編集と保存を行います。
+
+### JPCOARスキーマのXMLへの変換　
+
 1. 必要なPythonのモジュールをインストールします。venv環境での実行をおすすめします。
     ```sh
     pip install pyyaml
     ```
-1. `samples`以下のサンプルファイルの要領で、メタデータファイルを作成します。
-1. `jpcoar.py`スクリプトで、YAMLで作成したメタデータファイルをJPCOARスキーマのXMLファイルに変換します。以下のコマンドは、サンプルのメタデータファイルの変換を実行する例です。
+1. VSCodeのメニューから"Terminal"を選びます。ターミナルのウインドウが画面下部に開きます。
+1. ターミナルで`jpcoar.py`スクリプトを実行し、YAMLで作成したメタデータファイルをJPCOARスキーマのXMLファイルに変換します。まずテストとして、以下のコマンドで、サンプルのメタデータファイルがXMLに変換され、表示されることを確認してください。
     ```sh
     ./jpcoar.py samples/01_departmental_bulletin_paper_oa.yaml
+    ```
+    テストが成功したら、workフォルダに保存したYAMLのメタデータファイルを、XMLファイルに変換して保存します。以下のコマンドは、`my_article.yaml`という名前で作成したYAMLのメタデータファイルをXMLに変換し、同じworkフォルダの中に`my_article.xml`というファイル名で保存する例です。
+    ```sh
+    ./jpcoar.py work/my_article.yaml > work/my_article.xml
     ```
 
 ## 作成の背景
