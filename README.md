@@ -7,14 +7,14 @@
 
 ### 準備
 
-1. Pythonをインストールします。Windowsをお使いの場合、Windows用のインストーラを[ダウンロード](https://www.python.org/downloads/)してインストールするか、[Windows Subsystem for Linux](https://learn.microsoft.com/ja-jp/windows/wsl/install)(WSL)を使用して、Linux上でPythonをインストールしてください。
+1. Pythonをインストールします。Windowsをお使いの場合、[MicrosoftのWebサイト](ihttps://learn.microsoft.com/ja-jp/windows/python/beginners)にインストールや動作確認の方法が掲載されています。
 1. [Visual Studio Code](https://code.visualstudio.com/)(VSCode)をインストールします。
 1. VSCodeのユーザインターフェースを日本語で表示するため、[Japanese Language Pack for VS Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja)をインストールします。VSCodeを起動してCtrlキーとPキーを同時に押し、表示される入力欄に以下の文字列を入力して、Enterキーを押します。
     ```
     ext install MS-CEINTL.vscode-language-pack-ja
     ```
 1. VSCodeの[YAML拡張機能](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)をインストールします。
-1. VSCodeの画面上部のメニューから"ターミナル"を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドを実行して、必要なPythonのモジュールをインストールします。venv環境での実行をおすすめします。
+1. VSCodeの画面上部のメニューから"ターミナル"を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドを実行して、必要なPythonのモジュールをインストールします。
     ```sh
     pip install pyyaml resync
     ```
