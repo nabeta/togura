@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=/home/kosuke/jpcoar-json-schema/jpcoar.json
+# yaml-language-server: $schema=https://github.com/nabeta/jpcoar-schema-helper/blob/main/schema/jpcoar.json
 
 # 以下のメタデータを記述例として使用しています
 # https://github.com/JPCOAR/schema/blob/master/2.0/samples/01_departmental_bulletin_paper_oa.xml
