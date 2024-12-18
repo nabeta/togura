@@ -235,12 +235,13 @@ for creator in entry["creator"]:
 elem_access_rights = ET.SubElement(root, ET.QName(ns["dcterms"], "accessRights"))
 elem_access_rights.text = entry["access_rights"]
 
-for rights in entry["rights"]:
-  elem_rights = ET.SubElement(root, ET.QName(ns["dc"], "rights"), {
-    "xml:lang": rights["lang"],
-    ET.QName(ns["rdf"], "resource"): rights["rights"]
-  })
-  elem_rights.text = rights["rights"]
+if entry.get("rights"):
+  for rights in entry["rights"]:
+    elem_rights = ET.SubElement(root, ET.QName(ns["dc"], "rights"), {
+      "xml:lang": rights["lang"],
+      ET.QName(ns["rdf"], "resource"): rights["rights"]
+    })
+    elem_rights.text = rights["rights"]
 
 for subject in entry["subject"]:
   elem_subject = ET.SubElement(root, ET.QName(ns["jpcoar"], "subject"), {
@@ -266,27 +267,30 @@ elem_resource_type = ET.SubElement(root, ET.QName(ns["dc"], "type"), {
 })
 elem_resource_type.text = entry["type"]
 
-elem_text_version = ET.SubElement(root, ET.QName(ns["oaire"], "version"), {
-  ET.QName(ns["rdf"], "resource"): text_version_uri(entry["text_version"])
-})
-elem_text_version.text = entry["text_version"]
+if entry.get("text_version"):
+  elem_text_version = ET.SubElement(root, ET.QName(ns["oaire"], "version"), {
+    ET.QName(ns["rdf"], "resource"): text_version_uri(entry["text_version"])
+  })
+  elem_text_version.text = entry["text_version"]
 
 for identifier in entry["identifier"]:
   elem_identifier = ET.SubElement(root, ET.QName(ns["jpcoar"], "identifier"), {"identifierType": jpcoar_identifier_type(identifier)})
   elem_identifier.text = identifier
 
-elem_identifier_registration = ET.SubElement(root, ET.QName(ns["jpcoar"], "identifierRegistration"), {
-  "identifierType": entry["identifier_registration"]["identifier_type"]
-})
-elem_identifier_registration.text = entry["identifier_registration"]["identifier"]
+if entry.get("identifier_registration"):
+  elem_identifier_registration = ET.SubElement(root, ET.QName(ns["jpcoar"], "identifierRegistration"), {
+    "identifierType": entry["identifier_registration"]["identifier_type"]
+  })
+  elem_identifier_registration.text = entry["identifier_registration"]["identifier"]
 
 if entry.get("relation"):
   for relation in entry["relation"]:
     elem_relation = ET.SubElement(root, ET.QName(ns["jpcoar"], "relation"), {
       "relationType": relation["relation_type"]
     })
-    elem_related_identifier = ET.SubElement(elem_relation, ET.QName(ns["jpcoar"], "relatedIdentifier"))
-    elem_related_identifier.text = relation["related_identifier"]
+    for related_identifier in relation["related_identifier"]:
+      elem_related_identifier = ET.SubElement(elem_relation, ET.QName(ns["jpcoar"], "relatedIdentifier"))
+      elem_related_identifier.text = related_identifier
 
 for funding_reference in entry["funding_reference"]:
   elem_funding_reference = ET.SubElement(root, ET.QName(ns["jpcoar"], "fundingReference"))
@@ -337,25 +341,26 @@ page_start.text = entry["page_start"]
 page_end = ET.SubElement(root, ET.QName(ns["jpcoar"], "pageEnd"))
 page_end.text = entry["page_end"]
 
-for file in entry["file"]:
-  elem_file = ET.SubElement(root, ET.QName(ns["jpcoar"], "file"))
-  elem_file_uri = ET.SubElement(
-    elem_file,
-    ET.QName(ns["jpcoar"], "URI"),
-    {
-      "objectType": file["object_type"],
-      "label": file["label"]
-    }
-  )
-  elem_file_uri.text = file["uri"]
+if entry.get("file"):
+  for file in entry["file"]:
+    elem_file = ET.SubElement(root, ET.QName(ns["jpcoar"], "file"))
+    elem_file_uri = ET.SubElement(
+      elem_file,
+      ET.QName(ns["jpcoar"], "URI"),
+      {
+        "objectType": file["object_type"],
+        "label": file["label"]
+      }
+    )
+    elem_file_uri.text = file["uri"]
 
-  for extent in file["extent"]:
-    elem_file_extent = ET.SubElement(elem_file, ET.QName(ns["jpcoar"], "extent"))
-    elem_file_extent.text = extent
+    for extent in file["extent"]:
+      elem_file_extent = ET.SubElement(elem_file, ET.QName(ns["jpcoar"], "extent"))
+      elem_file_extent.text = extent
 
-  for date in file["date"]:
-    elem_file_date = ET.SubElement(elem_file, ET.QName(ns["datacite"], "date"), {"dateType": date["date_type"]})
-    elem_file_date.text = str(date["date"])
+    for date in file["date"]:
+      elem_file_date = ET.SubElement(elem_file, ET.QName(ns["datacite"], "date"), {"dateType": date["date_type"]})
+      elem_file_date.text = str(date["date"])
 
 ET.indent(root, space = "  ", level = 0)
 print(ET.tostring(root, encoding = "unicode", xml_declaration = True))
