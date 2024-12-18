@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nabeta/jpcoar-schema-helper/refs/heads/main/schema/jpcoar.json
+# yaml-language-server: $schema=../schema/jpcoar.json
 
 # 以下のメタデータを記述例として使用しています
 # https://github.com/JPCOAR/schema/blob/master/2.0/samples/02_journal_article_embargoed.xml
