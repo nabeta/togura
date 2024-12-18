@@ -7,13 +7,17 @@
 
 ### 準備
 
+1. Pythonをインストールします。Windowsをお使いの場合、Windows用のインストーラを[ダウンロード](https://www.python.org/downloads/)してインストールするか、[Windows Subsystem for Linux](https://learn.microsoft.com/ja-jp/windows/wsl/install)(WSL)を使用して、Linux上でPythonをインストールしてください。
 1. [Visual Studio Code](https://code.visualstudio.com/)(VSCode)をインストールします。
 1. VSCodeのユーザインターフェースを日本語で表示するため、[Japanese Language Pack for VS Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja)をインストールします。VSCodeを起動してCtrlキーとPキーを同時に押し、表示される入力欄に以下の文字列を入力して、Enterキーを押します。
     ```
     ext install MS-CEINTL.vscode-language-pack-ja
     ```
 1. VSCodeの[YAML拡張機能](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)をインストールします。
-1. Pythonをインストールします。Windowsをお使いの場合、Windows用のインストーラを[ダウンロード](https://www.python.org/downloads/)してインストールするか、[Windows Subsystem for Linux](https://learn.microsoft.com/ja-jp/windows/wsl/install)(WSL)を使用して、Linux上でPythonをインストールしてください。
+1. VSCodeの画面上部のメニューから"ターミナル"を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドを実行して、必要なPythonのモジュールをインストールします。venv環境での実行をおすすめします。
+    ```sh
+    pip install pyyaml resync
+    ```
 1. [ツールのファイル一式のzipファイル](https://github.com/nabeta/jpcoar-schema-helper/archive/refs/heads/main.zip)をダウンロードして、適当なフォルダに展開します。ここでは`jpcoar-schema-helper-main`フォルダに展開したものとします。
 
 ### メタデータの書き方
@@ -24,12 +28,7 @@
 
 ### JPCOARスキーマのXMLへの変換　
 
-1. 必要なPythonのモジュールをインストールします。venv環境での実行をおすすめします。
-    ```sh
-    pip install pyyaml resync
-    ```
-1. VSCodeの画面上部のメニューから"ターミナル"を選びます。ターミナルのウインドウが画面下部に開きます。
-1. ターミナルで`jpcoar.py`スクリプトを実行し、YAMLで作成したメタデータファイルをJPCOARスキーマのXMLファイルに変換します。まずテストとして、以下のコマンドで、サンプルのメタデータファイルがXMLに変換され、表示されることを確認してください。
+1. VSCodeのターミナルで`jpcoar.py`スクリプトを実行し、YAMLで作成したメタデータファイルをJPCOARスキーマのXMLファイルに変換します。まずテストとして、以下のコマンドで、サンプルのメタデータファイルがXMLに変換され、表示されることを確認してください。
     ```sh
     ./jpcoar.py samples/01_departmental_bulletin_paper_oa.yaml
     ```
@@ -52,8 +51,11 @@
 
 ## TODO
 
+- 論文以外のメタデータ項目への対応を追加する
 - メタデータの記述対象となる実ファイルの情報を自動的にメタデータファイルに追加する
-- ResourceSyncの`capabilitylist.xml`と`changelist.xml`の作成
+- ResourceSyncの`capabilitylist.xml`と`changelist.xml`を作成できるようにする
+- レコードIDの採番方法を決める
+- YAMLのプロパティ名を整理する
 
 ## 作者
 
