@@ -13,7 +13,7 @@
     ext install MS-CEINTL.vscode-language-pack-ja
     ```
 1. VSCodeの[YAML拡張機能](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)をインストールします。
-1. Pythonをインストールします。Windowsをお使いの場合、Windows用のインストーラを[ダウンロード](https://www.python.org/downloads/)してインストールするか、[Windows Subsystem for Linux](https://learn.microsoft.com/ja-jp/windows/wsl/install)(WSL)を使用してください。
+1. Pythonをインストールします。Windowsをお使いの場合、Windows用のインストーラを[ダウンロード](https://www.python.org/downloads/)してインストールするか、[Windows Subsystem for Linux](https://learn.microsoft.com/ja-jp/windows/wsl/install)(WSL)を使用して、Linux上でPythonをインストールしてください。
 1. このGitHubリポジトリの画面上部にある"Code"ボタンから"Download ZIP"を選択し、ツールのファイル一式をダウンロードして、適当なフォルダに展開します。ここでは`jpcoar-schema-helper`フォルダに展開したものとします。
 
 ### メタデータの書き方
