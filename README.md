@@ -14,12 +14,12 @@
     ```
 1. VSCodeの[YAML拡張機能](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)をインストールします。
 1. Pythonをインストールします。Windowsをお使いの場合、Windows用のインストーラを[ダウンロード](https://www.python.org/downloads/)してインストールするか、[Windows Subsystem for Linux](https://learn.microsoft.com/ja-jp/windows/wsl/install)(WSL)を使用して、Linux上でPythonをインストールしてください。
-1. [ツールのファイル一式のzipファイル](https://github.com/nabeta/jpcoar-schema-helper/archive/refs/heads/main.zip)をダウンロードして、適当なフォルダに展開します。ここでは`jpcoar-schema-helper`フォルダに展開したものとします。
+1. [ツールのファイル一式のzipファイル](https://github.com/nabeta/jpcoar-schema-helper/archive/refs/heads/main.zip)をダウンロードして、適当なフォルダに展開します。ここでは`jpcoar-schema-helper-main`フォルダに展開したものとします。
 
 ### メタデータの書き方
 
-1. 展開した`jpcoar-schema-helper`フォルダを開き、`samples`フォルダの中にあるサンプルのメタデータファイルを、`work`フォルダの中にコピーします。ファイル名は半角英数文字とし、拡張子は".yaml"のままにしておいてください。
-1. VSCodeで`jpcoar-schema-helper`フォルダを開きます。
+1. 展開した`jpcoar-schema-helper-main`フォルダを開き、`samples`フォルダの中にあるサンプルのメタデータファイルを、`work`フォルダの中にコピーします。ファイル名は半角英数文字とし、拡張子は".yaml"のままにしておいてください。
+1. VSCodeで`jpcoar-schema-helper-main`フォルダを開きます。
 1. VSCodeのファイル一覧から、`work`フォルダにコピーしたメタデータファイルを開き、メタデータの編集と保存を行ってください。
 
 ### JPCOARスキーマのXMLへの変換　
