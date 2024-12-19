@@ -156,7 +156,7 @@ file:
       - 3MB
       - 24 pages
     date:
-    - date_type: Issued
-      date: 2015-10-01
-    - date_type: Available
-      date: 2016-04-01
+      - date_type: Issued
+        date: 2015-10-01
+      - date_type: Available
+        date: 2016-04-01
