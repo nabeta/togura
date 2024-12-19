@@ -462,6 +462,26 @@ properties:
           type: array
           items:
             type: string
+            enum:
+              - ARK
+              - arXiv
+              - CRID
+              - DOI
+              - HDL
+              - ICHUSHI
+              - ISBN
+              - J-GLOBAL
+              - Local
+              - PISSN
+              - EISSN
+              - ISSN
+              - NAID
+              - NCID
+              - PMID
+              - PURL
+              - SCOPUS
+              - URI
+              - WOS
         related_title:
           type: object
           additionalProperties: false
