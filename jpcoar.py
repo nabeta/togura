@@ -243,16 +243,18 @@ if entry.get("rights"):
     })
     elem_rights.text = rights["rights"]
 
-for subject in entry["subject"]:
-  elem_subject = ET.SubElement(root, ET.QName(ns["jpcoar"], "subject"), {
-    "xml:lang": subject["lang"],
-    "subjectScheme": subject["subject_scheme"]
-  })
-  elem_subject.text = subject["subject"]
+if entry.get("subject"):
+  for subject in entry["subject"]:
+    elem_subject = ET.SubElement(root, ET.QName(ns["jpcoar"], "subject"), {
+      "xml:lang": subject["lang"],
+      "subjectScheme": subject["subject_scheme"]
+    })
+    elem_subject.text = subject["subject"]
 
-for publisher in entry["publisher"]:
-  elem_publisher = ET.SubElement(root, ET.QName(ns["dc"], "publisher"), {"xml:lang": publisher["lang"]})
-  elem_publisher.text = publisher["publisher"]
+if entry.get("publisher"):
+  for publisher in entry["publisher"]:
+    elem_publisher = ET.SubElement(root, ET.QName(ns["dc"], "publisher"), {"xml:lang": publisher["lang"]})
+    elem_publisher.text = publisher["publisher"]
 
 for date in entry["date"]:
   elem_date = ET.SubElement(root, ET.QName(ns["datacite"], "date"), {"dateType": date["date_type"]})
@@ -288,58 +290,65 @@ if entry.get("relation"):
     elem_relation = ET.SubElement(root, ET.QName(ns["jpcoar"], "relation"), {
       "relationType": relation["relation_type"]
     })
-    for related_identifier in relation["related_identifier"]:
-      elem_related_identifier = ET.SubElement(elem_relation, ET.QName(ns["jpcoar"], "relatedIdentifier"), {"identifierType": jpcoar_identifier_type(related_identifier)})
-      elem_related_identifier.text = related_identifier
+    elem_related_identifier = ET.SubElement(elem_relation, ET.QName(ns["jpcoar"], "relatedIdentifier"), {"identifierType": relation["related_identifier"]["identifier_type"]})
+    elem_related_identifier.text = relation["related_identifier"]["identifier"]
 
-for funding_reference in entry["funding_reference"]:
-  elem_funding_reference = ET.SubElement(root, ET.QName(ns["jpcoar"], "fundingReference"))
-  elem_funder_identifier = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "funderIdentifier"), {
-    "funderIdentifierType": funding_reference["funder_identifier_type"]
-  })
-  elem_funder_identifier.text = funding_reference["funder_identifier"]
-  elem_funder_name = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "funderName"), {
-    "xml:lang": funding_reference["funder_name"]["lang"]
-  })
-  elem_funder_name.text = funding_reference["funder_name"]["funder_name"]
-  elem_funding_stream = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "fundingStream"), {
-    "xml:lang": funding_reference["funding_stream"]["lang"]
-  })
-  elem_funding_stream.text = funding_reference["funding_stream"]["funding_stream"]
+if entry.get("funding_reference"):
+  for funding_reference in entry["funding_reference"]:
+    elem_funding_reference = ET.SubElement(root, ET.QName(ns["jpcoar"], "fundingReference"))
+    elem_funder_identifier = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "funderIdentifier"), {
+      "funderIdentifierType": funding_reference["funder_identifier_type"]
+    })
+    elem_funder_identifier.text = funding_reference["funder_identifier"]
+    elem_funder_name = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "funderName"), {
+      "xml:lang": funding_reference["funder_name"]["lang"]
+    })
+    elem_funder_name.text = funding_reference["funder_name"]["funder_name"]
+    elem_funding_stream = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "fundingStream"), {
+      "xml:lang": funding_reference["funding_stream"]["lang"]
+    })
+    elem_funding_stream.text = funding_reference["funding_stream"]["funding_stream"]
 
-  elem_award_number = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "awardNumber"), {
-    "awardURI": funding_reference["award_number"]["award_uri"],
-    "awardNumberType": funding_reference["award_number"]["award_number_type"]
-   })
-  elem_award_number.text = funding_reference["award_number"]["award_number"]
+    elem_award_number = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "awardNumber"), {
+      "awardURI": funding_reference["award_number"]["award_uri"],
+      "awardNumberType": funding_reference["award_number"]["award_number_type"]
+     })
+    elem_award_number.text = funding_reference["award_number"]["award_number"]
 
-  elem_award_title = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "awardTitle"), {
-    "xml:lang": funding_reference["award_title"]["lang"]
-  })
-  elem_award_title.text = funding_reference["award_title"]["award_title"]
+    elem_award_title = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "awardTitle"), {
+      "xml:lang": funding_reference["award_title"]["lang"]
+    })
+    elem_award_title.text = funding_reference["award_title"]["award_title"]
 
-for source_identifier in entry["source_identifier"]:
-  elem_source_identifier = ET.SubElement(root, ET.QName(ns["jpcoar"], "sourceIdentifier"), {"identifierType": source_identifier["identifier_type"]})
-  elem_source_identifier.text = source_identifier["source_identifier"]
+if entry.get("source_identifier"):
+  for source_identifier in entry["source_identifier"]:
+    elem_source_identifier = ET.SubElement(root, ET.QName(ns["jpcoar"], "sourceIdentifier"), {"identifierType": source_identifier["identifier_type"]})
+    elem_source_identifier.text = source_identifier["source_identifier"]
 
-for source_title in entry["source_title"]:
-  elem_source_title = ET.SubElement(root, ET.QName(ns["jpcoar"], "sourceTitle"), {"xml:lang": source_title["lang"]})
-  elem_source_title.text = source_title["source_title"]
+if entry.get("source_title"):
+  for source_title in entry["source_title"]:
+    elem_source_title = ET.SubElement(root, ET.QName(ns["jpcoar"], "sourceTitle"), {"xml:lang": source_title["lang"]})
+    elem_source_title.text = source_title["source_title"]
 
-volume = ET.SubElement(root, ET.QName(ns["jpcoar"], "volume"))
-volume.text = entry["volume"]
+if entry.get("volume"):
+  volume = ET.SubElement(root, ET.QName(ns["jpcoar"], "volume"))
+  volume.text = entry["volume"]
 
-issue = ET.SubElement(root, ET.QName(ns["jpcoar"], "issue"))
-issue.text = entry["issue"]
+if entry.get("issue"):
+  issue = ET.SubElement(root, ET.QName(ns["jpcoar"], "issue"))
+  issue.text = entry["issue"]
 
-num_pages = ET.SubElement(root, ET.QName(ns["jpcoar"], "numPages"))
-num_pages.text = str(entry["num_pages"])
+if entry.get("num_pages"):
+  num_pages = ET.SubElement(root, ET.QName(ns["jpcoar"], "numPages"))
+  num_pages.text = str(entry["num_pages"])
 
-page_start = ET.SubElement(root, ET.QName(ns["jpcoar"], "pageStart"))
-page_start.text = entry["page_start"]
+if entry.get("page_start"):
+  page_start = ET.SubElement(root, ET.QName(ns["jpcoar"], "pageStart"))
+  page_start.text = entry["page_start"]
 
-page_end = ET.SubElement(root, ET.QName(ns["jpcoar"], "pageEnd"))
-page_end.text = entry["page_end"]
+if entry.get("page_end"):
+  page_end = ET.SubElement(root, ET.QName(ns["jpcoar"], "pageEnd"))
+  page_end.text = entry["page_end"]
 
 if entry.get("file"):
   for file in entry["file"]:

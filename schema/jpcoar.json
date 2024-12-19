@@ -214,6 +214,36 @@
                 }
               }
             }
+          },
+          "affiliation": {
+            "type": "array",
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "identifier": {
+                  "type": "string"
+                },
+                "identifier_scheme": {
+                  "type": "string"
+                },
+                "affiliation_name": {
+                  "type": "array",
+                  "additionalProperties": false,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "lang": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -543,38 +573,35 @@
             ]
           },
           "related_identifier": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "identifier": {
-                  "type": "string"
-                },
-                "identifier_type": {
-                  "type": "string",
-                  "enum": [
-                    "ARK",
-                    "arXiv",
-                    "CRID",
-                    "DOI",
-                    "HDL",
-                    "ICHUSHI",
-                    "ISBN",
-                    "J-GLOBAL",
-                    "Local",
-                    "PISSN",
-                    "EISSN",
-                    "ISSN",
-                    "NAID",
-                    "NCID",
-                    "PMID",
-                    "PURL",
-                    "SCOPUS",
-                    "URI",
-                    "WOS"
-                  ]
-                }
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "identifier": {
+                "type": "string"
+              },
+              "identifier_type": {
+                "type": "string",
+                "enum": [
+                  "ARK",
+                  "arXiv",
+                  "CRID",
+                  "DOI",
+                  "HDL",
+                  "ICHUSHI",
+                  "ISBN",
+                  "J-GLOBAL",
+                  "Local",
+                  "PISSN",
+                  "EISSN",
+                  "ISSN",
+                  "NAID",
+                  "NCID",
+                  "PMID",
+                  "PURL",
+                  "SCOPUS",
+                  "URI",
+                  "WOS"
+                ]
               }
             }
           },
@@ -833,7 +860,16 @@
         "additionalProperties": false,
         "properties": {
           "name_identifier": {
-            "type": "string"
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name_identifier_scheme": {
+                "type": "string"
+              },
+              "identifier": {
+                "type": "string"
+              }
+            }
           },
           "degree_grantor_name": {
             "type": "object",
