@@ -944,4 +944,11 @@ properties:
       access_rights:
         type: array
       file:
-        type: array
+        type: object
+        properties:
+          uri:
+            type: string
+          object_type:
+            type: string
+            enum:
+              - thumbnail

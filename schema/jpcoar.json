@@ -1138,7 +1138,18 @@
           "type": "array"
         },
         "file": {
-          "type": "array"
+          "type": "object",
+          "properties": {
+            "uri": {
+              "type": "string"
+            },
+            "object_type": {
+              "type": "string",
+              "enum": [
+                "thumbnail"
+              ]
+            }
+          }
         }
       }
     }
