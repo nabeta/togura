@@ -9,11 +9,14 @@
 
 1. Pythonをインストールします。Windowsをお使いの場合、[MicrosoftのWebサイト](https://learn.microsoft.com/ja-jp/windows/python/beginners)にインストールや動作確認の方法が掲載されています。
 1. [Visual Studio Code](https://code.visualstudio.com/)(VSCode)をインストールします。
-1. VSCodeのユーザインターフェースを日本語で表示するため、[Japanese Language Pack for VS Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja)をインストールします。VSCodeを起動してCtrlキーとPキーを同時に押し、表示される入力欄に以下の文字列を入力して、Enterキーを押します。
+1. VSCodeのユーザインターフェースを日本語で表示するため、[Japanese Language Pack for VS Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja)をインストールします。VSCodeを起動してCtrlキーとPキーを同時に押し、表示された入力欄に以下の文字列を入力して、Enterキーを押します。
     ```
     ext install MS-CEINTL.vscode-language-pack-ja
     ```
-1. VSCodeの[YAML拡張機能](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)をインストールします。
+1. VSCodeの[YAML拡張機能](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)をインストールします。先ほどと同様に、VSCodeを起動した状態でCtrlキーとPキーを同時に押し、表示された入力欄に以下の文字列を入力して、Enterキーを押します。
+    ```
+    ext install redhat.vscode-yaml
+    ```
 1. VSCodeの画面上部のメニューから"ターミナル"を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドを実行して、必要なPythonのモジュールをインストールします。
     ```sh
     pip install pyyaml resync
@@ -36,7 +39,7 @@
     ```sh
     ./jpcoar.py work/my_article.yaml > public/my_article.xml
     ```
-1. ターミナルで`resourcesync.py`スクリプトを実行し、ResourceSyncのXMLファイルを作成して`public`フォルダの中に保存します。`https://example.com`は、実際にファイルを公開するWebサーバの名前に変更してください（テストとして実行している場合は、変更する必要はありません）。
+1. VSCodeのターミナルで`resourcesync.py`スクリプトを実行し、ResourceSyncのXMLファイルを作成して`public`フォルダの中に保存します。`https://example.com`は、実際にファイルを公開するWebサーバの名前に変更してください（テストとして実行している場合は、変更する必要はありません）。
     ```sh
     ./resourcesync.py https://example.com > public/resourcelist.xml
     ```
