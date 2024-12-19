@@ -827,7 +827,22 @@ properties:
     additionalProperties: false
     properties:
       holding_agent_name_identifier:
-        type: string
+        type: object
+        properties:
+          name_identifier_scheme:
+            type: string
+            enum:
+              - kakenhi
+              - ISNI
+              - Ringgold
+              - GRID
+              - ROR
+              - FANO
+              - ISIL
+              - MARC
+              - OCLC
+          name_identifier_uri:
+            type: string
       holding_agent_name:
         type: object
         properties:
