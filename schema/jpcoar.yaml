@@ -461,27 +461,33 @@ properties:
         related_identifier:
           type: array
           items:
-            type: string
-            enum:
-              - ARK
-              - arXiv
-              - CRID
-              - DOI
-              - HDL
-              - ICHUSHI
-              - ISBN
-              - J-GLOBAL
-              - Local
-              - PISSN
-              - EISSN
-              - ISSN
-              - NAID
-              - NCID
-              - PMID
-              - PURL
-              - SCOPUS
-              - URI
-              - WOS
+            type: object
+            additionalProperties: false
+            properties:
+              identifier:
+                type: string
+              identifier_type:
+                type: string
+                enum:
+                  - ARK
+                  - arXiv
+                  - CRID
+                  - DOI
+                  - HDL
+                  - ICHUSHI
+                  - ISBN
+                  - J-GLOBAL
+                  - Local
+                  - PISSN
+                  - EISSN
+                  - ISSN
+                  - NAID
+                  - NCID
+                  - PMID
+                  - PURL
+                  - SCOPUS
+                  - URI
+                  - WOS
         related_title:
           type: object
           additionalProperties: false
@@ -618,7 +624,7 @@ properties:
       type: object
       additionalProperties: false
       properties:
-        source_identifier:
+        identifier:
           type: string
         identifier_type:
           type: string
