@@ -487,7 +487,70 @@
         "review article",
         "other periodical",
         "software paper",
-        "article"
+        "article",
+        "book",
+        "book part",
+        "cartographic material",
+        "map",
+        "conference output",
+        "conference presentation",
+        "conference proceedings",
+        "conference poster",
+        "aggregated data",
+        "clinical trial data",
+        "compiled data",
+        "dataset",
+        "encoded data",
+        "experimental data",
+        "genomic data",
+        "geospatial data",
+        "laboratory notebook",
+        "measurement and test data",
+        "observational data",
+        "recorded data",
+        "simulation data",
+        "survey data",
+        "image",
+        "still image",
+        "moving image",
+        "video",
+        "lecture",
+        "design patent",
+        "patent",
+        "PCT application",
+        "plant patent",
+        "plant variety protection",
+        "software patent",
+        "trademark",
+        "utility model",
+        "report",
+        "research report",
+        "technical report",
+        "policy report",
+        "working paper",
+        "data management plan",
+        "sound",
+        "thesis",
+        "bachelor thesis",
+        "master thesis",
+        "doctoral thesis",
+        "commentary",
+        "design",
+        "industrial design",
+        "interactive resource",
+        "layout design",
+        "learning object",
+        "manuscript",
+        "musical notation",
+        "peer review",
+        "research proposal",
+        "research protocol",
+        "software",
+        "source code",
+        "technical documentation",
+        "transcription",
+        "workflow",
+        "other"
       ]
     },
     "version": {
@@ -1179,6 +1242,21 @@
         "license": {
           "type": "array"
         },
+        "rights": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "rights": {
+                "type": "string"
+              },
+              "lang": {
+                "type": "string"
+              }
+            }
+          }
+        },
         "access_rights": {
           "type": "array"
         },
@@ -1186,7 +1264,8 @@
           "type": "object",
           "properties": {
             "uri": {
-              "type": "string"
+              "type": "string",
+              "format": "uri"
             },
             "object_type": {
               "type": "string",
