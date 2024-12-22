@@ -7,7 +7,7 @@ import mimetypes
 import shutil
 from xml.dom import minidom
 import xml.etree.ElementTree as ET
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urljoin
 
 ns = {
   "jpcoar": "https://github.com/JPCOAR/schema/blob/master/2.0/",
@@ -205,7 +205,7 @@ def jpcoar_identifier_type(string):
     case _:
       return "URI"
 
-def generate_xml(entry, ns):
+def generate_xml(entry, ns, base_url):
   """JPCOARスキーマのXMLを作成する"""
   root = ET.Element(ET.QName(ns["jpcoar"], "jpcoar"))
   root.set(ET.QName(ns["xsi"], "schemaLocation"), "https://github.com/JPCOAR/schema/blob/master/2.0/ jpcoar_scm.xsd")
@@ -266,9 +266,7 @@ def generate_xml(entry, ns):
     })
     elem_text_version.text = entry["text_version"]
 
-  for identifier in entry["identifier"]:
-    elem_identifier = ET.SubElement(root, ET.QName(ns["jpcoar"], "identifier"), {"identifierType": jpcoar_identifier_type(identifier)})
-    elem_identifier.text = identifier
+  add_identifier(entry, root, base_url)
 
   if entry.get("identifier_registration"):
     elem_identifier_registration = ET.SubElement(root, ET.QName(ns["jpcoar"], "identifierRegistration"), {
@@ -369,6 +367,14 @@ def add_contributor(entry, root):
           elem_affiliation_name = ET.SubElement(elem_affiliation, ET.QName(ns["jpcoar"], "affiliationName"), {"xml:lang": affiliation_name["lang"]})
           elem_affiliation_name.text = affiliation_name["name"]
 
+def add_identifier(entry, root, prefix):
+  elem_identifier = ET.SubElement(root, ET.QName(ns["jpcoar"], "identifier"), {"identifierType": "URI"})
+  elem_identifier.text = urljoin(sys.argv[2], str(entry["id"]))
+
+  for identifier in entry["identifier"]:
+    elem_identifier = ET.SubElement(root, ET.QName(ns["jpcoar"], "identifier"), {"identifierType": jpcoar_identifier_type(identifier)})
+    elem_identifier.text = identifier
+
 def add_funding_reference(entry, root):
   """助成情報をメタデータに追加する"""
   for funding_reference in entry["funding_reference"]:
@@ -404,7 +410,7 @@ def add_funding_reference(entry, root):
         })
         elem_award_title.text = award_title["award_title"]
 
-def add_file(data_dir, root, ns):
+def add_file(data_dir, entry, root, ns, base_url):
   """ファイルの情報をメタデータに追加する"""
   for file in glob.glob(f"{data_dir}/*"):
     filename = os.path.basename(file)
@@ -420,7 +426,7 @@ def add_file(data_dir, root, ns):
         "label": filename
       }
     )
-    elem_file_uri.text = f"https://example.com/{filename}"
+    elem_file_uri.text = urljoin(base_url, f"{entry['id']}/{filename}")
 
     elem_file_extent = ET.SubElement(elem_file, ET.QName(ns["jpcoar"], "extent"))
     elem_file_extent.text = str(os.path.getsize(file))
@@ -453,9 +459,18 @@ def output_xml(data_dir, output_dir, root):
   with open(f"{dest_dir}/jpcoar20.xml", "w") as xml_file:
     xml_file.write(ET.tostring(root, encoding = "unicode", xml_declaration = True))
 
-data_dir = sys.argv[1]
-with open(f"{data_dir}/jpcoar20.yaml") as file:
-  entry = yaml.load(file, Loader = yaml.Loader)
-root = generate_xml(entry, ns)
-add_file(data_dir, root, ns)
-output_xml(data_dir, "./public", root)
+def main():
+  if len(sys.argv) != 3:
+    print("Usage: python3 jpcoar.py <metadata_dir> <base_url>")
+    sys.exit(1)
+
+  data_dir = sys.argv[1]
+  base_url = sys.argv[2]
+  with open(f"{data_dir}/jpcoar20.yaml") as file:
+    entry = yaml.load(file, Loader = yaml.Loader)
+  root = generate_xml(entry, ns, base_url)
+  add_file(data_dir, entry, root, ns, base_url)
+  output_xml(data_dir, "./public", root)
+
+if __name__ == "__main__":
+    main()

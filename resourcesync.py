@@ -5,17 +5,27 @@ import datetime
 from resync import Resource, ResourceList
 from urllib.parse import urljoin
 
-rl = ResourceList()
-public_dir = "public"
-for data_dir in os.listdir(public_dir):
-  if not os.path.isdir(os.path.join(public_dir, data_dir)):
-    continue
+def main():
+  if len(sys.argv) != 2:
+    print("Usage: python3 resourcesync.py <base_url>")
+    sys.exit(1)
 
-  if data_dir == ".keep":
-    continue
+  rl = ResourceList()
+  public_dir = "public"
+  base_url = sys.argv[1]
 
-  file = f"{data_dir}/jpcoar20.xml"
-  rl.add(Resource(urljoin(sys.argv[1], file), lastmod = datetime.datetime.fromtimestamp(os.path.getmtime(f"public/{file}"), datetime.timezone.utc).isoformat()))
+  for data_dir in os.listdir(public_dir):
+    if not os.path.isdir(os.path.join(public_dir, data_dir)):
+      continue
 
-with open(f"public/resourcelist.xml", "w") as file:
-  file.write(rl.as_xml())
+    if data_dir == ".keep":
+      continue
+
+    file = f"{data_dir}/jpcoar20.xml"
+    rl.add(Resource(urljoin(base_url, file), lastmod = datetime.datetime.fromtimestamp(os.path.getmtime(f"public/{file}"), datetime.timezone.utc).isoformat()))
+
+  with open(f"public/resourcelist.xml", "w") as file:
+    file.write(rl.as_xml())
+
+if __name__ == "__main__":
+    main()
