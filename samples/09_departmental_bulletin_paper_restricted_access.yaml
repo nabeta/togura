@@ -93,8 +93,8 @@ funding_reference:
       - funder_name: 日本学術振興会
         lang: ja
     funding_stream:
-      funding_stream: 科学研究費助成事業
-      lang: ja
+      - funding_stream: 科学研究費助成事業
+        lang: ja
     award_number:
       award_uri: https://kaken.nii.ac.jp/ja/grant/KAKENHI-PLANNED-18049069/
       award_number_type: JGN

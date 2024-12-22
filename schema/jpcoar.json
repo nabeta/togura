@@ -447,7 +447,8 @@
             "type": "array",
             "items": {
               "publication_place": {
-                "type": "string"
+                "type": "string",
+                "pattern": "^[A-Z]{3}$"
               }
             }
           }
@@ -832,14 +833,17 @@
             }
           },
           "funding_stream": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "funding_stream": {
-                "type": "string"
-              },
-              "lang": {
-                "type": "string"
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "funding_stream": {
+                  "type": "string"
+                },
+                "lang": {
+                  "type": "string"
+                }
               }
             }
           },

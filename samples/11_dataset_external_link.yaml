@@ -167,8 +167,8 @@ funding_reference:
       - funder_name: Ministry of Education, Culture, Sports, Science and Technology
         lang: en
     funding_stream:
-      funding_stream: 科学研究費助成事業
-      lang: ja
+      - funding_stream: 科学研究費助成事業
+        lang: ja
     award_number:
       award_uri: https://kaken.nii.ac.jp/ja/grant/KAKENHI-PLANNED-18049069/
       award_number_type: JGN
