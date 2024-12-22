@@ -98,8 +98,8 @@ funding_reference:
   - funder_identifier: "1025"
     funder_identifier_type: e-Rad_funder
     funder_name:
-      funder_name: 日本学術振興会
-      lang: ja
+      - funder_name: 日本学術振興会
+        lang: ja
     funding_stream:
       funding_stream: 科学研究費助成事業
       lang: ja

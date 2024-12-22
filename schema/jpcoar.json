@@ -93,38 +93,47 @@
             }
           },
           "family_name": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "name": {
-                "type": "string"
-              },
-              "lang": {
-                "type": "string"
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "lang": {
+                  "type": "string"
+                }
               }
             }
           },
           "given_name": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "name": {
-                "type": "string"
-              },
-              "lang": {
-                "type": "string"
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "lang": {
+                  "type": "string"
+                }
               }
             }
           },
           "creator_alternative": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "name": {
-                "type": "string"
-              },
-              "lang": {
-                "type": "string"
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "lang": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -266,6 +275,10 @@
           "rights": {
             "type": "string"
           },
+          "rights_uri": {
+            "type": "string",
+            "format": "uri"
+          },
           "lang": {
             "type": "string"
           }
@@ -386,43 +399,57 @@
         "additionalProperties": false,
         "properties": {
           "publisher_name": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "publisher_name": {
-                "type": "string"
-              },
-              "lang": {
-                "type": "string"
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "publisher_name": {
+                  "type": "string"
+                },
+                "lang": {
+                  "type": "string"
+                }
               }
             }
           },
           "publisher_description": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "publisher_name": {
-                "type": "string"
-              },
-              "lang": {
-                "type": "string"
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "publisher_description": {
+                  "type": "string"
+                },
+                "lang": {
+                  "type": "string"
+                }
               }
             }
           },
           "location": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "publisher_name": {
-                "type": "string"
-              },
-              "lang": {
-                "type": "string"
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "location": {
+                  "type": "string"
+                },
+                "lang": {
+                  "type": "string"
+                }
               }
             }
           },
           "publication_place": {
-            "type": "string"
+            "type": "array",
+            "items": {
+              "publication_place": {
+                "type": "string"
+              }
+            }
           }
         }
       }
@@ -767,17 +794,20 @@
             ]
           },
           "funder_name": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "funder_name"
-            ],
-            "properties": {
-              "funder_name": {
-                "type": "string"
-              },
-              "lang": {
-                "type": "string"
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "funder_name"
+              ],
+              "properties": {
+                "funder_name": {
+                  "type": "string"
+                },
+                "lang": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -1117,13 +1147,16 @@
           }
         },
         "holding_agent_name": {
-          "type": "object",
-          "properties": {
-            "holding_agent_name": {
-              "type": "string"
-            },
-            "lang": {
-              "type": "string"
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "holding_agent_name": {
+                "type": "string"
+              },
+              "lang": {
+                "type": "string"
+              }
             }
           }
         }
@@ -1240,7 +1273,28 @@
           "type": "array"
         },
         "license": {
-          "type": "array"
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "license": {
+                "type": "string"
+              },
+              "license_uri": {
+                "type": "string",
+                "format": "uri"
+              },
+              "licence_type": {
+                "type": "string",
+                "enum": [
+                  "file",
+                  "metadata",
+                  "thumbnail"
+                ]
+              }
+            }
+          }
         },
         "rights": {
           "type": "array",
@@ -1258,7 +1312,16 @@
           }
         },
         "access_rights": {
-          "type": "array"
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "embargoed access",
+              "metadata only access",
+              "open access",
+              "restricted access"
+            ]
+          }
         },
         "file": {
           "type": "object",

@@ -1,0 +1,240 @@
+# yaml-language-server: $schema=../schema/jpcoar.json
+
+# 以下のメタデータを記述例として使用しています
+# https://github.com/JPCOAR/schema/blob/master/2.0/samples/12_digital_archive.xml
+
+# タイトル
+# https://schema.irdb.nii.ac.jp/ja/schema/2.0/1
+title:
+  - title: 和訓栞
+    lang: ja
+  - title: ワクンノシオリ
+    lang: ja-Kana
+  - title: Wakun no shiori
+    lang: ja-Latn
+
+# その他のタイトル
+# https://schema.irdb.nii.ac.jp/ja/schema/2.0/2
+alternative:
+  - title: 栞
+    lang: ja
+  - title: シオリブミ
+    lang: ja-Kana
+  - title: ワクンノシオリ
+    lang: ja-Kana
+
+# 作成者
+# https://schema.irdb.nii.ac.jp/ja/schema/2.0/3
+creator:
+  - creator_type: 著
+    name_identifier:
+      - identifier_scheme: VIAF
+        identifier: https://viaf.org/viaf/18126058
+    creator_name:
+      - name: 谷川, 士清
+        lang: ja
+      - name: Tanigawa, Kotosuga
+        lang: en
+      - name: タニガワ, コトスガ
+        lang: ja-Kana
+    family_name:
+      - name: 谷川
+        lang: ja
+    given_name:
+      - name: 士清
+        lang: ja
+    creator_alternative:
+      - name: 谷川, 昇
+        lang: ja
+      - name: Tanigawa, Noboru
+        lang: en
+      - name: タニガワ, ノボル
+        lang: ja-Kana
+
+# アクセス権
+# https://schema.irdb.nii.ac.jp/ja/schema/2.0/5
+access_rights: restricted access
+
+# 主題
+# https://schema.irdb.nii.ac.jp/ja/schema/2.0/8
+subject:
+  - subject: 情報爆発
+    lang: ja
+    subject_scheme: Other
+  - subject: データマイニング
+    lang: ja
+    subject_scheme: Other
+
+# 出版者
+# https://schema.irdb.nii.ac.jp/ja/schema/2.0/11
+jpcoar_publisher:
+  - publisher_name:
+      - publisher_name: 須原屋, 茂兵衞
+        lang: ja
+    publisher_description:
+      - publisher_description: 巻之一三
+        lang: ja
+    location:
+      - location: 江戸
+        lang: ja
+    publication_place:
+      - JPN
+  - publisher_name:
+      - publisher_name: 山本, 平左衞門
+        lang: ja
+    publisher_description:
+      - publisher_description: 巻之一三
+        lang: ja
+    location:
+      - location: 京都
+        lang: ja
+    publication_place:
+      - JPN
+  - publisher_name:
+      - publisher_name: 須原屋, 茂兵衞
+        lang: ja
+    publisher_description:
+      - publisher_description: 巻之二八
+        lang: ja
+    location:
+      - location: 京都
+        lang: ja
+    publication_place:
+      - JPN
+
+# 日付
+# https://schema.irdb.nii.ac.jp/ja/schema/2.0/12
+date:
+  - date: 1777/1830
+    date_type: Issued
+
+# 日付（リテラル）
+# https://schema.irdb.nii.ac.jp/ja/schema/2.0/13
+dcterms_date:
+  - date: 安永6-文政13
+    lang: ja
+
+# 言語
+# https://schema.irdb.nii.ac.jp/ja/schema/2.0/14
+language:
+  - jpn
+
+# 資源タイプ
+# https://schema.irdb.nii.ac.jp/ja/schema/2.0/15
+type: book
+
+# 出版タイプ
+# https://schema.irdb.nii.ac.jp/ja/schema/2.0/17
+version: VoR
+
+# 識別子
+# https://schema.irdb.nii.ac.jp/ja/schema/2.0/18
+identifier:
+  - https://doi.org/10.20730/200017323
+  - https://kokusho.nijl.ac.jp/biblio/200017323/
+
+# ID登録
+# https://schema.irdb.nii.ac.jp/ja/schema/2.0/19
+identifier_registration:
+  identifier: 10.20730/200017323
+  identifier_type: JaLC
+
+# 関連情報
+# https://schema.irdb.nii.ac.jp/ja/schema/2.0/20
+relation:
+  - relation_type: inSeries
+    related_identifier:
+      identifier_type: URI
+      identifier: https://kokusho.nijl.ac.jp/page/list-ukai.html
+    related_title:
+      related_title: 鵜飼文庫
+      lang: ja
+
+# 時間的範囲
+# https://schema.irdb.nii.ac.jp/ja/schema/2.0/21
+temporal:
+  - temporal: 江戸時代
+    lang: ja
+
+# 版
+# https://schema.irdb.nii.ac.jp/ja/schema/2.0/36
+edition:
+  - edition: 安永３年刊の改版
+    lang: ja
+
+volume_title:
+  - volume_title: 前編
+    lang: ja
+  - volume_title: ゼンペン
+    lang: ja-Kana
+
+original_language:
+  - jpn
+
+extent:
+  - extent: 34冊 ; 25.1×17.7cm
+    lang: ja
+
+format:
+  - format: 袋綴
+
+holding_agent:
+  holding_agent_name_identifier:
+    identifier: https://ror.org/01464wm64
+    name_identifier_scheme: ROR
+  holding_agent_name:
+    - holding_agent_name: 人間文化研究機構　国文学研究資料館
+      lang: ja
+    - holding_agent_name: National Institute of Japanese Literature
+      lang: en
+
+# ファイル情報
+# https://schema.irdb.nii.ac.jp/ja/schema/2.0/43
+file:
+  - object_type: iiif
+    uri: https://kokusho.nijl.ac.jp/biblio/200017323/manifest
+
+# カタログ
+# https://schema.irdb.nii.ac.jp/ja/schema/2.0/44
+catalog:
+  contributor:
+    - contributor_name: 国文学研究資料館
+      lang: ja
+    - contributor_name: National Institute of Japanese Literature
+      lang: en
+  identifier:
+    - https://kokusho.nijl.ac.jp
+  title:
+    - title: 国書データベース
+      lang: ja
+    - title: コクショデータベース
+      lang: ja-Kana
+    - title: The Largest Digital Reference on Pre-Modern Japanese Works
+      lang: en
+  description:
+    - description: 国内外の多くの機関等及び国文学研究資料館が所蔵する古典籍（江戸時代以前の書籍）等資料の書誌情報と、その一部の高精細画像を一度に検索・利用できるデータベースです。無料で公開していますので、どなたでも利用できます。日本の古典籍の総合目録である「日本古典籍総合目録データベース」と「日本語の 歴史的典籍の国際共同研究ネットワーク構築計画（略称：歴史的典籍NW事業）」によって構築された「新日本古典籍総合データベース」を発展的に統合し、さらに機能強化を目指すものです。
+      description_type: Other
+      lang: ja
+  subject:
+    - subject: 書籍等
+      subject_scheme: Other
+    - subject: 人文学
+      subject_scheme: Other
+    - subject: 自然史・理工学
+      subject_scheme: Other
+  license:
+    - license: 画像利用条件
+      license_uri: https://kokusho.nijl.ac.jp/page/usage.html
+      licence_type: file
+  rights:
+    - rights: 二次利用の条件は原本の所蔵者によって異なる
+      lang: ja
+  access_rights:
+    - open access
+  file:
+    object_type: thumbnail
+    uri: https://xxx.xxx.xxx.xxx/xxx/thumbnail.jpg（準備中）
+
+# ファイル情報
+# https://schema.irdb.nii.ac.jp/ja/schema/2.0/43
+# ファイルは非公開のため、ファイル情報の記入なし / No jpcoar:file (File) element
