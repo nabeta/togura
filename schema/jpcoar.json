@@ -864,14 +864,17 @@
             }
           },
           "award_title": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "award_title": {
-                "type": "string"
-              },
-              "lang": {
-                "type": "string"
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "award_title": {
+                  "type": "string"
+                },
+                "lang": {
+                  "type": "string"
+                }
               }
             }
           }
@@ -1146,7 +1149,8 @@
               ]
             },
             "name_identifier_uri": {
-              "type": "string"
+              "type": "string",
+              "format": "uri"
             }
           }
         },

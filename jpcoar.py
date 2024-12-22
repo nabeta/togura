@@ -327,10 +327,12 @@ if entry.get("funding_reference"):
      })
     elem_award_number.text = funding_reference["award_number"]["award_number"]
 
-    elem_award_title = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "awardTitle"), {
-      "xml:lang": funding_reference["award_title"]["lang"]
-    })
-    elem_award_title.text = funding_reference["award_title"]["award_title"]
+    if funding_reference.get("award_title"):
+      for award_title in funding_reference["award_title"]:
+        elem_award_title = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "awardTitle"), {
+          "xml:lang": award_title["lang"]
+        })
+        elem_award_title.text = award_title["award_title"]
 
 if entry.get("source_identifier"):
   for source_identifier in entry["source_identifier"]:
