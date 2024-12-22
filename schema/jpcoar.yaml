@@ -50,6 +50,8 @@ properties:
           type: array
           items:
             additionalProperties: false
+            required:
+              - identifier
             properties:
               identifier:
                 type: string
@@ -70,6 +72,8 @@ properties:
           type: array
           items:
             type: object
+            required:
+              - name
             additionalProperties: false
             properties:
               name:
@@ -100,6 +104,8 @@ properties:
           type: array
           items:
             type: object
+            required:
+              - name
             additionalProperties: false
             properties:
               name:
@@ -110,6 +116,8 @@ properties:
           type: array
           items:
             additionalProperties: false
+            required:
+              - identifier
             properties:
               identifier:
                 type: string
@@ -176,6 +184,8 @@ properties:
           type: array
           items:
             additionalProperties: false
+            required:
+              - identifier
             properties:
               identifier:
                 type: string
@@ -226,6 +236,8 @@ properties:
     items:
       type: object
       additionalProperties: false
+      required:
+        - name_identifier
       properties:
         name_identifier:
           type: string
@@ -519,6 +531,8 @@ properties:
   identifier_registration:
     type: object
     additionalProperties: false
+    required:
+      - identifier
     properties:
       identifier:
         type: string
@@ -535,6 +549,8 @@ properties:
     type: array
     items:
       type: object
+      required:
+        - relation_type
       additionalProperties: false
       properties:
         relation_type:
@@ -563,6 +579,8 @@ properties:
         related_identifier:
           type: object
           additionalProperties: false
+          required:
+            - identifier
           properties:
             identifier:
               type: string
@@ -694,6 +712,8 @@ properties:
           type: array
           items:
             type: object
+            required:
+              - funding_stream
             additionalProperties: false
             properties:
               funding_stream:
@@ -715,6 +735,8 @@ properties:
           type: array
           items:
             type: object
+            required:
+              - award_title
             additionalProperties: false
             properties:
               award_title:
@@ -728,6 +750,8 @@ properties:
     type: array
     items:
       type: object
+      required:
+        - identifier
       additionalProperties: false
       properties:
         identifier:
@@ -812,6 +836,8 @@ properties:
         name_identifier:
           type: object
           additionalProperties: false
+          required:
+            - identifier
           properties:
             name_identifier_scheme:
               type: string
@@ -871,6 +897,8 @@ properties:
         conference_place:
           type: object
           additionalProperties: false
+          required:
+            - conference_place
           properties:
             conference_place:
               type: string
@@ -886,6 +914,8 @@ properties:
     items:
       type: object
       additionalProperties: false
+      required:
+        - edition
       properties:
         edition:
           type: string
@@ -899,6 +929,8 @@ properties:
     items:
       type: object
       additionalProperties: false
+      required:
+        - volume_title
       properties:
         volume_title:
           type: string
@@ -918,6 +950,8 @@ properties:
     type: array
     items:
       type: object
+      required:
+        - extent
       additionalProperties: false
       properties:
         extent:
@@ -931,6 +965,8 @@ properties:
     type: array
     items:
       type: object
+      required:
+        - format
       additionalProperties: false
       properties:
         format:
@@ -966,6 +1002,8 @@ properties:
         type: array
         items:
           type: object
+          required:
+            - holding_agent_name
           properties:
             holding_agent_name:
               type: string
@@ -983,6 +1021,8 @@ properties:
     type: array
     items:
       type: object
+      required:
+        - uri
       additionalProperties: false
       properties:
         uri:
@@ -1011,6 +1051,8 @@ properties:
           type: array
           items:
             type: object
+            required:
+              - date
             additionalProperties: false
             properties:
               date:
@@ -1098,6 +1140,10 @@ properties:
             - restricted access
       file:
         type: object
+        additionalProperties: false
+        required:
+          - uri
+          - object_type
         properties:
           uri:
             type: string

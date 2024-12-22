@@ -55,6 +55,9 @@
             "type": "array",
             "items": {
               "additionalProperties": false,
+              "required": [
+                "identifier"
+              ],
               "properties": {
                 "identifier": {
                   "type": "string",
@@ -81,6 +84,9 @@
             "type": "array",
             "items": {
               "type": "object",
+              "required": [
+                "name"
+              ],
               "additionalProperties": false,
               "properties": {
                 "name": {
@@ -126,6 +132,9 @@
             "type": "array",
             "items": {
               "type": "object",
+              "required": [
+                "name"
+              ],
               "additionalProperties": false,
               "properties": {
                 "name": {
@@ -141,6 +150,9 @@
             "type": "array",
             "items": {
               "additionalProperties": false,
+              "required": [
+                "identifier"
+              ],
               "properties": {
                 "identifier": {
                   "type": "string"
@@ -228,6 +240,9 @@
             "type": "array",
             "items": {
               "additionalProperties": false,
+              "required": [
+                "identifier"
+              ],
               "properties": {
                 "identifier": {
                   "type": "string"
@@ -290,6 +305,9 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "name_identifier"
+        ],
         "properties": {
           "name_identifier": {
             "type": "string",
@@ -618,6 +636,9 @@
     "identifier_registration": {
       "type": "object",
       "additionalProperties": false,
+      "required": [
+        "identifier"
+      ],
       "properties": {
         "identifier": {
           "type": "string"
@@ -636,6 +657,9 @@
       "type": "array",
       "items": {
         "type": "object",
+        "required": [
+          "relation_type"
+        ],
         "additionalProperties": false,
         "properties": {
           "relation_type": {
@@ -666,6 +690,9 @@
           "related_identifier": {
             "type": "object",
             "additionalProperties": false,
+            "required": [
+              "identifier"
+            ],
             "properties": {
               "identifier": {
                 "type": "string"
@@ -836,6 +863,9 @@
             "type": "array",
             "items": {
               "type": "object",
+              "required": [
+                "funding_stream"
+              ],
               "additionalProperties": false,
               "properties": {
                 "funding_stream": {
@@ -867,6 +897,9 @@
             "type": "array",
             "items": {
               "type": "object",
+              "required": [
+                "award_title"
+              ],
               "additionalProperties": false,
               "properties": {
                 "award_title": {
@@ -885,6 +918,9 @@
       "type": "array",
       "items": {
         "type": "object",
+        "required": [
+          "identifier"
+        ],
         "additionalProperties": false,
         "properties": {
           "identifier": {
@@ -962,6 +998,9 @@
           "name_identifier": {
             "type": "object",
             "additionalProperties": false,
+            "required": [
+              "identifier"
+            ],
             "properties": {
               "name_identifier_scheme": {
                 "type": "string"
@@ -1046,6 +1085,9 @@
           "conference_place": {
             "type": "object",
             "additionalProperties": false,
+            "required": [
+              "conference_place"
+            ],
             "properties": {
               "conference_place": {
                 "type": "string"
@@ -1066,6 +1108,9 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "edition"
+        ],
         "properties": {
           "edition": {
             "type": "string"
@@ -1081,6 +1126,9 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "volume_title"
+        ],
         "properties": {
           "volume_title": {
             "type": "string"
@@ -1101,6 +1149,9 @@
       "type": "array",
       "items": {
         "type": "object",
+        "required": [
+          "extent"
+        ],
         "additionalProperties": false,
         "properties": {
           "extent": {
@@ -1116,6 +1167,9 @@
       "type": "array",
       "items": {
         "type": "object",
+        "required": [
+          "format"
+        ],
         "additionalProperties": false,
         "properties": {
           "format": {
@@ -1158,6 +1212,9 @@
           "type": "array",
           "items": {
             "type": "object",
+            "required": [
+              "holding_agent_name"
+            ],
             "properties": {
               "holding_agent_name": {
                 "type": "string"
@@ -1177,6 +1234,9 @@
       "type": "array",
       "items": {
         "type": "object",
+        "required": [
+          "uri"
+        ],
         "additionalProperties": false,
         "properties": {
           "uri": {
@@ -1212,6 +1272,9 @@
             "type": "array",
             "items": {
               "type": "object",
+              "required": [
+                "date"
+              ],
               "additionalProperties": false,
               "properties": {
                 "date": {
@@ -1333,6 +1396,11 @@
         },
         "file": {
           "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "uri",
+            "object_type"
+          ],
           "properties": {
             "uri": {
               "type": "string",
