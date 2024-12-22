@@ -7,7 +7,7 @@
 
 ### 準備
 
-1. Pythonをインストールします。Windowsをお使いの場合、[MicrosoftのWebサイト](https://learn.microsoft.com/ja-jp/windows/python/beginners)にインストールや動作確認の方法が掲載されています。
+1. Pythonをインストールします。3.11以降のバージョンをインストールしてください。Windowsをお使いの場合、[MicrosoftのWebサイト](https://learn.microsoft.com/ja-jp/windows/python/beginners)にインストールや動作確認の方法が掲載されていますので、参考にしてください。
 1. [Visual Studio Code](https://code.visualstudio.com/)(VSCode)をインストールします。
 1. VSCodeのユーザインターフェースを日本語で表示するため、[Japanese Language Pack for VS Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja)をインストールします。VSCodeを起動してCtrlキーとPキーを同時に押し、表示された入力欄に以下の文字列を入力して、Enterキーを押します。
     ```
@@ -86,7 +86,7 @@
 ## TODO
 
 - `jpcoar20.yaml`のプロパティ名を整理する
-- ResourceSyncの`capabilitylist.xml`と`changelist.xml`を作成できるようにする
+- ResourceSyncの`changelist.xml`を作成できるようにする
 - [RO-Crate](https://www.researchobject.org/ro-crate/)での出力を行えるようにする
 - GitHub PagesやGitLab PagesでのHTMLの出力を行えるようにする
 
