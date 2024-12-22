@@ -47,11 +47,11 @@
     ./jpcoar.py work/my_article/ https://example.com
     ```
     メタデータの編集は`work`フォルダの中のファイルのみを用いて行います。`public`フォルダの中に作成されたファイルは編集しないでください。編集しても、再度`jpcoar.py`スクリプトを実行することで上書きされます。
-1. VSCodeのターミナルで`resourcesync.py`スクリプトを実行し、ResourceSyncのXMLファイルを`public`フォルダの中に作成します。コマンド文中の`https://example.com`は、実際にファイルを公開するWebサーバの名前に変更してください（テストとして実行している場合は、変更する必要はありません）。
+1. VSCodeのターミナルで`resourcesync.py`スクリプトを実行し、ResourceSyncのXMLファイルを`public`フォルダの中に作成します。コマンド文中の`https://example.com`は、`jpcoar.py`を実行するときに指定したWebサーバの名前に変更してください（テストとして実行している場合は、変更する必要はありません）。
     ```sh
     ./resourcesync.py https://example.com
     ```
-1. `public`フォルダに保存されたフォルダをWebサーバにアップロードします。
+1. `public`フォルダに保存されたフォルダを、`jpcoar.py`と`resourcesync.py`で指定したWebサーバにアップロードします。
 
 ## 作成の背景
 
@@ -62,9 +62,10 @@
 
 ## TODO
 
+- `jpcoar20.yaml`のプロパティ名を整理する
 - ResourceSyncの`capabilitylist.xml`と`changelist.xml`を作成できるようにする
-- レコードIDの採番方法を決める
-- YAMLのプロパティ名を整理する
+- [RO-Crate](https://www.researchobject.org/ro-crate/)での出力を行えるようにする
+- GitHub PagesやGitLab PagesでのHTMLの出力を行えるようにする
 
 ## 作者
 
