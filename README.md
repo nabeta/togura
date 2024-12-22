@@ -27,7 +27,10 @@
 
 1. 展開した`jpcoar-schema-helper-main`フォルダを開き、`samples`フォルダの中にあるサンプルのメタデータファイルを、`work`フォルダの中にコピーします。ファイル名は半角英数文字とし、拡張子は".yaml"のままにしておいてください。
 1. VSCodeで`jpcoar-schema-helper-main`フォルダを開きます。
-1. VSCodeのファイル一覧から、`work`フォルダにコピーしたメタデータファイルを開き、メタデータの編集と保存を行ってください。
+1. VSCodeのファイル一覧から、`work`フォルダにコピーしたメタデータファイルを開き、メタデータの編集と保存を行ってください。このとき、ファイルの1行目にある以下の記述は削除しないでください。
+   ```yaml
+   # yaml-language-server: $schema=../schema/jpcoar.json
+   ```
 
 ### JPCOARスキーマのXMLへの変換　
 
