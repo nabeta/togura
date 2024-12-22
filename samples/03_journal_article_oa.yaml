@@ -1,6 +1,9 @@
 # yaml-language-server: $schema=../schema/jpcoar.json
 # この1行目は削除しないでください
 
+# 他のメタデータファイルと重複しない通し番号を数字で指定してください
+id: 1003
+
 # 以下のメタデータを記述例として使用しています
 # 3. 学術雑誌論文（出版者版、サンプル2のエンバーゴ終了後）
 # https://github.com/JPCOAR/schema/blob/master/2.0/samples/03_journal_article_oa.xml

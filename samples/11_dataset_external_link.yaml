@@ -1,6 +1,9 @@
 # yaml-language-server: $schema=../schema/jpcoar.json
 # この1行目は削除しないでください
 
+# リポジトリ内で一意な通し番号を数字で指定してください
+id: 1011
+
 # 以下のメタデータを記述例として使用しています
 # 11. 研究データ（オープンアクセス、外部ストレージ公開）
 # https://github.com/JPCOAR/schema/blob/master/2.0/samples/11_dataset_external_link.xml

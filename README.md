@@ -25,28 +25,33 @@
 
 ### メタデータの書き方
 
-1. 展開した`jpcoar-schema-helper-main`フォルダを開き、`samples`フォルダの中にあるサンプルのメタデータファイルを、`work`フォルダの中にコピーします。ファイル名は半角英数文字とし、拡張子は".yaml"のままにしておいてください。
+1. 展開した`jpcoar-schema-helper-main`フォルダを開き、`work`フォルダの中に、新しいフォルダを作成します。フォルダ名は半角英数文字としてください。
+1. `samples`フォルダの中にあるサンプルのメタデータファイルから、登録する資料の種類に適したものを選んで、先ほど作ったフォルダにコピーします。ファイル名は`jpcoar20.yaml`としてください。
+1. 先ほど作ったフォルダに、登録したい論文ファイルや研究データファイルをコピーします。ファイル名はなんでもかまいませんが、データを公開するときのURLに使用されるため、英数小文字を使用することをおすすめします。
 1. VSCodeで`jpcoar-schema-helper-main`フォルダを開きます。
-1. VSCodeのファイル一覧から、`work`フォルダにコピーしたメタデータファイルを開き、メタデータの編集と保存を行ってください。このとき、ファイルの1行目にある以下の記述は削除しないでください。
-   ```yaml
-   # yaml-language-server: $schema=../schema/jpcoar.json
-   ```
+1. VSCodeのファイル一覧から、`work`フォルダの中に作成したフォルダを開き、メタデータファイル`jpcoar20.yaml`の編集と保存を行ってください。
+    * ファイルの1行目にある以下の記述は削除しないでください。もし削除した場合、1行目に同じ記述を追加し直してください。
+      ```yaml
+      # yaml-language-server: $schema=../schema/jpcoar.json
+      ```
+    * ファイルの5行目にある`id`に、他のメタデータファイルと重複しない通し番号を記入してください。この番号は、データを公開するときのURLに使用されます。
+      ```yaml
+      id: 1001
+      ```
 
 ### JPCOARスキーマのXMLへの変換　
 
-1. VSCodeのターミナルで`jpcoar.py`スクリプトを実行し、YAMLで作成したメタデータファイルをJPCOARスキーマのXMLファイルに変換します。まずテストとして、以下のコマンドで、サンプルのメタデータファイルがXMLに変換され、表示されることを確認してください。
+1. VSCodeのターミナルで`jpcoar.py`スクリプトを実行し、YAMLで作成したメタデータファイルをJPCOARスキーマのXMLファイルに変換します。スクリプトを実行すると、`public`フォルダの中に`id`の番号でフォルダが作成され、そのフォルダの中にメタデータファイルと登録するファイルが保存されます。
+    以下のコマンドは、`work/my_article`フォルダの内容を変換する例です。
     ```sh
-    ./jpcoar.py samples/01_departmental_bulletin_paper_oa.yaml
+    ./jpcoar.py work/my_article/
     ```
-    テストが成功したら、`work`フォルダに保存したYAMLのメタデータファイルを、XMLファイルに変換して保存します。以下のコマンドは、`my_article.yaml`という名前で作成したYAMLのメタデータファイルをXMLに変換し、`public`フォルダの中に`my_article.xml`というファイル名で保存する例です。
+    メタデータの編集は`work`フォルダの中のファイルのみを用いて行います。`public`フォルダの中に作成されたファイルは編集しないでください。編集しても、再度`jpcoar.py`スクリプトを実行することで上書きされます。
+1. VSCodeのターミナルで`resourcesync.py`スクリプトを実行し、ResourceSyncのXMLファイルを`public`フォルダの中に作成します。`https://example.com`は、実際にファイルを公開するWebサーバの名前に変更してください（テストとして実行している場合は、変更する必要はありません）。
     ```sh
-    ./jpcoar.py work/my_article.yaml > public/my_article.xml
+    ./resourcesync.py https://example.com
     ```
-1. VSCodeのターミナルで`resourcesync.py`スクリプトを実行し、ResourceSyncのXMLファイルを作成して`public`フォルダの中に保存します。`https://example.com`は、実際にファイルを公開するWebサーバの名前に変更してください（テストとして実行している場合は、変更する必要はありません）。
-    ```sh
-    ./resourcesync.py https://example.com > public/resourcelist.xml
-    ```
-1. `public`フォルダに保存されたファイルをWebサーバにアップロードします。
+1. `public`フォルダに保存されたフォルダをWebサーバにアップロードします。
 
 ## 作成の背景
 
@@ -57,8 +62,6 @@
 
 ## TODO
 
-- 論文以外のメタデータ項目への対応を追加する
-- メタデータの記述対象となる実ファイルの情報を自動的にメタデータファイルに追加する
 - ResourceSyncの`capabilitylist.xml`と`changelist.xml`を作成できるようにする
 - レコードIDの採番方法を決める
 - YAMLのプロパティ名を整理する

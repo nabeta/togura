@@ -1,6 +1,9 @@
 # yaml-language-server: $schema=../schema/jpcoar.json
 # この1行目は削除しないでください
 
+# 他のメタデータファイルと重複しない通し番号を数字で指定してください
+id: 1012
+
 # 以下のメタデータを記述例として使用しています
 # 12. デジタルアーカイブ
 # https://github.com/JPCOAR/schema/blob/master/2.0/samples/12_digital_archive.xml

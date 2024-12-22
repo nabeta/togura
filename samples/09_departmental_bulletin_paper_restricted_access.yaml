@@ -1,6 +1,9 @@
 # yaml-language-server: $schema=../schema/jpcoar.json
 # この1行目は削除しないでください
 
+# 他のメタデータファイルと重複しない通し番号を数字で指定してください
+id: 1009
+
 # 以下のメタデータを記述例として使用しています
 # 9. 紀要論文（出版者版が登録されているがファイルは非公開）
 # https://github.com/JPCOAR/schema/blob/master/2.0/samples/09_departmental_bulletin_paper_restricted_access.xml
