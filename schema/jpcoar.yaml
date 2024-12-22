@@ -521,10 +521,7 @@ properties:
         - identifier
       identifier:
         type: string
-        enum:
-          - DOI
-          - HDL
-          - URI
+        format: uri
 
   # ID登録
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/19
@@ -608,6 +605,8 @@ properties:
                 - WOS
         related_title:
           type: object
+          required:
+            - related_title
           additionalProperties: false
           properties:
             related_title:
@@ -623,6 +622,8 @@ properties:
     type: array
     items:
       type: object
+      required:
+        - temporal
       additionalProperties: false
       properties:
         temporal:
@@ -813,6 +814,8 @@ properties:
     type: array
     items:
       type: object
+      required:
+        - degree_name
       additionalProperties: false
       properties:
         degree_name:
@@ -845,6 +848,8 @@ properties:
               type: string
         degree_grantor_name:
           type: object
+          required:
+            - degree_grantor_name
           additionalProperties: false
           properties:
             degree_grantor_name:
@@ -862,6 +867,8 @@ properties:
       properties:
         conference_name:
           type: object
+          required:
+            - conference_name
           additionalProperties: false
           properties:
             conference_name:
@@ -1123,6 +1130,8 @@ properties:
         type: array
         items:
           type: object
+          required:
+            - rights
           additionalProperties: false
           properties:
             rights:

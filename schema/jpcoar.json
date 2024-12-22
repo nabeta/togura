@@ -625,11 +625,7 @@
         ],
         "identifier": {
           "type": "string",
-          "enum": [
-            "DOI",
-            "HDL",
-            "URI"
-          ]
+          "format": "uri"
         }
       }
     },
@@ -725,6 +721,9 @@
           },
           "related_title": {
             "type": "object",
+            "required": [
+              "related_title"
+            ],
             "additionalProperties": false,
             "properties": {
               "related_title": {
@@ -745,6 +744,9 @@
       "type": "array",
       "items": {
         "type": "object",
+        "required": [
+          "temporal"
+        ],
         "additionalProperties": false,
         "properties": {
           "temporal": {
@@ -975,6 +977,9 @@
       "type": "array",
       "items": {
         "type": "object",
+        "required": [
+          "degree_name"
+        ],
         "additionalProperties": false,
         "properties": {
           "degree_name": {
@@ -1012,6 +1017,9 @@
           },
           "degree_grantor_name": {
             "type": "object",
+            "required": [
+              "degree_grantor_name"
+            ],
             "additionalProperties": false,
             "properties": {
               "degree_grantor_name": {
@@ -1033,6 +1041,9 @@
         "properties": {
           "conference_name": {
             "type": "object",
+            "required": [
+              "conference_name"
+            ],
             "additionalProperties": false,
             "properties": {
               "conference_name": {
@@ -1371,6 +1382,9 @@
           "type": "array",
           "items": {
             "type": "object",
+            "required": [
+              "rights"
+            ],
             "additionalProperties": false,
             "properties": {
               "rights": {
