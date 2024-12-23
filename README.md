@@ -35,7 +35,7 @@
     ./resourcesync.py https://example.com
     ```
 1. `public`フォルダの中にResourceSyncのXML`capabilitylist.xml`と`resourcelist.xml`が作成されていることを確認します。
-1. `public`フォルダの中に`1000`フォルダが作成され、その中にJPCOARスキーマのXMLファイル`jpcoar20.xml`が作成されていることを確認します。
+1. `public`フォルダの中に`1000`フォルダが作成され、その中に`article.pdf`ファイルと`datset.txt`ファイル、ならびにJPCOARスキーマのXMLファイル`jpcoar20.xml`が作成されていることを確認します。
 
 ### メタデータの書き方
 
