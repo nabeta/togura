@@ -555,7 +555,8 @@
     "language": {
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "string",
+        "pattern": "^[a-z]{3}$"
       }
     },
     "type": {
