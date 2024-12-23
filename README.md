@@ -17,7 +17,7 @@
     ```
     ext install redhat.vscode-yaml
     ```
-1. VSCodeの画面上部のメニューから"ターミナル"を選び、さらに"新しいターミナル"を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドを実行して、必要なPythonのモジュールをインストールします。
+1. VSCodeの画面上部のメニューから「ターミナル」→「新しいターミナル」を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドを実行して、必要なPythonのモジュールをインストールします。
     ```sh
     pip install pyyaml setuptools resync rocrate
     ```
@@ -25,7 +25,8 @@
 
 ### 動作テスト
 
-1. VSCodeで`jpcoar-schema-helper-main`フォルダを開きます。
+1. `jpcoar-schema-helper-main/samples/00_sample`フォルダを開きます。`article.pdf`ファイルと`dataset.txt`ファイル、ならびにメタデータファイル`jpcoar20.yaml`が保存されていることを確認します。
+1. VSCodeのメニューから「ファイル」→「フォルダを開く」を選び、`jpcoar-schema-helper-main`フォルダを開きます。
 1. VSCodeのターミナルを開き、以下のコマンドを実行します。
     ```sh
     ./jpcoar.py samples/00_sample/ https://example.com
@@ -35,7 +36,7 @@
     ./resourcesync.py https://example.com
     ```
 1. `public`フォルダの中にResourceSyncのXML`capabilitylist.xml`と`resourcelist.xml`が作成されていることを確認します。
-1. `public`フォルダの中に`1000`フォルダが作成され、その中に`article.pdf`ファイルと`datset.txt`ファイル、ならびにJPCOARスキーマのXMLファイル`jpcoar20.xml`が作成されていることを確認します。
+1. `public`フォルダの中に`1000`フォルダが作成され、その中に`article.pdf`ファイルと`dataset.txt`ファイル、ならびにJPCOARスキーマのXMLファイル`jpcoar20.xml`が作成されていることを確認します。
 
 ### メタデータの書き方
 
