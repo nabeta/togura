@@ -32,7 +32,7 @@
 1. VSCodeのファイル一覧から`work/my_article`フォルダを開き、メタデータファイル`jpcoar20.yaml`の編集と保存を行ってください。編集の際には、以下の2点に注意してください。
     - ファイルの1行目にある以下の記述は削除しないでください。もし削除した場合、1行目に同じ記述を追加し直してください。
       ```yaml
-      # yaml-language-server: $schema=../schema/jpcoar.json
+      # yaml-language-server: $schema=../../schema/jpcoar.json
       ```
     - ファイルの5行目にある`id`に、他のメタデータファイルと重複しない通し番号を記入してください。この番号は、データを公開するときのURLに使用されます。
       ```yaml

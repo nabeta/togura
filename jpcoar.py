@@ -8,6 +8,7 @@ import shutil
 from xml.dom import minidom
 import xml.etree.ElementTree as ET
 from urllib.parse import urlparse, urljoin
+from rocrate.rocrate import ROCrate
 
 ns = {
   "jpcoar": "https://github.com/JPCOAR/schema/blob/master/2.0/",

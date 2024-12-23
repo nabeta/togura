@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=../schema/jpcoar.json
+# yaml-language-server: $schema=../../schema/jpcoar.json
 # この1行目は削除しないでください
 
 # 他のメタデータファイルと重複しない通し番号を数字で指定してください
