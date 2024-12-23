@@ -17,17 +17,31 @@
     ```
     ext install redhat.vscode-yaml
     ```
-1. VSCodeの画面上部のメニューから"ターミナル"を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドを実行して、必要なPythonのモジュールをインストールします。
+1. VSCodeの画面上部のメニューから"ターミナル"を選び、さらに"新しいターミナル"を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドを実行して、必要なPythonのモジュールをインストールします。
     ```sh
     pip install pyyaml setuptools resync rocrate
     ```
 1. [ツールのファイル一式のzipファイル](https://github.com/nabeta/jpcoar-schema-helper/archive/refs/heads/main.zip)をダウンロードして、適当なフォルダに展開します。ここでは`jpcoar-schema-helper-main`フォルダに展開したものとします。
 
+### 動作テスト
+
+1. VSCodeで`jpcoar-schema-helper-main`フォルダを開きます。
+1. VSCodeのターミナルを開き、以下のコマンドを実行します。
+    ```sh
+    ./jpcoar.py samples/00_sample/ https://example.com
+    ```
+1. 同様に、ターミナルで以下のコマンドを実行します。
+    ```sh
+    ./resourcesync.py https://example.com
+    ```
+1. `public`フォルダの中にResourceSyncのXML`capabilitylist.xml`と`resourcelist.xml`が作成されていることを確認します。
+1. `public`フォルダの中に`1000`フォルダが作成され、その中にJPCOARスキーマのXMLファイル`jpcoar20.xml`が作成されていることを確認します。
+
 ### メタデータの書き方
 
-1. 展開した`jpcoar-schema-helper-main`フォルダを開き、`work`フォルダの中に、新しいフォルダを作成します。フォルダ名は資料名などわかりやすいものであれば、なんでもかまいません。ここでは`work`フォルダの中に`my_article`フォルダを作ったこととして、以降そのフォルダを`work/my_article`フォルダと記述します。
+1. Windowsのエクスプローラーで`jpcoar-schema-helper-main`フォルダを開き、`work`フォルダの中に新しいフォルダを作成します。フォルダ名は資料名などわかりやすいものであれば、なんでもかまいません。ここでは`work`フォルダの中に`my_article`フォルダを作ったこととして、以降そのフォルダを`work/my_article`フォルダと記述します。
 1. `samples`フォルダの中にあるサンプルのメタデータファイルから、登録する資料の種類に適したものを選んで、`work/my_article`フォルダにコピーします。ファイル名は`jpcoar20.yaml`のままとしてください。
-1. `work/my_article`フォルダに、登録したい論文ファイルや研究データファイルをコピーします。ファイル名はなんでもかまいませんが、データを公開するときのURLに使用されるため、英数小文字を使用することをおすすめします。
+1. `work/my_article`フォルダに、登録したい論文ファイルや研究データファイルをコピーします。ファイル名はなんでもかまいませんが、データを公開するときのURLに使用されるため、英数小文字を使用することをおすすめします。ただし、`work/my_article`フォルダの中にフォルダを作成すると、これ以降の処理が正常に動作しなくなりますので注意してください。
 1. VSCodeで`jpcoar-schema-helper-main`フォルダを開きます。
 1. VSCodeのファイル一覧から`work/my_article`フォルダを開き、メタデータファイル`jpcoar20.yaml`の編集と保存を行ってください。編集の際には、以下の2点に注意してください。
     - ファイルの1行目にある以下の記述は削除しないでください。もし削除した場合、1行目に同じ記述を追加し直してください。
