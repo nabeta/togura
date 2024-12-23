@@ -19,7 +19,7 @@
     ```
 1. VSCodeの画面上部のメニューから"ターミナル"を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドを実行して、必要なPythonのモジュールをインストールします。
     ```sh
-    pip install pyyaml resync setuptools
+    pip install pyyaml setuptools resync rocrate
     ```
 1. [ツールのファイル一式のzipファイル](https://github.com/nabeta/jpcoar-schema-helper/archive/refs/heads/main.zip)をダウンロードして、適当なフォルダに展開します。ここでは`jpcoar-schema-helper-main`フォルダに展開したものとします。
 
