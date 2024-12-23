@@ -372,9 +372,10 @@ def add_identifier(entry, root, prefix):
   elem_identifier = ET.SubElement(root, ET.QName(ns["jpcoar"], "identifier"), {"identifierType": "URI"})
   elem_identifier.text = urljoin(sys.argv[2], str(entry["id"]))
 
-  for identifier in entry["identifier"]:
-    elem_identifier = ET.SubElement(root, ET.QName(ns["jpcoar"], "identifier"), {"identifierType": jpcoar_identifier_type(identifier)})
-    elem_identifier.text = identifier
+  if entry.get("identifier"):
+    for identifier in entry["identifier"]:
+      elem_identifier = ET.SubElement(root, ET.QName(ns["jpcoar"], "identifier"), {"identifierType": jpcoar_identifier_type(identifier)})
+      elem_identifier.text = identifier
 
 def add_funding_reference(entry, root):
   """助成情報をメタデータに追加する"""
@@ -429,6 +430,7 @@ def add_file(data_dir, entry, root, ns, base_url):
     )
     elem_file_uri.text = urljoin(base_url, f"{entry['id']}/{filename}")
 
+    elem_mime_type = ET.SubElement(elem_file, ET.QName(ns["jpcoar"], "mimeType"))
     elem_file_extent = ET.SubElement(elem_file, ET.QName(ns["jpcoar"], "extent"))
     elem_file_extent.text = str(os.path.getsize(file))
     # for extent in file["extent"]:
@@ -438,7 +440,6 @@ def add_file(data_dir, entry, root, ns, base_url):
     # for date in file["date"]:
       # elem_file_date = ET.SubElement(elem_file, ET.QName(ns["datacite"], "date"), {"dateType": date["date_type"]})
       # elem_file_date.text = str(date["date"])
-    elem_mime_type = ET.SubElement(elem_file, "mime_type")
     elem_mime_type.text = mimetypes.guess_type(file)[0]
 
 def output_xml(data_dir, output_dir, root):
