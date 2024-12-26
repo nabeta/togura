@@ -447,7 +447,7 @@ def output_xml(data_dir, output_dir, root):
   with open(f"{data_dir}/jpcoar20.yaml") as file:
     entry = yaml.load(file, Loader = yaml.Loader)
 
-  dest_dir = f"{output_dir}/{entry["id"]}/"
+  dest_dir = f"{output_dir}/{entry['id']}/"
   os.makedirs(dest_dir, exist_ok = True)
 
   for file in glob.glob(f"{data_dir}/*"):
