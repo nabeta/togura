@@ -27,16 +27,16 @@
 
 1. `jpcoar-schema-helper-main/samples/00_sample`フォルダを開きます。`article.pdf`ファイルと`dataset.txt`ファイル、ならびにメタデータファイル`jpcoar20.yaml`が保存されていることを確認します。
 1. VSCodeのメニューから「ファイル」→「フォルダを開く」を選び、`jpcoar-schema-helper-main`フォルダを開きます。
-1. VSCodeのターミナルを開き、以下のコマンドを実行します。
+1. VSCodeのターミナルを開き、以下のコマンドを実行します。成功した場合は、なにも出力されません。
     ```sh
     ./jpcoar.py samples/00_sample/ https://example.com
     ```
-1. 同様に、ターミナルで以下のコマンドを実行します。
+1. 同様に、ターミナルで以下のコマンドを実行します。成功した場合は、なにも出力されません。
     ```sh
     ./resourcesync.py https://example.com
     ```
-1. `public`フォルダの中にResourceSyncのXML`capabilitylist.xml`と`resourcelist.xml`が作成されていることを確認します。
 1. `public`フォルダの中に`1000`フォルダが作成され、その中に`article.pdf`ファイルと`dataset.txt`ファイル、ならびにJPCOARスキーマのXMLファイル`jpcoar20.xml`が作成されていることを確認します。
+1. 同様に、`public`フォルダの中にResourceSyncのXML`capabilitylist.xml`と`resourcelist.xml`が作成されていることを確認します。
 
 ### メタデータの書き方
 
