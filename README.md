@@ -13,11 +13,29 @@
     ```
     ext install MS-CEINTL.vscode-language-pack-ja
     ```
+1. VSCodeの表示言語を切り替えます。CtrlキーとShiftキーを押しながらPキーを押し、`display`と入力してEnterキーを押します。「日本語」を選択し、メッセージに従ってVSCodeを再起動します。
+1. VSCodeの[Python拡張機能](https://marketplace.visualstudio.com/items?itemName=ms-python.python)をインストールします。VSCodeを起動してCtrlキーとPキーを同時に押し、表示された入力欄に以下の文字列を入力して、Enterキーを押します。
+    ```
+    ext install ms-python.python
+    ```
+1. VSCodeの[GitHub Repositories拡張機能](https://marketplace.visualstudio.com/items?itemName=github.remotehub)をインストールします。先ほどと同様に、VSCodeを起動した状態でCtrlキーとPキーを同時に押し、表示された入力欄に以下の文字列を入力して、Enterキーを>押します。
+    ```
+    ext install GitHub.remotehub
+    ```
 1. VSCodeの[YAML拡張機能](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)をインストールします。先ほどと同様に、VSCodeを起動した状態でCtrlキーとPキーを同時に押し、表示された入力欄に以下の文字列を入力して、Enterキーを押します。
     ```
     ext install redhat.vscode-yaml
     ```
-1. VSCodeの画面上部のメニューから「ターミナル」→「新しいターミナル」を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドを実行して、必要なPythonのモジュールをインストールします。
+1. VSCodeの画面上部のメニューから「ターミナル」→「新しいターミナル」を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドを実行して、Pythonのvenv環境をインストールします。
+    ```sh
+    python3 -m venv .venv
+    ```
+    画面右下に「新しい環境が作成されました。これをワークスペース フォルダーに選択しますか?」というメッセージが出るので、「はい」を選択します。
+1. ターミナルで以下のコマンドを実行して、いったんターミナルを終了します。
+    ```sh
+    exit
+    ```
+1. VSCodeの画面上部のメニューからもう一度「ターミナル」→「新しいターミナル」を選び、新しいターミナルを起動します。以下のコマンドを実行して、必要なPythonのモジュールをインストールします。
     ```sh
     pip install pyyaml setuptools resync rocrate
     ```
@@ -26,7 +44,7 @@
 ### 動作テスト
 
 1. `jpcoar-schema-helper-main/samples/00_sample`フォルダを開きます。`article.pdf`ファイルと`dataset.txt`ファイル、ならびにメタデータファイル`jpcoar20.yaml`が保存されていることを確認します。
-1. VSCodeのメニューから「ファイル」→「フォルダを開く」を選び、`jpcoar-schema-helper-main`フォルダを開きます。
+1. VSCodeのメニューから「ファイル」→「フォルダーをワークスペースに追加」を選び、`jpcoar-schema-helper-main`フォルダを開きます。
 1. VSCodeのターミナルを開き、以下のコマンドを実行します。成功した場合は、なにも出力されません。
     ```sh
     ./jpcoar.py samples/00_sample/ https://example.com
