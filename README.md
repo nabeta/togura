@@ -5,7 +5,7 @@
 
 ## 使い方
 
-### 準備
+### 必要なソフトウェアのダウンロードとインストール
 
 1. Pythonをインストールします。3.11以降のバージョンをインストールしてください。Windowsをお使いの場合、[MicrosoftのWebサイト](https://learn.microsoft.com/ja-jp/windows/python/beginners)にインストールや動作確認の方法が掲載されていますので、参考にしてください。
 1. [Visual Studio Code](https://code.visualstudio.com/)(VSCode)をインストールします。
@@ -26,6 +26,9 @@
     ```
     ext install redhat.vscode-yaml
     ```
+
+### ツールの準備
+
 1. JPCOAR Schema Helperのファイル一式をダウンロードします。VSCodeでCtrlキーとShiftキーを押しながらPキーを押し、`gitcl`と入力します。画面上部のウインドウに「リポジトリ URL を指定するか、リポジトリ ソースを選択します。」と表示されますので、以下の文字列をコピーしてウインドウに入力し、Enterキーを押します。
     ```
     https://github.com/nabeta/jpcoar-schema-helper
@@ -36,7 +39,12 @@
     ```sh
     python3 -m venv .venv
     ```
-1. ターミナルで以下のコマンドを実行して、ターミナルを終了します。
+1. VSCodeでCtrlキーとShiftキーを押しながらPキーを押し、`settings.json`と入力します。画面上部のウインドウに表示される一覧から「基本設定: ユーザー設定を開く (JSON)」を選択します。
+1. 設定ファイルの編集画面が開きますので、2行目に以下の行をコピーして入力し、CtrlキーとSキーを同時に押して保存します。最後の`,`も忘れずにコピーしてください。
+    ```
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    ```
+1. 設定ファイルを閉じた後、ターミナルで以下のコマンドを実行して、ターミナルを終了します。
     ```sh
     exit
     ```
