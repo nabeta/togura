@@ -444,7 +444,7 @@ def add_file(data_dir, entry, root, ns, base_url):
 
 def output_xml(data_dir, output_dir, root):
   """JPCOARスキーマのXMLを出力する"""
-  with open(f"{data_dir}/jpcoar20.yaml") as file:
+  with open(f"{data_dir}/jpcoar20.yaml", encoding="utf-8") as file:
     entry = yaml.load(file, Loader = yaml.Loader)
 
   dest_dir = f"{output_dir}/{entry['id']}/"
