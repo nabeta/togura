@@ -18,7 +18,7 @@
     ```
     ext install ms-python.python
     ```
-1. VSCodeの[GitHub Repositories拡張機能](https://marketplace.visualstudio.com/items?itemName=github.remotehub)をインストールします。先ほどと同様に、VSCodeを起動した状態でCtrlキーとPキーを同時に押し、表示された入力欄に以下の文字列を入力して、Enterキーを>押します。
+1. VSCodeの[GitHub Repositories拡張機能](https://marketplace.visualstudio.com/items?itemName=github.remotehub)をインストールします。先ほどと同様に、VSCodeを起動した状態でCtrlキーとPキーを同時に押し、表示された入力欄に以下の文字列を入力して、Enterキーを押します。
     ```
     ext install GitHub.remotehub
     ```
