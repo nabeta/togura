@@ -93,6 +93,10 @@
     ```
 1. `public`フォルダに保存されたフォルダを、`jpcoar.py`と`resourcesync.py`で指定したWebサーバにアップロードします。
 
+### ツールの更新
+
+VSCodeでCtrlキーとShiftキーを押しながらPキーを押し、`git pull`と入力してEnterキーを押してください。
+
 ### フォルダの構成
 
 - `public`: 公開用のファイルが出力されるフォルダ
