@@ -26,25 +26,31 @@
     ```
     ext install redhat.vscode-yaml
     ```
+1. JPCOAR Schema Helperのファイル一式をダウンロードします。VSCodeでCtrlキーとShiftキーを押しながらPキーを押し、`gitcl`と入力します。画面上部のウインドウに「リポジトリ URL を指定するか、リポジトリ ソースを選択します。」と表示されますので、以下の文字列をコピーしてウインドウに入力し、Enterキーを押します。
+    ```
+    https://github.com/nabeta/jpcoar-schema-helper
+    ```
+1. 保存先のフォルダを尋ねるウインドウが表示されますので、適当なフォルダを指定します。「クローンしたリポジトリを開きますか?」というメッセージが表示されますので、「開く」を選択します。
+1. VSCodeのメニューで「ファイル」→「名前をつけてワークスペースを保存」を選択し、適当なフォルダを指定して「保存」を選択します。
 1. VSCodeの画面上部のメニューから「ターミナル」→「新しいターミナル」を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドを実行して、Pythonのvenv環境をインストールします。
     ```sh
     python3 -m venv .venv
     ```
-    画面右下に「新しい環境が作成されました。これをワークスペース フォルダーに選択しますか?」というメッセージが出るので、「はい」を選択します。
-1. ターミナルで以下のコマンドを実行して、いったんターミナルを終了します。
+1. ターミナルで以下のコマンドを実行して、ターミナルを終了します。
     ```sh
     exit
     ```
+1. VSCodeを一度終了し、再起動します。
 1. VSCodeの画面上部のメニューからもう一度「ターミナル」→「新しいターミナル」を選び、新しいターミナルを起動します。以下のコマンドを実行して、必要なPythonのモジュールをインストールします。
     ```sh
     pip install pyyaml setuptools resync rocrate
     ```
-1. [ツールのファイル一式のzipファイル](https://github.com/nabeta/jpcoar-schema-helper/archive/refs/heads/main.zip)をダウンロードして、適当なフォルダに展開します。ここでは`jpcoar-schema-helper-main`フォルダに展開したものとします。
+1. VSCodeでCtrlキーとShiftキーを押しながらPキーを押し、`git pull`と入力してEnterキーを押します。「Visual Studio Codeに定期的に 「git fetch」を実行する にしますか?」というメッセージが表示されますので、「いいえ」を選択します。
 
 ### 動作テスト
 
-1. `jpcoar-schema-helper-main/samples/00_sample`フォルダを開きます。`article.pdf`ファイルと`dataset.txt`ファイル、ならびにメタデータファイル`jpcoar20.yaml`が保存されていることを確認します。
-1. VSCodeのメニューから「ファイル」→「フォルダーをワークスペースに追加」を選び、`jpcoar-schema-helper-main`フォルダを開きます。
+1. Windows エクスプローラーでJPCOAR Schema Helperを保存したフォルダを開き、さらにその中にある`samples/00_sample`フォルダを開きます。`article.pdf`ファイルと`dataset.txt`ファイル、ならびにメタデータファイル`jpcoar20.yaml`が保存されていることを確認します。
+1. JPCOAR Schema Helperのフォルダの中にある`public`フォルダを開き、`.well-known`というフォルダしかないことを確認します。
 1. VSCodeのターミナルを開き、以下のコマンドを実行します。成功した場合は、なにも出力されません。
     ```sh
     ./jpcoar.py samples/00_sample/ https://example.com
@@ -58,7 +64,7 @@
 
 ### メタデータの書き方
 
-1. Windowsのエクスプローラーで`jpcoar-schema-helper-main`フォルダを開き、`work`フォルダの中に新しいフォルダを作成します。フォルダ名は資料名などわかりやすいものであれば、なんでもかまいません。ここでは`work`フォルダの中に`my_article`フォルダを作ったこととして、以降そのフォルダを`work/my_article`フォルダと記述します。
+1. WindowsのエクスプローラーでJPCOAR Schema Helperのフォルダを開き、`work`フォルダの中に新しいフォルダを作成します。フォルダ名は資料名などわかりやすいものであれば、なんでもかまいません。ここでは`work`フォルダの中に`my_article`フォルダを作ったこととして、以降そのフォルダを`work/my_article`フォルダと記述します。
 1. `samples`フォルダの中にあるサンプルのメタデータファイルから、登録する資料の種類に適したものを選んで、`work/my_article`フォルダにコピーします。ファイル名は`jpcoar20.yaml`のままとしてください。
 1. `work/my_article`フォルダに、登録したい論文ファイルや研究データファイルをコピーします。ファイル名はなんでもかまいませんが、データを公開するときのURLに使用されるため、英数小文字を使用することをおすすめします。ただし、`work/my_article`フォルダの中にフォルダを作成すると、これ以降の処理が正常に動作しなくなりますので注意してください。
 1. VSCodeで`jpcoar-schema-helper-main`フォルダを開きます。
