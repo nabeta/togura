@@ -10,10 +10,10 @@
 1. Pythonをインストールします。3.11以降のバージョンをインストールしてください。Windowsをお使いの場合、[MicrosoftのWebサイト](https://learn.microsoft.com/ja-jp/windows/python/beginners)にインストールや動作確認の方法が掲載されていますので、参考にしてください。
 1. [Visual Studio Code](https://code.visualstudio.com/)(VSCode)をインストールします。
 1. VSCodeを起動し、画面上部のメニューから「表示」→「拡張機能」を選びます。画面左側のウインドウに拡張機能の一覧が表示されるので、以下の4つに対してそれぞれ「インストール」ボタンを押します。
-    * [Japanese Language Pack for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja)
-    * [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
-    * [GitHub Repositories](https://marketplace.visualstudio.com/items?itemName=github.remotehub)
-    * [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
+    - [Japanese Language Pack for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja)
+    - [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
+    - [GitHub Repositories](https://marketplace.visualstudio.com/items?itemName=github.remotehub)
+    - [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
 1. VSCodeの表示言語を切り替えます。画面上部のメニューから「表示」→」コマンド パレット」を選び、画面上部に表示されたウインドウに`display`と入力してEnterキーを押します。「日本語」を選択し、メッセージに従ってVSCodeを再起動します。
 
 ### ツールの準備
@@ -82,7 +82,8 @@
 
 ### ツールの更新
 
-VSCodeのメニューで「表示」→「コマンド パレット」を選び、`git pull`と入力してEnterキーを押してください。「Visual Studio Codeに定期的に 「git fetch」を実行する にしますか?」というメッセージが表示された場合、「いいえ」を選択します。
+1. VSCodeのメニューで「表示」→「コマンド パレット」を選び、`git pull`と入力してEnterキーを押してください。「Visual Studio Codeに定期的に 「git fetch」を実行する にしますか?」というメッセージが表示された場合、「いいえ」を選択します。
+1. しばらく待って、特にエラーが表示されなければ、更新が完了しています。
 
 ### フォルダの構成
 
@@ -120,6 +121,10 @@ VSCodeのメニューで「表示」→「コマンド パレット」を選び�
 - ResourceSyncの`changelist.xml`を作成できるようにする
 - [RO-Crate](https://www.researchobject.org/ro-crate/)での出力を行えるようにする
 - GitHub PagesやGitLab PagesでのHTMLの出力を行えるようにする
+
+## 使い方の質問
+
+使い方やエラーの対応でわからないことがある場合は、[Code4Lib JAPANのDiscord](https://wiki.code4lib.jp/#Code4Lib_JAPAN_Discord)でお知らせください。
 
 ## 作者
 
