@@ -31,7 +31,7 @@
 1. いったんVScodeを終了し、再起動して、VSCodeの画面上部のメニューから「ターミナル」→「新しいターミナル」を選びます。
 1. ターミナルで以下のコマンドを実行して、必要なPythonのモジュールをインストールします。
     ```sh
-    pip install pyyaml setuptools resync rocrate
+    pip install -r requirements.txt
     ```
 
 ### 動作テスト
