@@ -14,7 +14,7 @@
     * [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
     * [GitHub Repositories](https://marketplace.visualstudio.com/items?itemName=github.remotehub)
     * [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
-1. VSCodeの表示言語を切り替えます。CtrlキーとShiftキーを押しながらPキーを押し、`display`と入力してEnterキーを押します。「日本語」を選択し、メッセージに従ってVSCodeを再起動します。
+1. VSCodeの表示言語を切り替えます。画面上部のメニューから「表示」→」コマンド パレット」を選び、画面上部に表示されたウインドウに`display`と入力してEnterキーを押します。「日本語」を選択し、メッセージに従ってVSCodeを再起動します。
 
 ### ツールの準備
 
@@ -82,7 +82,7 @@
 
 ### ツールの更新
 
-VSCodeでCtrlキーとShiftキーを押しながらPキーを押し、`git pull`と入力してEnterキーを押してください。「Visual Studio Codeに定期的に 「git fetch」を実行する にしますか?」というメッセージが表示された場合、「いいえ」を選択します。
+VSCodeのメニューで「表示」→「コマンド パレット」を選び、`git pull`と入力してEnterキーを押してください。「Visual Studio Codeに定期的に 「git fetch」を実行する にしますか?」というメッセージが表示された場合、「いいえ」を選択します。
 
 ### フォルダの構成
 
