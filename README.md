@@ -14,7 +14,7 @@
     - [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
     - [GitHub Repositories](https://marketplace.visualstudio.com/items?itemName=github.remotehub)
     - [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
-1. VSCodeの表示言語を切り替えます。画面上部のメニューから「表示」→」コマンド パレット」を選び、画面上部に表示されたウインドウに`display`と入力してEnterキーを押します。「日本語」を選択し、メッセージに従ってVSCodeを再起動します。
+1. VSCodeの表示言語を切り替えます。画面上部のメニューから「表示」→」コマンド パレット」を選び、画面上部に表示されたウインドウに`display`と入力してEnterキーを押します。「日本語」を選び、メッセージに従ってVSCodeを再起動します。
 
 ### ツールの準備
 
@@ -22,8 +22,8 @@
     ```
     https://github.com/nabeta/jpcoar-schema-helper
     ```
-1. 保存先のフォルダを尋ねるウインドウが表示されますので、適当なフォルダを指定します。「クローンしたリポジトリを開きますか?」というメッセージが表示されますので、「開く」を選択します。
-1. VSCodeのメニューで「ファイル」→「名前をつけてワークスペースを保存」を選択し、そのまま「保存」を選択します。
+1. 保存先のフォルダを尋ねるウインドウが表示されますので、適当なフォルダを指定します。「クローンしたリポジトリを開きますか?」というメッセージが表示されますので、「開く」を選びます。
+1. VSCodeのメニューで「ファイル」→「名前をつけてワークスペースを保存」を選び、そのまま「保存」を選びます。
 1. VSCodeの画面上部のメニューから「ターミナル」→「新しいターミナル」を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドを実行して、Pythonのvenv環境をインストールします。
     ```sh
     python3 -m venv .venv
@@ -83,7 +83,7 @@
 
 ### ツールの更新
 
-1. VSCodeのメニューで「表示」→「コマンド パレット」を選び、`git pull`と入力してEnterキーを押してください。「Visual Studio Codeに定期的に 「git fetch」を実行する にしますか?」というメッセージが表示された場合、「いいえ」を選択します。
+1. VSCodeのメニューで「表示」→「コマンド パレット」を選び、`git pull`と入力してEnterキーを押してください。「Visual Studio Codeに定期的に 「git fetch」を実行する にしますか?」というメッセージが表示された場合、「いいえ」を選びます。
 1. しばらく待って、特にエラーが表示されなければ、更新が完了しています。
 
 ### フォルダの構成
