@@ -50,6 +50,7 @@
 1. `public`フォルダの中に`1000`フォルダが作成され、その中に`article.pdf`ファイルと`dataset.txt`ファイル、ならびに以下のファイルが作成されていることを確認します。
     - `jpcoar20.xml`: JPCOARスキーマのXMLファイル
     - `ro-crate-metadata.json`: [RO-Crate](https://www.researchobject.org/ro-crate/)のメタデータJSONファイル（ファイルの情報のみ）
+    - `ro-crate-preview.html`: RO-CrateのプレビューHTMLファイル
 1. 同様に、`public`フォルダの中にResourceSyncのXML`capabilitylist.xml`と`resourcelist.xml`が作成されていることを確認します。
 
 ### メタデータの書き方

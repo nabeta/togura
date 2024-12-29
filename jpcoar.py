@@ -457,7 +457,8 @@ def output_crate(data_dir, output_dir, root):
   with open(f"{data_dir}/jpcoar20.yaml", encoding = "utf-8") as file:
     entry = yaml.load(file, Loader = yaml.Loader)
 
-  crate = ROCrate()
+  crate = ROCrate(gen_preview = True)
+  crate.name = entry["title"][0]["title"]
 
   # ファイルを追加
   for file in glob.glob(f"{data_dir}/*"):
