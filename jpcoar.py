@@ -458,7 +458,7 @@ def output_xml(data_dir, output_dir, root):
     shutil.copy2(file, f"{dest_dir}/{os.path.basename(file)}")
 
   ET.indent(root, space = "  ", level = 0)
-  with open(f"{dest_dir}/jpcoar20.xml", "w") as xml_file:
+  with open(f"{dest_dir}/jpcoar20.xml", "w", encoding="utf-8") as xml_file:
     xml_file.write(ET.tostring(root, encoding = "unicode", xml_declaration = True))
 
 def main():
@@ -468,7 +468,7 @@ def main():
 
   data_dir = sys.argv[1]
   base_url = sys.argv[2]
-  with open(f"{data_dir}/jpcoar20.yaml") as file:
+  with open(f"{data_dir}/jpcoar20.yaml", encoding="utf-8") as file:
     entry = yaml.load(file, Loader = yaml.Loader)
   root = generate_xml(entry, ns, base_url)
   add_file(data_dir, entry, root, ns, base_url)

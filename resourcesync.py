@@ -30,14 +30,14 @@ def main():
 
   caps.add_capability(rl, urljoin(base_url, "resourcelist.xml"))
 
-  with open(f"public/capabilitylist.xml", "w") as file:
+  with open(f"public/capabilitylist.xml", "w", encoding="utf-8") as file:
     file.write(caps.as_xml())
 
-  with open(f"public/resourcelist.xml", "w") as file:
+  with open(f"public/resourcelist.xml", "w", encoding="utf-8") as file:
     file.write(rl.as_xml())
 
   rsd.add_capability_list(urljoin(base_url, "capabilitylist.xml"))
-  with open(f"public/.well-known/resourcesync", "w") as file:
+  with open(f"public/.well-known/resourcesync", "w", encoding="utf-8") as file:
     file.write(rsd.as_xml())
 
 
