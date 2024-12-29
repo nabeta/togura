@@ -5,10 +5,12 @@ import glob
 import yaml
 import mimetypes
 import shutil
+import tempfile
 from xml.dom import minidom
 import xml.etree.ElementTree as ET
 from urllib.parse import urlparse, urljoin
 from rocrate.rocrate import ROCrate
+from rocrate.model.person import Person
 
 ns = {
   "jpcoar": "https://github.com/JPCOAR/schema/blob/master/2.0/",
@@ -442,24 +444,46 @@ def add_file(data_dir, entry, root, ns, base_url):
       # elem_file_date.text = str(date["date"])
     elem_mime_type.text = mimetypes.guess_type(file)[0]
 
-def output_xml(data_dir, output_dir, root):
+def generate_jpcoar_xml(data_dir, root):
   """JPCOARスキーマのXMLを出力する"""
-  with open(f"{data_dir}/jpcoar20.yaml", encoding="utf-8") as file:
+  with open(f"{data_dir}/jpcoar20.yaml", encoding = "utf-8") as file:
     entry = yaml.load(file, Loader = yaml.Loader)
 
-  dest_dir = f"{output_dir}/{entry['id']}/"
-  os.makedirs(dest_dir, exist_ok = True)
+  ET.indent(root, space = "  ", level = 0)
+  return root
 
+def output_crate(data_dir, output_dir, root):
+  """RO-Crateのディレクトリを出力する"""
+  with open(f"{data_dir}/jpcoar20.yaml", encoding = "utf-8") as file:
+    entry = yaml.load(file, Loader = yaml.Loader)
+
+  crate = ROCrate()
+
+  # ファイルを追加
   for file in glob.glob(f"{data_dir}/*"):
     filename = os.path.basename(file)
     if filename == "jpcoar20.yaml":
       continue
 
-    shutil.copy2(file, f"{dest_dir}/{os.path.basename(file)}")
+    data = crate.add_file(file)
 
-  ET.indent(root, space = "  ", level = 0)
-  with open(f"{dest_dir}/jpcoar20.xml", "w", encoding="utf-8") as xml_file:
-    xml_file.write(ET.tostring(root, encoding = "unicode", xml_declaration = True))
+  # 作成者を追加
+  for creator in entry["creator"]:
+    c = crate.add(Person(crate, properties = {
+         "name": creator["creator_name"][0]["name"]
+      }
+    ))
+
+  # JPCOARスキーマのXMLファイルを追加
+  xml = generate_jpcoar_xml(data_dir, root)
+  with tempfile.NamedTemporaryFile("r+", encoding = "utf-8") as xml_file:
+    xml_file.write(ET.tostring(xml, encoding = "unicode", xml_declaration = True))
+    xml_file.seek(0)
+    crate.add_file(xml_file.name, dest_path = "jpcoar20.xml")
+
+    # ディレクトリを出力
+    crate_dir = f"{output_dir}/{str(entry['id'])}"
+    crate.write(crate_dir)
 
 def main():
   if len(sys.argv) != 3:
@@ -468,11 +492,11 @@ def main():
 
   data_dir = sys.argv[1]
   base_url = sys.argv[2]
-  with open(f"{data_dir}/jpcoar20.yaml", encoding="utf-8") as file:
+  with open(f"{data_dir}/jpcoar20.yaml", encoding = "utf-8") as file:
     entry = yaml.load(file, Loader = yaml.Loader)
   root = generate_xml(entry, ns, base_url)
   add_file(data_dir, entry, root, ns, base_url)
-  output_xml(data_dir, "./public", root)
+  output_crate(data_dir, "./public", root)
 
 if __name__ == "__main__":
-    main()
+  main()
