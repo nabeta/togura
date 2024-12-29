@@ -9,27 +9,16 @@
 
 1. Pythonをインストールします。3.11以降のバージョンをインストールしてください。Windowsをお使いの場合、[MicrosoftのWebサイト](https://learn.microsoft.com/ja-jp/windows/python/beginners)にインストールや動作確認の方法が掲載されていますので、参考にしてください。
 1. [Visual Studio Code](https://code.visualstudio.com/)(VSCode)をインストールします。
-1. VSCodeのユーザインターフェースを日本語で表示するため、[Japanese Language Pack for VS Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja)をインストールします。VSCodeを起動してCtrlキーとPキーを同時に押し、表示された入力欄に以下の文字列を入力して、Enterキーを押します。
-    ```
-    ext install MS-CEINTL.vscode-language-pack-ja
-    ```
+1. VSCodeを起動し、画面上部のメニューから「表示」→「拡張機能」を選びます。画面左側のウインドウに拡張機能の一覧が表示されるので、以下の4つに対してそれぞれ「インストール」ボタンを押します。
+    * [Japanese Language Pack for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja)
+    * [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
+    * [GitHub Repositories](https://marketplace.visualstudio.com/items?itemName=github.remotehub)
+    * [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
 1. VSCodeの表示言語を切り替えます。CtrlキーとShiftキーを押しながらPキーを押し、`display`と入力してEnterキーを押します。「日本語」を選択し、メッセージに従ってVSCodeを再起動します。
-1. VSCodeの[Python拡張機能](https://marketplace.visualstudio.com/items?itemName=ms-python.python)をインストールします。VSCodeを起動してCtrlキーとPキーを同時に押し、表示された入力欄に以下の文字列を入力して、Enterキーを押します。
-    ```
-    ext install ms-python.python
-    ```
-1. VSCodeの[GitHub Repositories拡張機能](https://marketplace.visualstudio.com/items?itemName=github.remotehub)をインストールします。先ほどと同様に、VSCodeを起動した状態でCtrlキーとPキーを同時に押し、表示された入力欄に以下の文字列を入力して、Enterキーを押します。
-    ```
-    ext install GitHub.remotehub
-    ```
-1. VSCodeの[YAML拡張機能](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)をインストールします。先ほどと同様に、VSCodeを起動した状態でCtrlキーとPキーを同時に押し、表示された入力欄に以下の文字列を入力して、Enterキーを押します。
-    ```
-    ext install redhat.vscode-yaml
-    ```
 
 ### ツールの準備
 
-1. JPCOAR Schema Helperのファイル一式をダウンロードします。VSCodeでCtrlキーとShiftキーを押しながらPキーを押し、`gitcl`と入力します。画面上部のウインドウに「リポジトリ URL を指定するか、リポジトリ ソースを選択します。」と表示されますので、以下の文字列をコピーしてウインドウに入力し、Enterキーを押します。
+1. JPCOAR Schema Helperのファイル一式をダウンロードします。VSCodeのメニューの「表示」→「ソース管理」を選び、画面左側のウインドウの「リポジトリの複製」を選びます。画面上部のウインドウに「リポジトリ URL を指定するか、リポジトリ ソースを選択します。」と表示されますので、以下の文字列をコピーしてウインドウに入力し、Enterキーを押します。
     ```
     https://github.com/nabeta/jpcoar-schema-helper
     ```
@@ -39,21 +28,11 @@
     ```sh
     python3 -m venv .venv
     ```
-1. VSCodeでCtrlキーとShiftキーを押しながらPキーを押し、`settings.json`と入力します。画面上部のウインドウに表示される一覧から「基本設定: ユーザー設定を開く (JSON)」を選択します。
-1. 設定ファイルの編集画面が開きますので、2行目に以下の行をコピーして入力し、CtrlキーとSキーを同時に押して保存します。最後の`,`も忘れずにコピーしてください。
-    ```
-    "python.terminal.activateEnvInCurrentTerminal": true,
-    ```
-1. 設定ファイルを閉じた後、ターミナルで以下のコマンドを実行して、ターミナルを終了します。
-    ```sh
-    exit
-    ```
-1. VSCodeを一度終了し、再起動します。
-1. VSCodeの画面上部のメニューからもう一度「ターミナル」→「新しいターミナル」を選び、新しいターミナルを起動します。以下のコマンドを実行して、必要なPythonのモジュールをインストールします。
+1. いったんVScodeを終了し、再起動して、VSCodeの画面上部のメニューから「ターミナル」→「新しいターミナル」を選びます。
+1. ターミナルで以下のコマンドを実行して、必要なPythonのモジュールをインストールします。
     ```sh
     pip install pyyaml setuptools resync rocrate
     ```
-1. VSCodeでCtrlキーとShiftキーを押しながらPキーを押し、`git pull`と入力してEnterキーを押します。「Visual Studio Codeに定期的に 「git fetch」を実行する にしますか?」というメッセージが表示されますので、「いいえ」を選択します。
 
 ### 動作テスト
 
@@ -103,7 +82,7 @@
 
 ### ツールの更新
 
-VSCodeでCtrlキーとShiftキーを押しながらPキーを押し、`git pull`と入力してEnterキーを押してください。
+VSCodeでCtrlキーとShiftキーを押しながらPキーを押し、`git pull`と入力してEnterキーを押してください。「Visual Studio Codeに定期的に 「git fetch」を実行する にしますか?」というメッセージが表示された場合、「いいえ」を選択します。
 
 ### フォルダの構成
 
