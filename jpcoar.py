@@ -477,10 +477,11 @@ def output_crate(data_dir, output_dir, root):
 
   # JPCOARスキーマのXMLファイルを追加
   xml = generate_jpcoar_xml(data_dir, root)
-  with tempfile.NamedTemporaryFile("r+", encoding = "utf-8") as xml_file:
-    xml_file.write(ET.tostring(xml, encoding = "unicode", xml_declaration = True))
-    xml_file.seek(0)
-    crate.add_file(xml_file.name, dest_path = "jpcoar20.xml")
+  with tempfile.TemporaryDirectory() as tempdir:
+    with open(f"{tempdir}/jpcoar20.xml", "w", encoding = "utf-8") as xml_file:
+      xml_file.write(ET.tostring(xml, encoding = "unicode", xml_declaration = True))
+      xml_file.seek(0)
+      crate.add_file(xml_file.name, dest_path = "jpcoar20.xml")
 
     # ディレクトリを出力
     crate_dir = f"{output_dir}/{str(entry['id'])}"
