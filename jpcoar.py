@@ -388,7 +388,7 @@ def add_funding_reference(entry, root):
   for funding_reference in entry["funding_reference"]:
     elem_funding_reference = ET.SubElement(root, ET.QName(ns["jpcoar"], "fundingReference"))
 
-    if funding_referehce.get("funder_identifier"):
+    if funding_reference.get("funder_identifier"):
       elem_funder_identifier = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "funderIdentifier"), {
         "funderIdentifierType": funding_reference["funder_identifier_type"]
       })
