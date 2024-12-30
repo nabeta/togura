@@ -324,15 +324,17 @@ def add_creator(entry, root):
   """作成者をメタデータに追加する"""
   for creator in entry["creator"]:
     elem_creator = ET.SubElement(root, ET.QName(ns["jpcoar"], "creator"), {"creatorType": "著"})
-    for name_identifier in creator["name_identifier"]:
-      elem_name_identifier = ET.SubElement(elem_creator, ET.QName(ns["jpcoar"], "nameIdentifier"), {
-        "nameIdentifierScheme": name_identifier["identifier_scheme"],
-        "nameIdentifierURI": name_identifier["identifier"]
-      })
-      elem_name_identifier.text = name_identifier["identifier"]
-    for creator_name in creator["creator_name"]:
-      elem_creator_name = ET.SubElement(elem_creator, ET.QName(ns["jpcoar"], "creatorName"), {"xml:lang": creator_name["lang"]})
-      elem_creator_name.text = creator_name["name"]
+    if creator.get("name_identifier"):
+      for name_identifier in creator["name_identifier"]:
+        elem_name_identifier = ET.SubElement(elem_creator, ET.QName(ns["jpcoar"], "nameIdentifier"), {
+          "nameIdentifierScheme": name_identifier["identifier_scheme"],
+          "nameIdentifierURI": name_identifier["identifier"]
+        })
+        elem_name_identifier.text = name_identifier["identifier"]
+    if creator.get("creator_name"):
+      for creator_name in creator["creator_name"]:
+        elem_creator_name = ET.SubElement(elem_creator, ET.QName(ns["jpcoar"], "creatorName"), {"xml:lang": creator_name["lang"]})
+        elem_creator_name.text = creator_name["name"]
     if creator.get("affiliation"):
       for affiliation in creator["affiliation"]:
         elem_affiliation = ET.SubElement(elem_creator, ET.QName(ns["jpcoar"], "affiliation"))
@@ -349,15 +351,17 @@ def add_contributor(entry, root):
   """寄与者をメタデータに追加する"""
   for contributor in entry["contributor"]:
     elem_contributor = ET.SubElement(root, ET.QName(ns["jpcoar"], "contributor"))
-    for name_identifier in contributor["name_identifier"]:
-      elem_name_identifier = ET.SubElement(elem_contributor, ET.QName(ns["jpcoar"], "nameIdentifier"), {
-        "nameIdentifierScheme": name_identifier["identifier_scheme"],
-        "nameIdentifierURI": name_identifier["identifier"]
-      })
-      elem_name_identifier.text = name_identifier["identifier"]
-    for contributor_name in contributor["contributor_name"]:
-      elem_contributor_name = ET.SubElement(elem_contributor, ET.QName(ns["jpcoar"], "contributorName"), {"xml:lang": contributor_name["lang"]})
-      elem_contributor_name.text = contributor_name["name"]
+    if contributor.get("name_identifier"):
+      for name_identifier in contributor["name_identifier"]:
+        elem_name_identifier = ET.SubElement(elem_contributor, ET.QName(ns["jpcoar"], "nameIdentifier"), {
+          "nameIdentifierScheme": name_identifier["identifier_scheme"],
+          "nameIdentifierURI": name_identifier["identifier"]
+        })
+        elem_name_identifier.text = name_identifier["identifier"]
+    if contributor.get("contributor_name"):
+      for contributor_name in contributor["contributor_name"]:
+        elem_contributor_name = ET.SubElement(elem_contributor, ET.QName(ns["jpcoar"], "contributorName"), {"xml:lang": contributor_name["lang"]})
+        elem_contributor_name.text = contributor_name["name"]
     if contributor.get("affiliation"):
       for affiliation in contributor["affiliation"]:
         elem_affiliation = ET.SubElement(elem_contributor, ET.QName(ns["jpcoar"], "affiliation"))
@@ -383,10 +387,13 @@ def add_funding_reference(entry, root):
   """助成情報をメタデータに追加する"""
   for funding_reference in entry["funding_reference"]:
     elem_funding_reference = ET.SubElement(root, ET.QName(ns["jpcoar"], "fundingReference"))
-    elem_funder_identifier = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "funderIdentifier"), {
-      "funderIdentifierType": funding_reference["funder_identifier_type"]
-    })
-    elem_funder_identifier.text = funding_reference["funder_identifier"]
+
+    if funding_referehce.get("funder_identifier"):
+      elem_funder_identifier = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "funderIdentifier"), {
+        "funderIdentifierType": funding_reference["funder_identifier_type"]
+      })
+      elem_funder_identifier.text = funding_reference["funder_identifier"]
+
     elem_funding_reference = ET.SubElement(root, ET.QName(ns["jpcoar"], "fundingReference"))
     for funder_name in funding_reference["funder_name"]:
       elem_funder_name = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "funderName"), {
@@ -401,11 +408,12 @@ def add_funding_reference(entry, root):
         })
         elem_funding_stream.text = funding_stream["funding_stream"]
 
-    elem_award_number = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "awardNumber"), {
-      "awardURI": funding_reference["award_number"]["award_uri"],
-      "awardNumberType": funding_reference["award_number"]["award_number_type"]
-     })
-    elem_award_number.text = funding_reference["award_number"]["award_number"]
+    if funding_reference.get("award_number"):
+      elem_award_number = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "awardNumber"), {
+        "awardURI": funding_reference["award_number"]["award_uri"],
+        "awardNumberType": funding_reference["award_number"]["award_number_type"]
+       })
+      elem_award_number.text = funding_reference["award_number"]["award_number"]
 
     if funding_reference.get("award_title"):
       for award_title in funding_reference["award_title"]:
