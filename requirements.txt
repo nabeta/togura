@@ -1,3 +1,4 @@
+pytest
 PyYAML >= 6.0
 resync
 rocrate
