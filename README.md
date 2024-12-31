@@ -9,7 +9,7 @@
 
 1. Pythonをインストールします。3.11以降のバージョンをインストールしてください。Windowsをお使いの場合、[MicrosoftのWebサイト](https://learn.microsoft.com/ja-jp/windows/python/beginners)にインストールや動作確認の方法が掲載されていますので、参考にしてください。
 1. [Visual Studio Code](https://code.visualstudio.com/)(VSCode)をインストールします。
-1. [Git](https://git-scm.com/downloads)をインストールします。途中の選択肢は「Next」を選ぶのでかまいません。
+1. [Git](https://git-scm.com/downloads)をインストールします。途中の選択肢はすべて「Next」を選ぶのでかまいません。
 1. VSCodeを起動し、画面上部のメニューから「表示」→「拡張機能」を選びます。画面左側のウインドウに拡張機能の一覧が表示されるので、以下の4つに対してそれぞれ「インストール」ボタンを押します。
     - [Japanese Language Pack for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja)
     - [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
@@ -23,6 +23,7 @@
     https://github.com/nabeta/jpcoar-schema-helper
     ```
 1. 保存先のフォルダを尋ねるウインドウが表示されますので、適当なフォルダを指定します。「クローンしたリポジトリを開きますか?」というメッセージが表示されますので、「開く」を選びます。
+1. 「このフォルダー内のファイルの作成者を信頼しますか?」と尋ねられたら、「はい、作成者を信頼します」を選びます。
 1. VSCodeのメニューで「ファイル」→「名前をつけてワークスペースを保存」を選び、そのまま「保存」を選びます。
 1. VSCodeの画面上部のメニューから「ターミナル」→「新しいターミナル」を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドを実行して、Pythonのvenv環境（仮想環境）をインストールします。
     ```sh
