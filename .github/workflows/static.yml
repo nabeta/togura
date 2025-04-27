@@ -22,8 +22,32 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  build:
+
+  runs-on: ubuntu-latest
+
+  steps:
+  - uses: actions/checkout@v4
+  - name: Set up Python 3.13
+    uses: actions/setup-python@v5
+    with:
+      python-version: "3.13"
+  - name: Install dependencies
+    run: |
+      python -m pip install --upgrade pip
+      if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      cp -a samples/* work/
+      python ./jpcoar.py
+  - name: Setup Pages
+    uses: actions/configure-pages@v5
+  - name: Upload artifact
+    uses: actions/upload-pages-artifact@v3
+    with:
+      path: './public'
+
   # Single deploy job since we're just deploying
   deploy:
+    needs: build
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -31,13 +55,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Upload entire repository
-          path: './public'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
