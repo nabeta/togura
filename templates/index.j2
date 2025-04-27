@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ config.site_name }}</title>
+    <style>
+      {% include "templates/style.css" %}
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <h1>{{ config.site_name }}</h1>
+
+      <ul>
+        {% for entry in entries %}
+          <li>
+            <a href="{{ entry.id }}.html">
+              {% for creator in entry.creator %}{{ creator.creator_name[0].name }}{% endfor %}.
+              {{ entry.title[0].title }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <div>
+        最終更新日: {{ now }}
+        <a href="resourcelist.xml">ResourceSync XML</a>
+      </div>
+
+      {% include "templates/footer.j2" %}
+    </div>
+  </body>
+</html>

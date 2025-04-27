@@ -5,12 +5,16 @@ import glob
 import yaml
 import mimetypes
 import shutil
-import tempfile
+import datetime
 from xml.dom import minidom
 import xml.etree.ElementTree as ET
 from urllib.parse import urlparse, urljoin
-from rocrate.rocrate import ROCrate
-from rocrate.model.person import Person
+import generator
+import resourcesync
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
 ns = {
   "jpcoar": "https://github.com/JPCOAR/schema/blob/master/2.0/",
@@ -376,7 +380,7 @@ def add_contributor(entry, root):
 
 def add_identifier(entry, root, prefix):
   elem_identifier = ET.SubElement(root, ET.QName(ns["jpcoar"], "identifier"), {"identifierType": "URI"})
-  elem_identifier.text = urljoin(sys.argv[2], str(entry["id"]))
+  elem_identifier.text = urljoin(config()["base_url"], str(entry["id"]))
 
   if entry.get("identifier"):
     for identifier in entry["identifier"]:
@@ -452,61 +456,23 @@ def add_file(data_dir, entry, root, ns, base_url):
       # elem_file_date.text = str(date["date"])
     elem_mime_type.text = mimetypes.guess_type(file)[0]
 
-def generate_jpcoar_xml(data_dir, root):
-  """JPCOARスキーマのXMLを出力する"""
-  with open(f"{data_dir}/jpcoar20.yaml", encoding = "utf-8") as file:
-    entry = yaml.load(file, Loader = yaml.Loader)
-
-  ET.indent(root, space = "  ", level = 0)
-  return root
-
-def output_crate(data_dir, output_dir, root):
-  """RO-Crateのディレクトリを出力する"""
-  with open(f"{data_dir}/jpcoar20.yaml", encoding = "utf-8") as file:
-    entry = yaml.load(file, Loader = yaml.Loader)
-
-  crate = ROCrate(gen_preview = True)
-  crate.name = entry["title"][0]["title"]
-
-  # ファイルを追加
-  for file in glob.glob(f"{data_dir}/*"):
-    filename = os.path.basename(file)
-    if filename == "jpcoar20.yaml":
-      continue
-
-    data = crate.add_file(file)
-
-  # 作成者を追加
-  for creator in entry["creator"]:
-    c = crate.add(Person(crate, properties = {
-         "name": creator["creator_name"][0]["name"]
-      }
-    ))
-
-  # JPCOARスキーマのXMLファイルを追加
-  xml = generate_jpcoar_xml(data_dir, root)
-  with tempfile.TemporaryDirectory() as tempdir:
-    with open(f"{tempdir}/jpcoar20.xml", "w", encoding = "utf-8") as xml_file:
-      xml_file.write(ET.tostring(xml, encoding = "unicode", xml_declaration = True))
-      xml_file.seek(0)
-      crate.add_file(xml_file.name, dest_path = "jpcoar20.xml")
-
-    # ディレクトリを出力
-    crate_dir = f"{output_dir}/{str(entry['id'])}"
-    crate.write(crate_dir)
+def config():
+  with open("config.yml", encoding = "utf-8") as file:
+    return yaml.load(file, Loader = yaml.Loader)
 
 def main():
-  if len(sys.argv) != 3:
-    print("Usage: python3 jpcoar.py <metadata_dir> <base_url>")
-    sys.exit(1)
+  data_dir = "./work"
+  output_dir = "./public"
+  base_url = config()["base_url"]
 
-  data_dir = sys.argv[1]
-  base_url = sys.argv[2]
-  with open(f"{data_dir}/jpcoar20.yaml", encoding = "utf-8") as file:
-    entry = yaml.load(file, Loader = yaml.Loader)
-  root = generate_xml(entry, ns, base_url)
-  add_file(data_dir, entry, root, ns, base_url)
-  output_crate(data_dir, "./public", root)
+  for path in glob.glob(f"{data_dir}/*"):
+    with open(f"{path}/jpcoar20.yaml", encoding = "utf-8") as file:
+      entry = yaml.load(file, Loader = yaml.Loader)
+      root = generate_xml(entry, ns, base_url)
+      add_file(path, entry, root, ns, base_url)
+      generator.generate_ro_crate(path, output_dir, root)
+  generator.generate_html(data_dir, output_dir, config)
+  resourcesync.generate_resourcesync(output_dir, base_url)
 
 if __name__ == "__main__":
   main()

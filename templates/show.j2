@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ entry.title[0].title }}</title>
+    <style>
+      {% include "templates/style.css" %}
+    </style>
+  </head>
+  <body>
+    <div class="main">
+
+      <div><a href="index.html">一覧</a></div>
+
+      <h1>{{ entry.title[0].title }}</h1>
+
+      <p>{{ config.base_url }}/{{ entry.id }}.html</p>
+
+      <dl>
+        {% for creator in entry.creator %}
+          <dt>著者</dt>
+          <dd>
+            {% for creator_name in creator.creator_name %}
+              {{ creator_name.name }}
+            {% endfor %}
+            {% for name_identifier in creator.name_identifier %}
+              {% if name_identifier.identifier_scheme == "ORCID" %}
+                <a href="{{ name_identifier.identifier }}">{{ name_identifier.identifier }}</a>
+              {% else %}
+                {{ name_identifier.identifier }}
+              {% endif %}
+            {% endfor %}
+          </dd>
+        {% endfor %}
+      </dl>
+
+      <dl>
+        <dt>主題</dt>
+        {% for subject in entry.subject %}
+          <dd>{{ subject.subject_scheme }}: {{ subject.subject }}</dd>
+        {% endfor %}
+      </dl>
+
+      <dl>
+        <dt>出版者</dt>
+        {% for publisher in entry.publisher %}
+          <dd>{{ publisher.lang }}: {{ publisher.publisher }}</dd>
+        {% endfor %}
+      </dl>
+
+      <dl>
+        <dt>日付</dt>
+        {% for date in entry.date %}
+          <dd>{{ date.date_type }}: {{ date.date }}</dd>
+        {% endfor %}
+      </dl>
+
+      <dl>
+        <dt>識別子</dt>
+        {% for identifier in entry.identifier %}
+          <dd>{{ identifier }}</dd>
+        {% endfor %}
+      </dl>
+
+      <dl>
+        <dt>関連情報</dt>
+        {% for relation in entry.relation %}
+          <dd>{{ relation.relation_type }}: <a href="{{ relation.related_identifier.identifier }}">{{ relation.related_identifier.identifier }}</a></dd>
+        {% endfor %}
+      </dl>
+
+      <dl>
+        <dt>助成情報</dt>
+        {% for funding_reference in entry.funding_reference %}
+          <dd>
+            {% if funding_reference.award_number.award_number_type == "JGN" %}
+              <a href="{{ funding_reference.award_number.award_uri }}">{{ funding_reference.award_title[0].award_title }}</a>
+            {% else %}
+              {{ funding_reference.award_title[0].award_title }}
+            {% endif %}
+          </dd>
+        {% endfor %}
+      </dl>
+
+      <dl>
+        <dt>収録物名</dt>
+        {% for source_title in entry.source_title %}
+          <dd>
+            {{ source_title.source_title }}.
+            vol. {{ entry.volume }},
+            issue {{ entry.issue }}.
+            {{ entry.page_start }}-{{ entry.page_end }}.
+          </dd>
+        {% endfor %}
+      </dl>
+
+      <dl>
+        <dt>ファイル</dt>
+        {% for file in files %}
+          <dd><a href="{{ entry.id }}/{{ file }}">{{ file }}</a></dd>
+        {% endfor %}
+      </dl>
+
+      <div>
+        最終更新日: {{ now }}
+        <a href="{{ entry.id }}/jpcoar20.xml">JPCOAR Schema 2.0 XML</a>
+      </div>
+
+      {% include "templates/footer.j2" %}
+    </div>
+  </body>
+</html>

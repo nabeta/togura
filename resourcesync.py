@@ -1,23 +1,16 @@
-#!/usr/bin/env python3
 import os
 import sys
 import datetime
 from resync import Resource, ResourceList, CapabilityList, SourceDescription
 from urllib.parse import urljoin
 
-def main():
-  if len(sys.argv) != 2:
-    print("Usage: python3 resourcesync.py <base_url>")
-    sys.exit(1)
-
+def generate_resourcesync(output_dir, base_url):
   rsd = SourceDescription()
   caps = CapabilityList()
   rl = ResourceList()
-  public_dir = "public"
-  base_url = sys.argv[1]
 
-  for data_dir in os.listdir(public_dir):
-    if not os.path.isdir(os.path.join(public_dir, data_dir)):
+  for data_dir in os.listdir(output_dir):
+    if not os.path.isdir(os.path.join(output_dir, data_dir)):
       continue
 
     if data_dir == ".keep":
@@ -39,7 +32,3 @@ def main():
   rsd.add_capability_list(urljoin(base_url, "capabilitylist.xml"))
   with open(f"public/.well-known/resourcesync", "w", encoding="utf-8") as file:
     file.write(rsd.as_xml())
-
-
-if __name__ == "__main__":
-    main()
