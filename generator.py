@@ -29,17 +29,17 @@ def generate_ro_crate(data_dir, output_dir, root):
     data = crate.add_file(file)
 
   # 作成者を追加
-  for creator in entry["creator"]:
-    c = crate.add(Person(crate, properties = {
-         "name": creator["creator_name"][0]["name"]
-      }
-    ))
+  if entry.get("creator"):
+    for creator in entry["creator"]:
+      c = crate.add(Person(crate, properties = {
+           "name": creator["creator_name"][0]["name"]
+        }
+      ))
 
   # JPCOARスキーマのXMLファイルを追加
-  xml = generate_jpcoar_xml(data_dir, root)
   with tempfile.TemporaryDirectory() as tempdir:
     with open(f"{tempdir}/jpcoar20.xml", "w", encoding = "utf-8") as xml_file:
-      xml_file.write(ET.tostring(xml, encoding = "unicode", xml_declaration = True))
+      xml_file.write(ET.tostring(root, encoding = "unicode", xml_declaration = True))
       xml_file.seek(0)
       crate.add_file(xml_file.name, dest_path = "jpcoar20.xml")
 
@@ -77,10 +77,3 @@ def generate_html(data_dir, output_dir, config):
     file.write(index_html)
     logger.debug("index.html")
 
-def generate_jpcoar_xml(data_dir, root):
-  """JPCOARスキーマのXMLを出力する"""
-  with open(f"{data_dir}/jpcoar20.yaml", encoding = "utf-8") as file:
-    entry = yaml.load(file, Loader = yaml.Loader)
-
-  ET.indent(root, space = "  ", level = 0)
-  return root

@@ -15,16 +15,41 @@
 
       <h1>{{ entry.title[0].title }}</h1>
 
-      <p>{{ config.base_url }}/{{ entry.id }}.html</p>
+      <div>
+        {{ config.base_url }}/{{ entry.id }}.html
+      </div>
+
+      <dl>
+        <dt>資源タイプ</dt>
+        <dd>{{ entry.type }}</dd>
+      </dl>
 
       <dl>
         {% for creator in entry.creator %}
-          <dt>著者</dt>
+          <dt>作成者</dt>
           <dd>
             {% for creator_name in creator.creator_name %}
               {{ creator_name.name }}
             {% endfor %}
             {% for name_identifier in creator.name_identifier %}
+              {% if name_identifier.identifier_scheme == "ORCID" %}
+                <a href="{{ name_identifier.identifier }}">{{ name_identifier.identifier }}</a>
+              {% else %}
+                {{ name_identifier.identifier }}
+              {% endif %}
+            {% endfor %}
+          </dd>
+        {% endfor %}
+      </dl>
+
+      <dl>
+        {% for contributor in entry.contributor %}
+          <dt>寄与者</dt>
+          <dd>
+            {% for contributor_name in contributor.contributor_name %}
+              {{ contributor_name.name }}
+            {% endfor %}
+            {% for name_identifier in contributor.name_identifier %}
               {% if name_identifier.identifier_scheme == "ORCID" %}
                 <a href="{{ name_identifier.identifier }}">{{ name_identifier.identifier }}</a>
               {% else %}
@@ -59,7 +84,7 @@
       <dl>
         <dt>識別子</dt>
         {% for identifier in entry.identifier %}
-          <dd>{{ identifier }}</dd>
+          <dd><a href="{{ identifier }}">{{ identifier }}</a></dd>
         {% endfor %}
       </dl>
 
