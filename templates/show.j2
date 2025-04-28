@@ -121,6 +121,23 @@
       </dl>
 
       <dl>
+        <dt>学位授与番号</dt>
+        <dd>{{ entry.dissertation_number }}</dd>
+        <dt>学位名</dt>
+        {% for degree_name in entry.degree_name %}
+          <dd>{{ degree_name.lang }}: {{ degree_name.degree_name }}</dd>
+        {% endfor %}
+        <dt>学位授与年月日</dt>
+        <dd>{{ entry.date_granted }}</dd>
+        <dt>学位授与機関</dt>
+        {% for degree_grantor in entry.degree_grantor %}
+          {% for degree_grantor_name in degree_grantor.degree_grantor_name %}
+            <dd>{{ degree_grantor_name.lang }}: {{ degree_grantor_name.degree_grantor_name }}</dd>
+          {% endfor %}
+        {% endfor %}
+      </dl>
+
+      <dl>
         <dt>ファイル</dt>
         {% for file in files %}
           <dd><a href="{{ entry.id }}/{{ file }}">{{ file }}</a></dd>

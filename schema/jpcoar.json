@@ -1065,18 +1065,21 @@
             }
           },
           "degree_grantor_name": {
-            "type": "object",
-            "required": [
-              "degree_grantor_name"
-            ],
-            "additionalProperties": false,
-            "properties": {
-              "degree_grantor_name": {
-                "type": "string"
-              },
-              "lang": {
-                "type": "string",
-                "pattern": "^[a-z]{2}(-[A-Za-z]+)?$"
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "degree_grantor_name"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "degree_grantor_name": {
+                  "type": "string"
+                },
+                "lang": {
+                  "type": "string",
+                  "pattern": "^[a-z]{2}(-[A-Za-z]+)?$"
+                }
               }
             }
           }
