@@ -53,7 +53,7 @@ def generate_html(data_dir, output_dir, config):
   template_index = env.get_template('templates/index.j2')
   template_show = env.get_template('templates/show.j2')
   entries = []
-  for path in glob.glob(f"{data_dir}/*"):
+  for path in sorted(glob.glob(f"{data_dir}/*"), key=os.path.basename, reverse=True):
     files = []
     for file in glob.glob(f"{path}/*"):
       filename = os.path.basename(file)

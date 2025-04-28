@@ -25,18 +25,30 @@
       </dl>
 
       <dl>
+        <dt>出版タイプ</dt>
+        <dd>{{ entry.text_version }}</dd>
+      </dl>
+
+      <dl>
         {% for creator in entry.creator %}
           <dt>作成者</dt>
           <dd>
             {% for creator_name in creator.creator_name %}
-              {{ creator_name.name }}
+              <dl>
+                <dt>{{ creator_name.lang }}</dt>
+                <dd>{{ creator_name.name }}</dd>
+              </dl>
             {% endfor %}
             {% for name_identifier in creator.name_identifier %}
-              {% if name_identifier.identifier_scheme == "ORCID" %}
-                <a href="{{ name_identifier.identifier }}">{{ name_identifier.identifier }}</a>
-              {% else %}
-                {{ name_identifier.identifier }}
-              {% endif %}
+              <dl>
+                {% if name_identifier.identifier_scheme == "ORCID" %}
+                  <dt>ORCID</dt>
+                  <dd><a href="{{ name_identifier.identifier }}">{{ name_identifier.identifier }}</a></dd>
+                {% else %}
+                <dt>{{ name_identifier.identifier_scheme }}</dt>
+                <dd>{{ name_identifier.identifier }}</dd>
+                {% endif %}
+              </dl>
             {% endfor %}
           </dd>
         {% endfor %}
@@ -82,11 +94,25 @@
       </dl>
 
       <dl>
+        <dt>言語</dt>
+        {% for language in entry.language %}
+          <dd>{{ language }}</dd>
+        {% endfor %}
+      </dl>
+
+      <dl>
         <dt>識別子</dt>
         {% for identifier in entry.identifier %}
           <dd><a href="{{ identifier }}">{{ identifier }}</a></dd>
         {% endfor %}
       </dl>
+
+      {% if entry.identifier_registration %}
+        <dl>
+          <dt>ID登録</dt>
+          <dd><a href="https://doi.org/{{ entry.identifier_registration.identifier }}">https://doi.org/{{ entry.identifier_registration.identifier }}</a></dd>
+        </dl>
+      {% endif %}
 
       <dl>
         <dt>関連情報</dt>
