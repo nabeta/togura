@@ -1,7 +1,9 @@
 # JPCOAR Schema Helper
 
 [JPCOARスキーマ](https://schema.irdb.nii.ac.jp/ja/schema) 2.0のメタデータを、YAMLを使って少しかんたんに記述できるようにするためのツールです。作成したYAMLファイルは、付属のスクリプトでJPCOARスキーマのXMLファイルに変換することができます。  
-また、作成したメタデータファイルをもとに、[ResourceSync](https://www.openarchives.org/rs/1.1/resourcesync)のXMLファイルを作成することができます。
+また、作成したメタデータファイルをもとに、HTMLファイルや[ResourceSync](https://www.openarchives.org/rs/1.1/resourcesync)のXMLファイルを作成することができます。
+
+出力例は https://nabeta.github.io/jpcoar-schema-helper にあります。
 
 ## 使い方
 
