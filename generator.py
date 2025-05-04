@@ -139,6 +139,15 @@ def generate_jalc_xml(data_dir, output_dir, config):
     title = ET.SubElement(titles, "titles")
     title.text = t["title"]
 
+  fund_list = ET.SubElement(content, "fund_list")
+  for funding_reference in entry["funding_reference"]:
+    fund = ET.SubElement(fund_list, "fund")
+    funder_name = ET.SubElement(fund, "funder_name")
+    funder_name.text = funding_reference["funder_name"][0].get("funder_name")
+    if funding_reference.get("funder_identifier"):
+      funder_identifier = ET.SubElement(fund, "funder_identifier", {"type": funding_reference.get("funder_identifier_type", "Other")})
+      funder_identifier.text = funding_reference["funder_identifier"]
+
   # JaLC XMLを出力する
   with open(f"{output_dir}/{str(entry['id'])}/jalc.xml", "w") as file:
     ET.indent(root, space="\t", level=0)
