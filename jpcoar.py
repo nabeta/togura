@@ -487,6 +487,7 @@ def main():
       root = generate_xml(entry, ns, base_url)
       add_directory_file(path, entry, root, ns, base_url)
       generator.generate_ro_crate(path, output_dir, root)
+      generator.generate_jalc_xml(path, output_dir, config)
   generator.generate_html(data_dir, output_dir, config)
   resourcesync.generate_resourcesync(output_dir, base_url)
 
