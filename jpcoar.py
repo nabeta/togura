@@ -218,7 +218,7 @@ def generate_xml(entry, ns, base_url):
   root.set(ET.QName(ns["xsi"], "schemaLocation"), "https://github.com/JPCOAR/schema/blob/master/2.0/ jpcoar_scm.xsd")
 
   for title in entry["title"]:
-    elem_title = ET.SubElement(root, ET.QName(ns["dc"], "title"))
+    elem_title = ET.SubElement(root, ET.QName(ns["dc"], "title"), {"xml:lang": title["lang"]})
     elem_title.text = title["title"]
 
   if entry.get("creator"):
@@ -242,14 +242,14 @@ def generate_xml(entry, ns, base_url):
   if entry.get("subject"):
     for subject in entry["subject"]:
       elem_subject = ET.SubElement(root, ET.QName(ns["jpcoar"], "subject"), {
-        "xml:lang": subject.get("lang", "unknown"),
-        "subjectScheme": subject["subject_scheme"]
+        "xml:lang": subject.get("lang", "unknown") or "unknown",
+        "subjectScheme": subject.get("subject_scheme", "Other")
       })
       elem_subject.text = subject["subject"]
 
   if entry.get("publisher"):
     for publisher in entry["publisher"]:
-      elem_publisher = ET.SubElement(root, ET.QName(ns["dc"], "publisher"), {"xml:lang": publisher["lang"]})
+      elem_publisher = ET.SubElement(root, ET.QName(ns["dc"], "publisher"), {"xml:lang": publisher.get("lang", "unknown") or "unknown"})
       elem_publisher.text = publisher["publisher"]
 
   if entry.get("date"):
@@ -321,6 +321,9 @@ def generate_xml(entry, ns, base_url):
   if entry.get("page_end"):
     page_end = ET.SubElement(root, ET.QName(ns["jpcoar"], "pageEnd"))
     page_end.text = entry["page_end"]
+
+  if entry.get("file"):
+    add_file(entry, root)
 
   return root
 
@@ -426,7 +429,20 @@ def add_funding_reference(entry, root):
         })
         elem_award_title.text = award_title["award_title"]
 
-def add_file(data_dir, entry, root, ns, base_url):
+def add_file(entry, root):
+  if entry.get("file"):
+    for file in entry["file"]:
+      elem_file = ET.SubElement(root, ET.QName(ns["jpcoar"], "file"))
+
+      if file.get("uri"):
+        elem_file_uri = ET.SubElement(elem_file, ET.QName(ns["jpcoar"], "URI"))
+        elem_file_uri.text = file["uri"]
+
+      if file.get("mime_type"):
+        elem_file_mime_type = ET.SubElement(elem_file, ET.QName(ns["jpcoar"], "mimeType"))
+        elem_file_mime_type.text = file["mime_type"]
+
+def add_directory_file(data_dir, entry, root, ns, base_url):
   """ファイルの情報をメタデータに追加する"""
   for file in glob.glob(f"{data_dir}/*"):
     filename = os.path.basename(file)
@@ -469,7 +485,7 @@ def main():
     with open(f"{path}/jpcoar20.yaml", encoding = "utf-8") as file:
       entry = yaml.load(file, Loader = yaml.Loader)
       root = generate_xml(entry, ns, base_url)
-      add_file(path, entry, root, ns, base_url)
+      add_directory_file(path, entry, root, ns, base_url)
       generator.generate_ro_crate(path, output_dir, root)
   generator.generate_html(data_dir, output_dir, config)
   resourcesync.generate_resourcesync(output_dir, base_url)
