@@ -9,17 +9,21 @@
     </style>
   </head>
   <body>
-    <div class="main">
+    <div class="container">
       <h1>{{ config.site_name }}</h1>
 
       <ul>
         {% for entry in entries %}
           <li>
             <a href="{{ entry.id }}.html">
-              ({{ entry.type }})
-              {% for creator in entry.creator %}{{ creator.creator_name[0].name }}{% endfor %}.
+              {{ entry.id }}
+              [{{ entry.type }}]
+              {% for creator in entry.creator %}
+                {{ creator.creator_name[0].name }}
+              {% endfor %}.
               {{ entry.title[0].title }}
             </a>
+            ({{ entry.file[0].date[0].date }})
           </li>
         {% endfor %}
       </ul>
