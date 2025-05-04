@@ -23,7 +23,11 @@
               {% endfor %}.
               {{ entry.title[0].title }}
             </a>
-            ({{ entry.file[0].date[0].date }})
+            {% if not entry.file is not defined %}
+              {% if not entry.file[0].date is not defined %}
+                ({{ entry.file[0].date[0].date }})
+              {% endif %}
+            {% endif %}
           </li>
         {% endfor %}
       </ul>
