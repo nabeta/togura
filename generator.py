@@ -139,6 +139,19 @@ def generate_jalc_xml(data_dir, output_dir, config):
     title = ET.SubElement(titles, "titles")
     title.text = t["title"]
 
+  creator_list = ET.SubElement(content, "creator_list")
+  for i, c in enumerate(entry["creator"]):
+    creator = ET.SubElement(creator_list, "creator", {"sequence": str(i)})
+    for name in c["creator_name"]:
+      names = ET.SubElement(creator, "names", {"lang": name.get("lang", "")})
+      first_name = ET.SubElement(names, "first_name")
+      first_name.text = name["name"]
+    if c.get("name_identifier"):
+      researcher_id = ET.SubElement(creator, "researcher_id")
+      for identifier in c["name_identifier"]:
+        id_code = ET.SubElement(researcher_id, "id_code", {"type": identifier.get("identifier_scheme", "")})
+        id_code.text = identifier["identifier"]
+
   fund_list = ET.SubElement(content, "fund_list")
   for funding_reference in entry["funding_reference"]:
     fund = ET.SubElement(fund_list, "fund")
