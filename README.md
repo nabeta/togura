@@ -75,24 +75,24 @@
       id: 1001
       ```
 
-### JPCOARスキーマのXMLへの変換　
+### リポジトリ用ファイルの出力
 
-1. VSCodeのターミナルで`jpcoar.py`スクリプトを実行し、YAMLで作成したメタデータファイルをJPCOARスキーマのXMLファイルに変換します。
-    ```sh
-    ./jpcoar.py
-    ```
-    スクリプトを実行すると、`public`フォルダの中に以下のファイルとフォルダが作成されます。
+ VSCodeのターミナルで`jpcoar.py`スクリプトを実行し、YAMLで作成したメタデータファイルをJPCOARスキーマのXMLファイルに変換します。
+```sh
+./jpcoar.py
+```
+スクリプトを実行すると、`public`フォルダの中に以下のファイルとフォルダが作成されます。
 
-    - 登録一覧のHTMLファイル`index.html`
-    - `id`の番号のついたフォルダ
-        - 登録した論文ファイル・研究データファイル
-        - `jpcoar20.xml`: JPCOARスキーマのXMLファイル
-        - `ro-crate-metadata.json`: [RO-Crate](https://www.researchobject.org/ro-crate/)のメタデータJSONファイル（ファイルの情報のみ）
-        - `ro-crate-preview.html`: RO-CrateのプレビューHTMLファイル
+- 登録一覧のHTMLファイル`index.html`
+- `id`の番号のついたフォルダ
+    - 登録した論文ファイル・研究データファイル
+    - `jpcoar20.xml`: JPCOARスキーマのXMLファイル
+    - `ro-crate-metadata.json`: [RO-Crate](https://www.researchobject.org/ro-crate/)のメタデータJSONファイル（ファイルの情報のみ）
+    - `ro-crate-preview.html`: RO-CrateのプレビューHTMLファイル
 
-    メタデータの編集は`work`フォルダの中のファイルのみを用いて行います。`public`フォルダの中に作成されたファイルは編集しないでください。編集しても、再度`jpcoar.py`スクリプトを実行することで上書きされます。
+メタデータの編集は`work`フォルダの中のファイルのみを用いて行います。`public`フォルダの中に作成されたファイルは編集しないでください。編集しても、再度`jpcoar.py`スクリプトを実行することで上書きされます。
 
-### ファイルの公開
+### リポジトリ用ファイルの公開
 
 `public`フォルダに保存されたフォルダとファイルの一式を、Webサーバにアップロードします。アップロードの方法は、FTPクライアントやサーバの業者が提供している管理画面など、お使いのWebサーバによって異なります。
 
