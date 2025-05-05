@@ -241,8 +241,12 @@
               </dt>
               <dd class="col-sm-10">
                 {{ source_title.source_title }}.
-                vol. {{ entry.volume }},
-                issue {{ entry.issue }}.
+                {% if entry.volume %}
+                  vol. {{ entry.volume }},
+                {% endif %}
+                {% if entry.issue %}
+                  issue {{ entry.issue }}.
+                {% endif %}
                 {{ entry.page_start }}-{{ entry.page_end }}.
               </dd>
             {% endfor %}
