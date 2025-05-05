@@ -111,6 +111,27 @@
       </dl>
 
       <dl class="row">
+        <dt class="col-sm-2"><a href="https://schema.irdb.nii.ac.jp/ja/schema/2.0/5">アクセス権</a></dt>
+        <dd class="col-sm-10">
+          <dl class="row">
+            {{ entry.access_rights }}
+          </dl>
+        </dd>
+      </dl>
+
+      <dl class="row">
+        <dt class="col-sm-2"><a href="https://schema.irdb.nii.ac.jp/ja/schema/2.0/6">権利情報</a></dt>
+        <dd class="col-sm-10">
+          <dl class="row">
+            {% for right in entry.rights %}
+              <dt class="col-sm-2">{{ right.lang }}</dt>
+              <dd class="col-sm-10">{{ right.rights }}</dd>
+            {% endfor %}
+          </dl>
+        </dd>
+      </dl>
+
+      <dl class="row">
         <dt class="col-sm-2"><a href="https://schema.irdb.nii.ac.jp/ja/schema/2.0/8">主題</a></dt>
         <dd class="col-sm-10">
           <dl class="row">
@@ -160,9 +181,11 @@
 
       <dl class="row">
         <dt class="col-sm-2"><a href="https://schema.irdb.nii.ac.jp/ja/schema/2.0/14">言語</a></dt>
-        {% for language in entry.language %}
-          <dd class="col-sm-10">{{ language }}</dd>
-        {% endfor %}
+        <dd class="col-sm-10">
+          {% for language in entry.language %}
+            {{ language }}
+          {% endfor %}
+        </dd>
       </dl>
 
       <dl class="row">
