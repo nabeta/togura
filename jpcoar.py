@@ -450,7 +450,10 @@ def add_file(entry, root):
       elem_file = ET.SubElement(root, ET.QName(ns["jpcoar"], "file"))
 
       if file.get("uri"):
-        elem_file_uri = ET.SubElement(elem_file, ET.QName(ns["jpcoar"], "URI"))
+        elem_file_uri = ET.SubElement(elem_file, ET.QName(ns["jpcoar"], "URI"), {
+            "objectType": file.get("object_type", "") or ""
+          }
+        )
         elem_file_uri.text = file["uri"]
 
       if file.get("mime_type"):
