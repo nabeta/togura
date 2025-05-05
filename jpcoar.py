@@ -407,7 +407,7 @@ def add_contributor(entry, root):
 
 def add_identifier(entry, root, prefix):
   elem_identifier = ET.SubElement(root, ET.QName(ns["jpcoar"], "identifier"), {"identifierType": "URI"})
-  elem_identifier.text = urljoin(config()["base_url"], str(entry["id"]))
+  elem_identifier.text = urljoin(config()["base_url"], f"{entry['id']}/ro-crate-metadata.html")
 
   if entry.get("identifier"):
     for identifier in entry["identifier"]:

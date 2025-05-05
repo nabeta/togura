@@ -17,7 +17,7 @@ def generate_ro_crate(data_dir, output_dir, root):
   with open(f"{data_dir}/jpcoar20.yaml", encoding = "utf-8") as file:
     entry = yaml.load(file, Loader = yaml.Loader)
 
-  crate = ROCrate(gen_preview = True)
+  crate = ROCrate(gen_preview = False)
   crate.name = entry["title"][0]["title"]
 
   # ファイルを追加
@@ -67,7 +67,7 @@ def generate_html(data_dir, output_dir, config):
     with open(f"{path}/jpcoar20.yaml", encoding = "utf-8") as file:
       entry = yaml.load(file, Loader = yaml.Loader)
       entries.append(entry)
-      with open(f"{output_dir}/{str(entry['id'])}.html", "w") as file:
+      with open(f"{output_dir}/{str(entry['id'])}/ro-crate-preview.html", "w") as file:
         template_show.globals['now'] = datetime.datetime.now(datetime.UTC)
         show_html = template_show.render(entry = entry, files = files, config = config())
         file.write(show_html)
