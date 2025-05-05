@@ -244,10 +244,19 @@ def generate_xml(entry, ns, base_url):
   if entry.get("subject"):
     for subject in entry["subject"]:
       elem_subject = ET.SubElement(root, ET.QName(ns["jpcoar"], "subject"), {
-        "xml:lang": subject.get("lang", "unknown") or "unknown",
-        "subjectScheme": subject.get("subject_scheme", "Other")
+        "subjectScheme": subject.get("subject_scheme", "Other"),
+        "subjectURI": subject.get("subject_uri", ""),
+        "xml:lang": subject.get("lang", "unknown") or "unknown"
       })
       elem_subject.text = subject["subject"]
+
+  if entry.get("description"):
+    for description in entry["description"]:
+      elem_description = ET.SubElement(root, ET.QName(ns["datacite"], "description"), {
+        "descriptionType": description["description_type"],
+        "xml:lang": description.get("lang", "unknown") or "unknown",
+      })
+      elem_description.text = description["description"]
 
   if entry.get("publisher"):
     for publisher in entry["publisher"]:
