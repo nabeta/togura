@@ -331,6 +331,7 @@ def generate_xml(entry, ns, base_url):
   if entry.get("file"):
     add_file(entry, root)
 
+  logger.debug(f"{str(entry['id'])}.yaml")
   return root
 
 def add_creator(entry, root):
