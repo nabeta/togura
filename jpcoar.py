@@ -337,6 +337,35 @@ def generate_xml(entry, ns, base_url):
     page_end = ET.SubElement(root, ET.QName(ns["jpcoar"], "pageEnd"))
     page_end.text = entry["page_end"]
 
+  if entry.get("dissertation_number"):
+    dissertation_number = ET.SubElement(root, ET.QName(ns["dcndl"], "dissertationNumber"))
+    dissertation_number.text = entry["dissertation_number"]
+
+  if entry.get("degree_name"):
+    for d in entry["degree_name"]:
+      degree_name = ET.SubElement(root, ET.QName(ns["dcndl"], "degreeName"), {
+        "xml:lang": d.get("lang", "und") or "und"
+      })
+      degree_name.text = d["degree_name"]
+
+  if entry.get("date_granted"):
+    date_granted = ET.SubElement(root, ET.QName(ns["dcndl"], "dateGranted"))
+    date_granted.text = str(entry["date_granted"])
+
+  if entry.get("degree_grantor"):
+    degree_grantor = ET.SubElement(root, ET.QName(ns["dcndl"], "degreeGrantor"))
+    for d in entry["degree_grantor"]:
+      for i in d["name_identifier"]:
+        name_identifier = ET.SubElement(degree_grantor, ET.QName(ns["jpcoar"], "nameIdentifier"), {
+          "nameIdentifierScheme": i.get("name_identifier_scheme", "unk")
+        })
+        name_identifier.text = i["identifier"]
+      for i in d["degree_grantor_name"]:
+        degree_grantor_name = ET.SubElement(degree_grantor, ET.QName(ns["jpcoar"], "degreeGrantorName"), {
+          "xml:lang": i.get("lang", "und") or "und"
+        })
+        degree_grantor_name.text = i["name"]
+
   if entry.get("file"):
     add_file(entry, root)
 

@@ -1050,17 +1050,20 @@
         "additionalProperties": false,
         "properties": {
           "name_identifier": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "identifier"
-            ],
-            "properties": {
-              "name_identifier_scheme": {
-                "type": "string"
-              },
-              "identifier": {
-                "type": "string"
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "identifier"
+              ],
+              "properties": {
+                "name_identifier_scheme": {
+                  "type": "string"
+                },
+                "identifier": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -1069,11 +1072,11 @@
             "items": {
               "type": "object",
               "required": [
-                "degree_grantor_name"
+                "name"
               ],
               "additionalProperties": false,
               "properties": {
-                "degree_grantor_name": {
+                "name": {
                   "type": "string"
                 },
                 "lang": {
