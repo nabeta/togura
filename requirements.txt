@@ -3,3 +3,4 @@ PyYAML >= 6.0
 resync
 rocrate
 setuptools
+xmlschema
