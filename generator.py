@@ -84,11 +84,8 @@ def generate_jalc_xml(data_dir, output_dir, config):
   with open(f"{data_dir}/jpcoar20.yaml", encoding = "utf-8") as file:
     entry = yaml.load(file, Loader = yaml.Loader)
 
-  # ID登録や収録物識別子が記述されていなければ処理を終了する
+  # ID登録が記述されていなければ処理を終了する
   if entry.get("identifier_registration") == None:
-    return
-
-  if entry.get("source_identifier") == None:
     return
 
   root = ET.Element("root")
