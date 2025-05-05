@@ -159,7 +159,7 @@
     - [Simple DL](https://github.com/slumou/simpledl)
 - [Super – Simple – Static – Sustainable: a low resource repository jam](https://or2024.openrepositories.org/program-registration/workshops-and-tutorials/w02/) （Open Repositories 2024のワークショップ）
     - [Super-Simple-Static-Sustainable](https://github.com/OpenRepositoriesConference/Super-Simple-Static-Sustainable) （ワークショップの成果物）
-- [阿達藍留, 山田俊幸, 大向一輝. DAKit: 低コストなデータ共有のための静的デジタルアーカイブジェネレータの提案, 情報知識学会誌, 2022, 32巻4号, p.406-409.](https://doi.org/10.2964/jsik_2022_035)
+- [阿達 藍留, 山田 俊幸, 大向 一輝. DAKit: 低コストなデータ共有のための静的デジタルアーカイブジェネレータの提案, 情報知識学会誌, 2022, 32巻4号, p.406-409.](https://doi.org/10.2964/jsik_2022_035)
     - [DAKit](https://github.com/utokyodh/dakit)
 
 ## 作者
