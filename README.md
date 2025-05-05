@@ -50,7 +50,10 @@
     ```sh
     ./jpcoar.py
     ```
-1. `public`フォルダの中に`1000`フォルダが作成され、その中に`article.pdf`ファイルと`dataset.txt`ファイル、ならびに以下のファイルが作成されていることを確認します。
+1. `public`フォルダの中に`1000`フォルダが作成され、その中に以下のファイルが作成されていることを確認します。
+
+    - `article.pdf`
+    - `dataset.txt`
     - `jpcoar20.xml`: JPCOARスキーマのXMLファイル
     - `ro-crate-metadata.json`: [RO-Crate](https://www.researchobject.org/ro-crate/)のメタデータJSONファイル（ファイルの情報のみ）
     - `ro-crate-preview.html`: RO-CrateのプレビューHTMLファイル
@@ -83,8 +86,9 @@
     - 登録一覧のHTMLファイル`index.html`
     - `id`の番号のついたフォルダ
         - 登録した論文ファイル・研究データファイル
-        - 登録したメタデータのHTMLファイル
-        - JPCOARスキーマのXMLファイル`jpcoar20.xml`
+        - `jpcoar20.xml`: JPCOARスキーマのXMLファイル
+        - `ro-crate-metadata.json`: [RO-Crate](https://www.researchobject.org/ro-crate/)のメタデータJSONファイル（ファイルの情報のみ）
+        - `ro-crate-preview.html`: RO-CrateのプレビューHTMLファイル
 
     メタデータの編集は`work`フォルダの中のファイルのみを用いて行います。`public`フォルダの中に作成されたファイルは編集しないでください。編集しても、再度`jpcoar.py`スクリプトを実行することで上書きされます。
 
