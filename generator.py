@@ -152,6 +152,22 @@ def generate_jalc_xml(data_dir, output_dir, config):
         id_code = ET.SubElement(researcher_id, "id_code", {"type": identifier.get("identifier_scheme", "")})
         id_code.text = identifier["identifier"]
 
+  if entry.get("volume"):
+    volume = ET.SubElement(content, "volume")
+    volume.text = entry["volume"]
+
+  if entry.get("issue"):
+    issue = ET.SubElement(content, "issue")
+    issue.text = entry["issue"]
+
+  if entry.get("pageStart"):
+    first_page = ET.SubElement(content, "first_page")
+    first_page.text = entry["pageStart"]
+
+  if entry.get("pageEnd"):
+    last_page = ET.SubElement(content, "last_page")
+    last_page.text = entry["pageEnd"]
+
   fund_list = ET.SubElement(content, "fund_list")
   for funding_reference in entry["funding_reference"]:
     fund = ET.SubElement(fund_list, "fund")
