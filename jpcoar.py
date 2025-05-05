@@ -218,7 +218,9 @@ def generate_xml(entry, ns, base_url):
   root.set(ET.QName(ns["xsi"], "schemaLocation"), "https://github.com/JPCOAR/schema/blob/master/2.0/ jpcoar_scm.xsd")
 
   for title in entry["title"]:
-    elem_title = ET.SubElement(root, ET.QName(ns["dc"], "title"), {"xml:lang": title["lang"]})
+    elem_title = ET.SubElement(root, ET.QName(ns["dc"], "title"), {
+      "xml:lang": title.get("lang", "unknown") or "unknown"
+    })
     elem_title.text = title["title"]
 
   if entry.get("creator"):
@@ -234,7 +236,7 @@ def generate_xml(entry, ns, base_url):
   if entry.get("rights"):
     for rights in entry["rights"]:
       elem_rights = ET.SubElement(root, ET.QName(ns["dc"], "rights"), {
-        "xml:lang": rights["lang"],
+        "xml:lang": rights.get("lang", "unknown") or "unknown",
         ET.QName(ns["rdf"], "resource"): rights["rights"]
       })
       elem_rights.text = rights["rights"]
@@ -249,7 +251,9 @@ def generate_xml(entry, ns, base_url):
 
   if entry.get("publisher"):
     for publisher in entry["publisher"]:
-      elem_publisher = ET.SubElement(root, ET.QName(ns["dc"], "publisher"), {"xml:lang": publisher.get("lang", "unknown") or "unknown"})
+      elem_publisher = ET.SubElement(root, ET.QName(ns["dc"], "publisher"), {
+        "xml:lang": publisher.get("lang", "unknown") or "unknown"
+      })
       elem_publisher.text = publisher["publisher"]
 
   if entry.get("date"):
@@ -299,7 +303,9 @@ def generate_xml(entry, ns, base_url):
 
   if entry.get("source_title"):
     for source_title in entry["source_title"]:
-      elem_source_title = ET.SubElement(root, ET.QName(ns["jpcoar"], "sourceTitle"), {"xml:lang": source_title["lang"]})
+      elem_source_title = ET.SubElement(root, ET.QName(ns["jpcoar"], "sourceTitle"), {
+        "xml:lang": source_title.get("lang", "unknown") or "unknown"
+      })
       elem_source_title.text = source_title["source_title"]
 
   if entry.get("volume"):
@@ -340,7 +346,9 @@ def add_creator(entry, root):
         elem_name_identifier.text = name_identifier["identifier"]
     if creator.get("creator_name"):
       for creator_name in creator["creator_name"]:
-        elem_creator_name = ET.SubElement(elem_creator, ET.QName(ns["jpcoar"], "creatorName"), {"xml:lang": creator_name["lang"]})
+        elem_creator_name = ET.SubElement(elem_creator, ET.QName(ns["jpcoar"], "creatorName"), {
+          "xml:lang": creator_name.get("lang", "unknown") or "unknown"
+        })
         elem_creator_name.text = creator_name["name"]
     if creator.get("affiliation"):
       for affiliation in creator["affiliation"]:
@@ -351,7 +359,9 @@ def add_creator(entry, root):
         })
         elem_affiliation_identifier.text = affiliation["identifier"]
         for affiliation_name in affiliation["affiliation_name"]:
-          elem_affiliation_name = ET.SubElement(elem_affiliation, ET.QName(ns["jpcoar"], "affiliationName"), {"xml:lang": affiliation_name["lang"]})
+          elem_affiliation_name = ET.SubElement(elem_affiliation, ET.QName(ns["jpcoar"], "affiliationName"), {
+            "xml:lang": affiliation_name.get("lang", "unknown") or "unknown"
+          })
           elem_affiliation_name.text = affiliation_name["name"]
 
 def add_contributor(entry, root):
@@ -367,7 +377,9 @@ def add_contributor(entry, root):
         elem_name_identifier.text = name_identifier["identifier"]
     if contributor.get("contributor_name"):
       for contributor_name in contributor["contributor_name"]:
-        elem_contributor_name = ET.SubElement(elem_contributor, ET.QName(ns["jpcoar"], "contributorName"), {"xml:lang": contributor_name["lang"]})
+        elem_contributor_name = ET.SubElement(elem_contributor, ET.QName(ns["jpcoar"], "contributorName"), {
+          "xml:lang": contributor_name.get("lang", "unknown") or "unknown"
+        })
         elem_contributor_name.text = contributor_name["name"]
     if contributor.get("affiliation"):
       for affiliation in contributor["affiliation"]:
@@ -378,7 +390,9 @@ def add_contributor(entry, root):
         })
         elem_affiliation_identifier.text = affiliation["identifier"]
         for affiliation_name in affiliation["affiliation_name"]:
-          elem_affiliation_name = ET.SubElement(elem_affiliation, ET.QName(ns["jpcoar"], "affiliationName"), {"xml:lang": affiliation_name["lang"]})
+          elem_affiliation_name = ET.SubElement(elem_affiliation, ET.QName(ns["jpcoar"], "affiliationName"), {
+            "xml:lang": affiliation_name("lang", "unknown") or "unknown"
+          })
           elem_affiliation_name.text = affiliation_name["name"]
 
 def add_identifier(entry, root, prefix):
@@ -404,14 +418,14 @@ def add_funding_reference(entry, root):
     elem_funding_reference = ET.SubElement(root, ET.QName(ns["jpcoar"], "fundingReference"))
     for funder_name in funding_reference["funder_name"]:
       elem_funder_name = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "funderName"), {
-        "xml:lang": funder_name["lang"]
+        "xml:lang": funder_name.get("lang", "unknown") or "unknown"
       })
       elem_funder_name.text = funder_name["funder_name"]
 
     if funding_reference.get("funding_stream"):
       for funding_stream in funding_reference["funding_stream"]:
         elem_funding_stream = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "fundingStream"), {
-          "xml:lang": funding_stream["lang"]
+          "xml:lang": funding_stream.get("lang", "unknown") or "unknown"
         })
         elem_funding_stream.text = funding_stream["funding_stream"]
 
@@ -425,7 +439,7 @@ def add_funding_reference(entry, root):
     if funding_reference.get("award_title"):
       for award_title in funding_reference["award_title"]:
         elem_award_title = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "awardTitle"), {
-          "xml:lang": award_title["lang"]
+          "xml:lang": award_title.get("lang", "unknown") or "unknown"
         })
         elem_award_title.text = award_title["award_title"]
 
