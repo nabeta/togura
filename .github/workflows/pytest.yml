@@ -21,3 +21,7 @@ jobs:
     - name: Run pytest
       run: |
         pytest test/
+    - name: Run generator
+      run: |
+        cp -a samples/* works/
+        ./jpcoar.py
