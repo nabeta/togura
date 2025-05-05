@@ -122,14 +122,15 @@ def generate_jalc_xml(data_dir, output_dir, config):
   url.text = f"{config()['base_url']}/{entry['id']}.html"
 
   journal_id_list = ET.SubElement(content, "journal_id_list")
-  for source_identifier in entry["source_identifier"]:
-    if source_identifier["identifier_type"] == "PISSN":
-      journal_id = ET.SubElement(journal_id_list, "journal_id", {"type": "ISSN"})
-    elif source_identifier["identifier_type"] == "EISSN":
-      journal_id = ET.SubElement(journal_id_list, "journal_id", {"type": "ISSN"})
-    else:
-      journal_id = ET.SubElement(journal_id_list, "journal_id", {"type": source_identifier["identifier_type"]})
-    journal_id.text = source_identifier["identifier"]
+  if entry.get("source_identifier"):
+    for source_identifier in entry["source_identifier"]:
+      if source_identifier["identifier_type"] == "PISSN":
+        journal_id = ET.SubElement(journal_id_list, "journal_id", {"type": "ISSN"})
+      elif source_identifier["identifier_type"] == "EISSN":
+        journal_id = ET.SubElement(journal_id_list, "journal_id", {"type": "ISSN"})
+      else:
+        journal_id = ET.SubElement(journal_id_list, "journal_id", {"type": source_identifier["identifier_type"]})
+      journal_id.text = source_identifier["identifier"]
 
   title_list = ET.SubElement(content, "title_list")
   for t in entry["title"]:
@@ -166,14 +167,15 @@ def generate_jalc_xml(data_dir, output_dir, config):
     last_page = ET.SubElement(content, "last_page")
     last_page.text = entry["pageEnd"]
 
-  fund_list = ET.SubElement(content, "fund_list")
-  for funding_reference in entry["funding_reference"]:
-    fund = ET.SubElement(fund_list, "fund")
-    funder_name = ET.SubElement(fund, "funder_name")
-    funder_name.text = funding_reference["funder_name"][0].get("funder_name")
-    if funding_reference.get("funder_identifier"):
-      funder_identifier = ET.SubElement(fund, "funder_identifier", {"type": funding_reference.get("funder_identifier_type", "Other")})
-      funder_identifier.text = funding_reference["funder_identifier"]
+  if entry.get("funding_reference"):
+    fund_list = ET.SubElement(content, "fund_list")
+    for funding_reference in entry["funding_reference"]:
+      fund = ET.SubElement(fund_list, "fund")
+      funder_name = ET.SubElement(fund, "funder_name")
+      funder_name.text = funding_reference["funder_name"][0].get("funder_name")
+      if funding_reference.get("funder_identifier"):
+        funder_identifier = ET.SubElement(fund, "funder_identifier", {"type": funding_reference.get("funder_identifier_type", "Other")})
+        funder_identifier.text = funding_reference["funder_identifier"]
 
   # JaLC XMLを出力する
   with open(f"{output_dir}/{str(entry['id'])}/jalc.xml", "w") as file:
