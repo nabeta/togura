@@ -76,9 +76,26 @@
                   <dt class="col-sm-2">ORCID</dt>
                   <dd class="col-sm-10"><a href="{{ name_identifier.identifier }}">{{ name_identifier.identifier }}</a></dd>
                 {% else %}
-                <dt class="col-sm-2">{{ name_identifier.identifier_scheme }}</dt>
-                <dd class="col-sm-10">{{ name_identifier.identifier }}</dd>
+                  <dt class="col-sm-2">{{ name_identifier.identifier_scheme }}</dt>
+                  <dd class="col-sm-10">{{ name_identifier.identifier }}</dd>
                 {% endif %}
+              </dl>
+            {% endfor %}
+            {% for affiliation in creator.affiliation %}
+              <dl class="row">
+                <dt class="col-sm-2">作成者所属</dt>
+                <dd class="col-sm-10">
+                  <dl class="row">
+                    <dt class="col-sm-2">{{ affiliation.identifier_scheme }}</dt>
+                    <dd class="col-sm-10">{{ affiliation.identifier }}</dd>
+                  </dl>
+                  {% for affiliation_name in affiliation.affiliation_name %}
+                    <dl class="row">
+                      <dt class="col-sm-2">{{ affiliation_name.lang }}</dt>
+                      <dd class="col-sm-10">{{ affiliation_name.name }}</dd>
+                    </dl>
+                  {% endfor %}
+                </dd>
               </dl>
             {% endfor %}
           </dd>
@@ -104,6 +121,23 @@
                 <dt class="col-sm-2">{{ name_identifier.identifier_scheme }}</dt>
                 <dd class="col-sm-10">{{ name_identifier.identifier }}</dd>
                 {% endif %}
+              </dl>
+            {% endfor %}
+            {% for affiliation in contributor.affiliation %}
+              <dl class="row">
+                <dt class="col-sm-2">寄与者所属</dt>
+                <dd class="col-sm-10">
+                  <dl class="row">
+                    <dt class="col-sm-2">{{ affiliation.identifier_scheme }}</dt>
+                    <dd class="col-sm-10">{{ affiliation.identifier }}</dd>
+                  </dl>
+                  {% for affiliation_name in affiliation.affiliation_name %}
+                    <dl class="row">
+                      <dt class="col-sm-2">{{ affiliation_name.lang }}</dt>
+                      <dd class="col-sm-10">{{ affiliation_name.name }}</dd>
+                    </dl>
+                  {% endfor %}
+                </dd>
               </dl>
             {% endfor %}
           </dd>
