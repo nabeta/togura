@@ -401,7 +401,7 @@ def add_contributor(entry, root):
         elem_affiliation_identifier.text = affiliation["identifier"]
         for affiliation_name in affiliation["affiliation_name"]:
           elem_affiliation_name = ET.SubElement(elem_affiliation, ET.QName(ns["jpcoar"], "affiliationName"), {
-            "xml:lang": affiliation_name("lang", "unknown") or "unknown"
+            "xml:lang": affiliation_name.get("lang", "unknown") or "unknown"
           })
           elem_affiliation_name.text = affiliation_name["name"]
 
@@ -479,7 +479,7 @@ def add_file(entry, root):
           elem_file_date = ET.SubElement(elem_file, ET.QName(ns["datacite"], "date"), {
             "dateType": date.get("date_type", "unknown")
           })
-          elem_file_date.text = date["date"]
+          elem_file_date.text = str(date["date"])
 
 def add_directory_file(data_dir, entry, root, ns, base_url):
   """ファイルの情報をメタデータに追加する"""
