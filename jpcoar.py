@@ -219,7 +219,7 @@ def generate_xml(entry, ns, base_url):
 
   for title in entry["title"]:
     elem_title = ET.SubElement(root, ET.QName(ns["dc"], "title"), {
-      "xml:lang": title.get("lang", "unknown") or "unknown"
+      "xml:lang": title.get("lang", "und") or "und"
     })
     elem_title.text = title["title"]
 
@@ -236,7 +236,7 @@ def generate_xml(entry, ns, base_url):
   if entry.get("rights"):
     for rights in entry["rights"]:
       elem_rights = ET.SubElement(root, ET.QName(ns["dc"], "rights"), {
-        "xml:lang": rights.get("lang", "unknown") or "unknown",
+        "xml:lang": rights.get("lang", "und") or "und",
         ET.QName(ns["rdf"], "resource"): rights["rights"]
       })
       elem_rights.text = rights["rights"]
@@ -246,7 +246,7 @@ def generate_xml(entry, ns, base_url):
       elem_subject = ET.SubElement(root, ET.QName(ns["jpcoar"], "subject"), {
         "subjectScheme": subject.get("subject_scheme", "Other"),
         "subjectURI": subject.get("subject_uri", ""),
-        "xml:lang": subject.get("lang", "unknown") or "unknown"
+        "xml:lang": subject.get("lang", "und") or "und"
       })
       elem_subject.text = subject["subject"]
 
@@ -254,14 +254,14 @@ def generate_xml(entry, ns, base_url):
     for description in entry["description"]:
       elem_description = ET.SubElement(root, ET.QName(ns["datacite"], "description"), {
         "descriptionType": description["description_type"],
-        "xml:lang": description.get("lang", "unknown") or "unknown",
+        "xml:lang": description.get("lang", "und") or "und",
       })
       elem_description.text = description["description"]
 
   if entry.get("publisher"):
     for publisher in entry["publisher"]:
       elem_publisher = ET.SubElement(root, ET.QName(ns["dc"], "publisher"), {
-        "xml:lang": publisher.get("lang", "unknown") or "unknown"
+        "xml:lang": publisher.get("lang", "und") or "und"
       })
       elem_publisher.text = publisher["publisher"]
 
@@ -313,7 +313,7 @@ def generate_xml(entry, ns, base_url):
   if entry.get("source_title"):
     for source_title in entry["source_title"]:
       elem_source_title = ET.SubElement(root, ET.QName(ns["jpcoar"], "sourceTitle"), {
-        "xml:lang": source_title.get("lang", "unknown") or "unknown"
+        "xml:lang": source_title.get("lang", "und") or "und"
       })
       elem_source_title.text = source_title["source_title"]
 
@@ -357,7 +357,7 @@ def add_creator(entry, root):
     if creator.get("creator_name"):
       for creator_name in creator["creator_name"]:
         elem_creator_name = ET.SubElement(elem_creator, ET.QName(ns["jpcoar"], "creatorName"), {
-          "xml:lang": creator_name.get("lang", "unknown") or "unknown"
+          "xml:lang": creator_name.get("lang", "und") or "und"
         })
         elem_creator_name.text = creator_name["name"]
     if creator.get("affiliation"):
@@ -370,7 +370,7 @@ def add_creator(entry, root):
         elem_affiliation_identifier.text = affiliation["identifier"]
         for affiliation_name in affiliation["affiliation_name"]:
           elem_affiliation_name = ET.SubElement(elem_affiliation, ET.QName(ns["jpcoar"], "affiliationName"), {
-            "xml:lang": affiliation_name.get("lang", "unknown") or "unknown"
+            "xml:lang": affiliation_name.get("lang", "und") or "und"
           })
           elem_affiliation_name.text = affiliation_name["name"]
 
@@ -388,7 +388,7 @@ def add_contributor(entry, root):
     if contributor.get("contributor_name"):
       for contributor_name in contributor["contributor_name"]:
         elem_contributor_name = ET.SubElement(elem_contributor, ET.QName(ns["jpcoar"], "contributorName"), {
-          "xml:lang": contributor_name.get("lang", "unknown") or "unknown"
+          "xml:lang": contributor_name.get("lang", "und") or "und"
         })
         elem_contributor_name.text = contributor_name["name"]
     if contributor.get("affiliation"):
@@ -401,7 +401,7 @@ def add_contributor(entry, root):
         elem_affiliation_identifier.text = affiliation["identifier"]
         for affiliation_name in affiliation["affiliation_name"]:
           elem_affiliation_name = ET.SubElement(elem_affiliation, ET.QName(ns["jpcoar"], "affiliationName"), {
-            "xml:lang": affiliation_name.get("lang", "unknown") or "unknown"
+            "xml:lang": affiliation_name.get("lang", "und") or "und"
           })
           elem_affiliation_name.text = affiliation_name["name"]
 
@@ -427,14 +427,14 @@ def add_funding_reference(entry, root):
 
     for funder_name in funding_reference["funder_name"]:
       elem_funder_name = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "funderName"), {
-        "xml:lang": funder_name.get("lang", "unknown") or "unknown"
+        "xml:lang": funder_name.get("lang", "und") or "und"
       })
       elem_funder_name.text = funder_name["funder_name"]
 
     if funding_reference.get("funding_stream"):
       for funding_stream in funding_reference["funding_stream"]:
         elem_funding_stream = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "fundingStream"), {
-          "xml:lang": funding_stream.get("lang", "unknown") or "unknown"
+          "xml:lang": funding_stream.get("lang", "und") or "und"
         })
         elem_funding_stream.text = funding_stream["funding_stream"]
 
@@ -448,7 +448,7 @@ def add_funding_reference(entry, root):
     if funding_reference.get("award_title"):
       for award_title in funding_reference["award_title"]:
         elem_award_title = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "awardTitle"), {
-          "xml:lang": award_title.get("lang", "unknown") or "unknown"
+          "xml:lang": award_title.get("lang", "und") or "und"
         })
         elem_award_title.text = award_title["award_title"]
 
@@ -476,7 +476,7 @@ def add_file(entry, root):
       if file.get("date"):
         for date in file["date"]:
           elem_file_date = ET.SubElement(elem_file, ET.QName(ns["datacite"], "date"), {
-            "dateType": date.get("date_type", "unknown")
+            "dateType": date.get("date_type", "und")
           })
           elem_file_date.text = str(date["date"])
 
