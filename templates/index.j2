@@ -18,7 +18,9 @@
               {{ entry.id }}
               [{{ entry.type }}]
               {% for creator in entry.creator %}
-                {{ creator.creator_name[0].name }}
+                {% if creator["creator_name"]|length > 0 %}
+                  {{ creator.creator_name[0].name }}
+                {% endif %}
               {% endfor %}.
               {{ entry.title[0].title }}
             </a>

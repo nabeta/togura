@@ -31,8 +31,9 @@ def generate_ro_crate(data_dir, output_dir, root):
   # 作成者を追加
   if entry.get("creator"):
     for creator in entry["creator"]:
-      c = crate.add(Person(crate, properties = {
-           "name": creator["creator_name"][0]["name"]
+      if len(creator["creator_name"]) > 0:
+        c = crate.add(Person(crate, properties = {
+          "name": creator["creator_name"][0]["name"]
         }
       ))
 
