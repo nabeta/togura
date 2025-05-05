@@ -185,7 +185,7 @@ def generate_jalc_xml(data_dir, output_dir, config):
 
   title_list = ET.SubElement(content, "title_list")
   for t in entry["title"]:
-    titles = ET.SubElement(title_list, "titles", {"lang": t.get("lang", "unknown")})
+    titles = ET.SubElement(title_list, "titles", {"lang": t.get("lang", "und")})
     title = ET.SubElement(titles, "titles")
     title.text = t["title"]
 
@@ -193,7 +193,7 @@ def generate_jalc_xml(data_dir, output_dir, config):
   for i, c in enumerate(entry["creator"]):
     creator = ET.SubElement(creator_list, "creator", {"sequence": str(i)})
     for name in c["creator_name"]:
-      names = ET.SubElement(creator, "names", {"lang": name.get("lang", "")})
+      names = ET.SubElement(creator, "names", {"lang": name.get("lang", "und")})
       first_name = ET.SubElement(names, "first_name")
       first_name.text = name["name"]
     if c.get("name_identifier"):
