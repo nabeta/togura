@@ -100,12 +100,63 @@ def generate_jalc_xml(data_dir, output_dir, config):
   content_classification = ET.SubElement(head, "content_classification")
   classification = None
   match entry["type"]:
+    case "conference paper":
+      content_classification.text = "01"
+      classification = "article"
     case "departmental bulletin paper":
       content_classification.text = "01"
       classification = "article"
     case "journal article":
       content_classification.text = "01"
       classification = "article"
+    case "periodical":
+      content_classification.text = "01"
+      classification = "article"
+    case "review article":
+      content_classification.text = "01"
+      classification = "article"
+    case "data paper":
+      content_classification.text = "01"
+      classification = "article"
+    case "editorial":
+      content_classification.text = "01"
+      classification = "article"
+    case "article":
+      content_classification.text = "01"
+      classification = "article"
+    case "other":
+      content_classification.text = "01"
+      classification = "article"
+    case "newspaper":
+      content_classification.text = "01"
+      classification = "article"
+    case "software paper":
+      content_classification.text = "01"
+      classification = "article"
+    case "thesis":
+      content_classification.text = "02"
+      classification = ""
+    case "bachelor thesis":
+      content_classification.text = "02"
+      classification = ""
+    case "master thesis":
+      content_classification.text = "02"
+      classification = ""
+    case "doctoral thesis":
+      content_classification.text = "02"
+      classification = ""
+    case "learning material":
+      content_classification.text = "04"
+      classification = ""
+    case "learning object":
+      content_classification.text = "04"
+      classification = ""
+    case "dataset":
+      content_classification.text = "03"
+      classification = ""
+    case "software":
+      content_classification.text = "03"
+      classification = ""
     case _:
       return
 
