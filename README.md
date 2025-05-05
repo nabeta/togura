@@ -149,6 +149,14 @@
 
 使い方やエラーの対応でわからないことがある場合は、[Code4Lib JAPANのDiscord](https://wiki.code4lib.jp/#Code4Lib_JAPAN_Discord)でお知らせください。
 
+## 参考資料
+
+- [Hussein Suleman. Designing Repositories in Poor Countries, Open Repositories 2023, 2023.](https://doi.org/10.5281/zenodo.8111568)
+    - [Simple DL](https://github.com/slumou/simpledl)
+- [Super – Simple – Static – Sustainable: a low resource repository jam](https://or2024.openrepositories.org/program-registration/workshops-and-tutorials/w02/)
+- [阿達藍留, 山田俊幸, 大向一輝. DAKit: 低コストなデータ共有のための静的デジタルアーカイブジェネレータの提案, 情報知識学会誌, 2022, 32巻4号, p.406-409.](https://doi.org/10.2964/jsik_2022_035)
+    - [DAKit](https://github.com/utokyodh/dakit)
+
 ## 作者
 
 田辺浩介 ([@nabeta](https://github.com/nabeta))
