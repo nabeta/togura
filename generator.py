@@ -121,7 +121,7 @@ def generate_jalc_xml(data_dir, output_dir, config):
   doi.text = entry["identifier_registration"]["identifier"]
 
   url = ET.SubElement(content, "url")
-  url.text = f"{config()['base_url']}/{entry['id']}"
+  url.text = f"{config()['base_url']}/{entry['id']}.html"
 
   journal_id_list = ET.SubElement(content, "journal_id_list")
   for source_identifier in entry["source_identifier"]:
