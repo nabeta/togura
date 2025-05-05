@@ -353,7 +353,7 @@ def generate_xml(entry, ns, base_url):
     date_granted.text = str(entry["date_granted"])
 
   if entry.get("degree_grantor"):
-    degree_grantor = ET.SubElement(root, ET.QName(ns["dcndl"], "degreeGrantor"))
+    degree_grantor = ET.SubElement(root, ET.QName(ns["jpcoar"], "degreeGrantor"))
     for d in entry["degree_grantor"]:
       for i in d["name_identifier"]:
         name_identifier = ET.SubElement(degree_grantor, ET.QName(ns["jpcoar"], "nameIdentifier"), {
