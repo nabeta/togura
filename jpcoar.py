@@ -425,7 +425,6 @@ def add_funding_reference(entry, root):
       })
       elem_funder_identifier.text = funding_reference["funder_identifier"]
 
-    elem_funding_reference = ET.SubElement(root, ET.QName(ns["jpcoar"], "fundingReference"))
     for funder_name in funding_reference["funder_name"]:
       elem_funder_name = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "funderName"), {
         "xml:lang": funder_name.get("lang", "unknown") or "unknown"
