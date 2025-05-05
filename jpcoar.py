@@ -456,6 +456,18 @@ def add_file(entry, root):
         elem_file_mime_type = ET.SubElement(elem_file, ET.QName(ns["jpcoar"], "mimeType"))
         elem_file_mime_type.text = file["mime_type"]
 
+      if file.get("extent"):
+        for extent in file["extent"]:
+          elem_file_extent = ET.SubElement(elem_file, ET.QName(ns["jpcoar"], "extent"))
+          elem_file_extent.text = extent
+
+      if file.get("date"):
+        for date in file["date"]:
+          elem_file_date = ET.SubElement(elem_file, ET.QName(ns["datacite"], "date"), {
+            "dateType": date.get("date_type", "unknown")
+          })
+          elem_file_date.text = date["date"]
+
 def add_directory_file(data_dir, entry, root, ns, base_url):
   """ファイルの情報をメタデータに追加する"""
   for file in glob.glob(f"{data_dir}/*"):

@@ -26,7 +26,9 @@
             </a>
             {% if not entry.file is not defined %}
               {% if not entry.file[0].date is not defined %}
-                ({{ entry.file[0].date[0].date }})
+                {% if entry.file[0].date|length > 0 %}
+                  ({{ entry.file[0].date[0].date }})
+                {% endif %}
               {% endif %}
             {% endif %}
           </li>

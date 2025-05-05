@@ -29,6 +29,12 @@
               <dd class="col-sm-10">
                 <a href="{{ file.uri }}">{{ file.uri }}</a>
               </dd>
+              <dt class="col-sm-2">大きさ</dt>
+              <dd class="col-sm-10">
+                {% for extent in file.extent %}
+                  {{ extent }}
+                {% endfor %}
+              </dd>
               {% for date in file.date %}
                 <dt class="col-sm-2">{{ date.date_type }}</dt>
                 <dd class="col-sm-10">{{ date.date }}</dd>
