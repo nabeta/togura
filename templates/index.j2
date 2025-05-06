@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config.site_name }}</title>
+    <title>{{ site_name }}</title>
     <style>{% include "templates/style.css" %}</style>
     {% include "templates/head_custom.html" ignore missing %}
   </head>
   <body>
     <div class="container">
-      <h1>{{ config.site_name }}</h1>
+      <h1>{{ site_name }}</h1>
 
       <ul>
         {% for entry in entries %}

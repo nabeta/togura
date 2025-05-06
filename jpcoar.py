@@ -1,16 +1,8 @@
-#!/usr/bin/env python3
-import sys
 import os
 import glob
-import yaml
 import mimetypes
-import shutil
-import datetime
-from xml.dom import minidom
 import xml.etree.ElementTree as ET
 from urllib.parse import urlparse, urljoin
-import generator
-import resourcesync
 import logging
 
 logger = logging.getLogger(__name__)
@@ -223,7 +215,7 @@ def jpcoar_identifier_type(string):
     case _:
       return "URI"
 
-def generate_xml(entry, ns, base_url):
+def generate(entry, base_url):
   """JPCOARスキーマのXMLを作成する"""
   root = ET.Element(ET.QName(ns["jpcoar"], "jpcoar"))
   root.set(ET.QName(ns["xsi"], "schemaLocation"), "https://github.com/JPCOAR/schema/blob/master/2.0/ jpcoar_scm.xsd")
@@ -448,9 +440,9 @@ def add_contributor(entry, root):
           })
           elem_affiliation_name.text = affiliation_name["name"]
 
-def add_identifier(entry, root, prefix):
+def add_identifier(entry, root, base_url):
   elem_identifier = ET.SubElement(root, ET.QName(ns["jpcoar"], "identifier"), {"identifierType": "URI"})
-  elem_identifier.text = urljoin(config()["base_url"], f"{entry['id']}/ro-crate-metadata.html")
+  elem_identifier.text = urljoin(base_url, f"{entry['id']}/ro-crate-metadata.html")
 
   if entry.get("identifier"):
     for identifier in entry["identifier"]:
@@ -524,7 +516,7 @@ def add_file(entry, root):
           })
           elem_file_date.text = str(date["date"])
 
-def add_directory_file(data_dir, entry, root, ns, base_url):
+def add_directory_file(data_dir, entry, root, base_url):
   """ファイルの情報をメタデータに追加する"""
   for file in glob.glob(f"{data_dir}/*"):
     filename = os.path.basename(file)
@@ -553,25 +545,3 @@ def add_directory_file(data_dir, entry, root, ns, base_url):
       # elem_file_date = ET.SubElement(elem_file, ET.QName(ns["datacite"], "date"), {"dateType": date["date_type"]})
       # elem_file_date.text = str(date["date"])
     elem_mime_type.text = mimetypes.guess_type(file)[0]
-
-def config():
-  with open("config.yml", encoding = "utf-8") as file:
-    return yaml.load(file, Loader = yaml.Loader)
-
-def main():
-  data_dir = "./work"
-  output_dir = "./public"
-  base_url = config()["base_url"]
-
-  for path in glob.glob(f"{data_dir}/*"):
-    with open(f"{path}/jpcoar20.yaml", encoding = "utf-8") as file:
-      entry = yaml.load(file, Loader = yaml.Loader)
-      root = generate_xml(entry, ns, base_url)
-      add_directory_file(path, entry, root, ns, base_url)
-      generator.generate_ro_crate(path, output_dir, root)
-      generator.generate_jalc_xml(path, output_dir, config)
-  generator.generate_html(data_dir, output_dir, config)
-  resourcesync.generate_resourcesync(output_dir, base_url)
-
-if __name__ == "__main__":
-  main()

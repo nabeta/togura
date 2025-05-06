@@ -37,7 +37,7 @@ jobs:
           echo -e "site_name: JPCOAR大学機関リポジトリ\nbase_url: https://nabeta.github.io/jpcoar-schema-helper" > config.yml
           cp templates/bootstrap.html templates/head_custom.html
           rsync -a samples/ work/
-          python ./jpcoar.py
+          python ./togura.py
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

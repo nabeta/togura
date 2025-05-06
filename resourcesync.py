@@ -1,10 +1,9 @@
 import os
-import sys
 import datetime
 from resync import Resource, ResourceList, CapabilityList, SourceDescription
 from urllib.parse import urljoin
 
-def generate_resourcesync(output_dir, base_url):
+def generate(output_dir, base_url):
   rsd = SourceDescription()
   caps = CapabilityList()
   rl = ResourceList()
@@ -23,12 +22,12 @@ def generate_resourcesync(output_dir, base_url):
 
   caps.add_capability(rl, urljoin(base_url, "resourcelist.xml"))
 
-  with open(f"public/capabilitylist.xml", "w", encoding="utf-8") as file:
+  with open("public/capabilitylist.xml", "w", encoding="utf-8") as file:
     file.write(caps.as_xml())
 
-  with open(f"public/resourcelist.xml", "w", encoding="utf-8") as file:
+  with open("public/resourcelist.xml", "w", encoding="utf-8") as file:
     file.write(rl.as_xml())
 
   rsd.add_capability_list(urljoin(base_url, "capabilitylist.xml"))
-  with open(f"public/.well-known/resourcesync", "w", encoding="utf-8") as file:
+  with open("public/.well-known/resourcesync", "w", encoding="utf-8") as file:
     file.write(rsd.as_xml())
