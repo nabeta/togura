@@ -483,9 +483,10 @@ def add_funding_reference(entry, root):
 
     if funding_reference.get("award_number"):
       elem_award_number = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "awardNumber"), {
-        "awardURI": funding_reference["award_number"]["award_uri"],
         "awardNumberType": funding_reference["award_number"]["award_number_type"]
        })
+      if funding_reference["award_number"].get("award_uri"):
+        elem_award_number.set("awardURI", funding_reference["award_number"]["award_uri"])
       elem_award_number.text = funding_reference["award_number"]["award_number"]
 
     if funding_reference.get("award_title"):
