@@ -245,10 +245,11 @@ def generate_xml(entry, ns, base_url):
   if entry.get("subject"):
     for subject in entry["subject"]:
       elem_subject = ET.SubElement(root, ET.QName(ns["jpcoar"], "subject"), {
-        "subjectScheme": subject.get("subject_scheme", "Other"),
-        "subjectURI": subject.get("subject_uri", ""),
+        "subjectScheme": subject["subject_scheme"],
         "xml:lang": subject.get("lang", "und") or "und"
       })
+      if subject.get("subject_uri"):
+        elem_subject.set("subjectURI", subject["subject_uri"])
       elem_subject.text = subject["subject"]
 
   if entry.get("description"):
