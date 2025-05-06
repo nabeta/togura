@@ -98,7 +98,7 @@ def generate(data_dir, output_dir, base_url):
   doi.text = entry["identifier_registration"]["identifier"]
 
   url = ET.SubElement(content, "url")
-  url.text = urljoin(base_url, f"{entry['id']}/ro-crate-metadata.html")
+  url.text = urljoin(base_url, f"{entry['id']}/ro-crate-preview.html")
 
   if book_classification:
     book_c = ET.SubElement(content, "book_classification")
