@@ -1,18 +1,21 @@
 # Togura - 極めてシンプルな機関リポジトリ
 
-Togura（とぐら、[鳥座](https://ja.wiktionary.org/wiki/%E9%B3%A5%E5%BA%A7)）は、[JPCOARスキーマ](https://schema.irdb.nii.ac.jp/ja/schema) 2.0に対応した、極めてシンプルな機関リポジトリを構築するためのアプリケーションです。[ResourceSync](https://www.openarchives.org/rs/toc)によるメタデータのハーベストに対応しており、[IRDB](https://irdb.nii.ac.jp/)を通して、[CiNii Research](https://cir.nii.ac.jp/)でのメタデータの検索や[JaLC](https://japanlinkcenter.org/top/)によるDOIの付与が行えるようになっています。
+Togura（とぐら、[鳥座](https://ja.wiktionary.org/wiki/%E9%B3%A5%E5%BA%A7)）は、極めてシンプルな機関リポジトリを構築するためのアプリケーションです。
 
 動作例は https://nabeta.github.io/togura にあります。
 
 ## 特長
 
-Toguraによる論文や研究データの公開は、ローカル環境（手元のパソコン）でメタデータファイルやHTMLファイルを作成し、それらのファイルを論文や研究データのファイルといっしょにWebサーバにアップロードすることで行います。このため、以下のような特長を持っています。
+Toguraは[JPCOARスキーマ](https://schema.irdb.nii.ac.jp/ja/schema) 2.0のメタデータの記述、ならびに[ResourceSync](https://www.openarchives.org/rs/toc)によるメタデータのハーベストに対応しており、[IRDB](https://irdb.nii.ac.jp/)を通して、[CiNii Research](https://cir.nii.ac.jp/)でのメタデータの検索や[JaLC](https://japanlinkcenter.org/top/)によるDOIの付与が行えるようになっています。
 
-- Toguraでは直接JPCOARスキーマのメタデータを記述するため、[JAIRO Cloud](https://jpcoar.repo.nii.ac.jp/page/42)のメタデータマッピングの設定が不要になります。また、紀要や博士論文など、資料の種類ごとにメタデータの雛形を作っておき、それをコピーしてメタデータを記述することも可能になります。
-- 手元のパソコンで登録作業を行うことができるため、メンテナンスによって登録作業を行えなくなる期間が発生しません。
-- メタデータファイルをはじめ、登録に使用するファイルがすべて手元のパソコンに残るため、手元のパソコンのバックアップを取ることで、機関リポジトリ全体のバックアップが行えます。
+Toguraで構築する機関リポジトリでの論文や研究データの公開は、ローカル環境（手元のパソコン）でメタデータファイルやHTMLファイルを作成し、それらのファイルを論文や研究データのファイルといっしょにWebサーバにアップロードすることで行います。このため、以下のような特長を持っています。
+
+- Toguraでは直接JPCOARスキーマのメタデータを記述するため、[JAIRO Cloud](https://jpcoar.repo.nii.ac.jp/page/42)などでのメタデータマッピングの設定が不要になります。
+- Toguraはメタデータの簡易チェック機能を提供しており、JPCOARスキーマに適合しないメタデータを記述した場合でも容易に誤りに気づくことができます。
+- 手元のパソコンだけで登録作業を行うため、インターネットに接続されていない環境でも作業を行うことができます（インターネット接続は公開作業のときのみ必要）。メンテナンスによって登録作業を行えなくなる期間も発生しません。
+- メタデータファイルをはじめ、登録に使用するファイルがすべて手元のパソコンに残るため、手元のパソコンのバックアップを取ることで、機関リポジトリ全体のバックアップが行えます。データの復旧も、バックアップからファイルをコピーするだけで行えます。
 - 複数台のパソコンから接続できる共有フォルダがあれば、複数人で登録作業を行うことができます。
-- Toguraによって構築された機関リポジトリは静的ファイルだけで構成されるため、セキュリティの問題が発生する可能性は極めて低くなります。
+- Toguraによって構築された機関リポジトリは静的ファイルだけで構成されるため、Webサーバでのセキュリティの問題が発生する可能性は極めて低くなります。
 
 一方で、以下のような制限があります。
 
@@ -21,7 +24,7 @@ Toguraによる論文や研究データの公開は、ローカル環境（手�
 - IRDBによるハーベストに対応させる場合、Togura専用のホスト名を用意する必要があります。
     - ハーベスト可: `https://togura.example.ac.jp/`
     - ハーベスト不可: `https://www.example.ac.jp/togura/`
-- Toguraで扱うファイルは、一律で全体公開となります。IPアドレスやユーザ認証による限定公開機能はありません。
+- Toguraで扱うファイルは、一律で全体公開となります。ユーザ認証やアクセス元のIPアドレスによる限定公開機能はありません。
 - Toguraの画面のデザインを変更するには、HTMLテンプレートファイルを直接編集する必要があります。
 
 ## 使い方
@@ -62,7 +65,8 @@ Toguraによる論文や研究データの公開は、ローカル環境（手�
 ### 動作テスト
 
 1. Windowsのエクスプローラーなどで、Toguraを保存したフォルダを開きます。
-1. `config.example.yml`ファイルを同じフォルダに`config.yml`ファイルという名前でコピーします。
+1. `config.example.yml`ファイルを同じフォルダに`config.yml`という名前でコピーします。
+1. `templates`フォルダを開き、`bootstrap.html`ファイルを同じフォルダに`head_custom.html`という名前でコピーします。
 1. `samples`フォルダを開き、さらにその中にある`00_sample`フォルダを開きます。`article.pdf`ファイルと`dataset.txt`ファイル、ならびにメタデータファイル`jpcoar20.yaml`が保存されていることを確認します。
 1. 同様に`samples`フォルダと同じ場所に保存されている`public`フォルダを開き、`.well-known`というフォルダしかないことを確認します。
 1. VSCodeに戻ってターミナルを開き、以下のコマンドを実行します。
@@ -70,12 +74,11 @@ Toguraによる論文や研究データの公開は、ローカル環境（手�
     ./togura.py
     ```
 1. `public`フォルダの中に`1000`フォルダが作成され、その中に以下のファイルが作成されていることを確認します。
-
     - `article.pdf`
     - `dataset.txt`
+    - `ro-crate-preview.html`: メタデータを表示するためのHTMLファイル。[RO-Crate](https://www.researchobject.org/ro-crate/)の規格に則ったファイル名になっています
+    - `ro-crate-metadata.json`: RO-CrateのメタデータJSONファイル
     - `jpcoar20.xml`: JPCOARスキーマのXMLファイル
-    - `ro-crate-metadata.json`: [RO-Crate](https://www.researchobject.org/ro-crate/)のメタデータJSONファイル（ファイルの情報のみ）
-    - `ro-crate-preview.html`: RO-CrateのプレビューHTMLファイル
 1. 同様に、`public`フォルダの中にResourceSyncのXML`capabilitylist.xml`と`resourcelist.xml`が作成されていることを確認します。
 
 ### メタデータの書き方
@@ -108,9 +111,9 @@ VSCodeのターミナルで`togura.py`スクリプトを実行し、YAMLで作�
 - 登録一覧のHTMLファイル`index.html`
 - `id`の番号のついたフォルダ
     - 登録した論文ファイル・研究データファイル
+    - `ro-crate-preview.html`: メタデータを表示するためのHTMLファイル
+    - `ro-crate-metadata.json`: RO-CrateのメタデータJSONファイル
     - `jpcoar20.xml`: JPCOARスキーマのXMLファイル
-    - `ro-crate-metadata.json`: [RO-Crate](https://www.researchobject.org/ro-crate/)のメタデータJSONファイル（ファイルの情報のみ）
-    - `ro-crate-preview.html`: RO-CrateのプレビューHTMLファイル
 
 メタデータの編集は`work`フォルダの中のファイルのみを用いて行います。`public`フォルダの中に作成されたファイルは編集しないでください。編集しても、再度`togura.py`スクリプトを実行することで上書きされます。
 
@@ -120,9 +123,7 @@ VSCodeのターミナルで`togura.py`スクリプトを実行し、YAMLで作�
 
 ### バックアップ
 
-`work`フォルダと`public`フォルダをバックアップする必要があります。
-
-バックアップはフォルダをコピーするだけで行えます。外付けディスクなどにコピーしておいてください。
+バックアップは`togura`フォルダをコピーするだけで行えます。外付けディスクなどにコピーしておいてください。
 
 ### ツールの更新
 
@@ -139,11 +140,14 @@ VSCodeのターミナルで`togura.py`スクリプトを実行し、YAMLで作�
 
 ### フォルダの構成
 
+- `archive`: 作業済みのファイルを保存するフォルダ（未使用）
 - `public`: 公開用のファイルが出力されるフォルダ
+    - データを公開するには、このフォルダの中身をWebサーバにアップロードすること
     - このフォルダに保存されたファイルは編集しないこと
 - `samples`: メタデータのサンプルのフォルダ
-- `schema`: メタデータスキーマの定義ファイル
+- `schema`: メタデータスキーマの定義ファイル（開発者用）
 - `templates`: HTMLテンプレートファイル
+- `test`: テスト用スクリプトを保存するフォルダ（開発者用）
 - `work`: 作業用フォルダ
     - このフォルダに保存されたファイルを編集すること
 
@@ -163,9 +167,11 @@ VSCodeのターミナルで`togura.py`スクリプトを実行し、YAMLで作�
 
 ## TODO
 
+- `jpcoar20.yaml`での`id`の記述方法の簡略化
 - `jpcoar20.yaml`のプロパティ名を整理する
 - ResourceSyncの`changelist.xml`を作成できるようにする
 - RO-Crateで出力する項目を追加する
+- JaLC DOIの直接付与のサポート
 
 ## 使い方の質問
 
