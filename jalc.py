@@ -1,5 +1,6 @@
 import yaml
 import xml.etree.ElementTree as ET
+from urllib.parse import urlparse, urljoin
 from logging import getLogger, DEBUG
 
 logger = getLogger(__name__)
