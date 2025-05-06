@@ -236,9 +236,10 @@ def generate_xml(entry, ns, base_url):
   if entry.get("rights"):
     for rights in entry["rights"]:
       elem_rights = ET.SubElement(root, ET.QName(ns["dc"], "rights"), {
-        "xml:lang": rights.get("lang", "und") or "und",
-        ET.QName(ns["rdf"], "resource"): rights["rights"]
+        "xml:lang": rights.get("lang", "und") or "und"
       })
+      if rights.get("rights_uri"):
+        elem_rights.set(ET.QName(ns["rdf"], "resource"), rights["rights_uri"])
       elem_rights.text = rights["rights"]
 
   if entry.get("subject"):
