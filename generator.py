@@ -98,7 +98,7 @@ def generate_jalc_xml(data_dir, output_dir, config):
   result_method.text = "0"
 
   content_classification = ET.SubElement(head, "content_classification")
-  classification = None
+  classification = book_classification = None
   match entry["type"]:
     case "conference paper":
       content_classification.text = "01"
@@ -135,28 +135,24 @@ def generate_jalc_xml(data_dir, output_dir, config):
       classification = "article"
     case "thesis":
       content_classification.text = "02"
-      classification = ""
+      book_classification = "03"
     case "bachelor thesis":
       content_classification.text = "02"
-      classification = ""
+      book_classification = "03"
     case "master thesis":
       content_classification.text = "02"
-      classification = ""
+      book_classification = "03"
     case "doctoral thesis":
       content_classification.text = "02"
-      classification = ""
+      book_classification = "03"
     case "learning material":
       content_classification.text = "04"
-      classification = ""
     case "learning object":
       content_classification.text = "04"
-      classification = ""
     case "dataset":
       content_classification.text = "03"
-      classification = ""
     case "software":
       content_classification.text = "03"
-      classification = ""
     case _:
       return
 
@@ -164,7 +160,12 @@ def generate_jalc_xml(data_dir, output_dir, config):
   request_kind.text = "01"
 
   body = ET.SubElement(root, "body")
-  content = ET.SubElement(body, "content", {"classification": classification, "sequence": ""})
+  site_id = ET.SubElement(body, "site_id")
+  site_id.text = "dummy"
+
+  content = ET.SubElement(body, "content", {"sequence": "0"})
+  if classification:
+    content.set("classification", classification)
 
   doi = ET.SubElement(content, "doi")
   doi.text = entry["identifier_registration"]["identifier"]
@@ -172,28 +173,37 @@ def generate_jalc_xml(data_dir, output_dir, config):
   url = ET.SubElement(content, "url")
   url.text = f"{config()['base_url']}/{entry['id']}.html"
 
-  journal_id_list = ET.SubElement(content, "journal_id_list")
-  if entry.get("source_identifier"):
-    for source_identifier in entry["source_identifier"]:
-      if source_identifier["identifier_type"] == "PISSN":
-        journal_id = ET.SubElement(journal_id_list, "journal_id", {"type": "ISSN"})
-      elif source_identifier["identifier_type"] == "EISSN":
-        journal_id = ET.SubElement(journal_id_list, "journal_id", {"type": "ISSN"})
-      else:
-        journal_id = ET.SubElement(journal_id_list, "journal_id", {"type": source_identifier["identifier_type"]})
-      journal_id.text = source_identifier["identifier"]
+  if book_classification:
+    book_c = ET.SubElement(content, "book_classification")
+    book_c.text = book_classification
+
+  if classification == "01":
+    journal_id_list = ET.SubElement(content, "journal_id_list")
+    if entry.get("source_identifier"):
+      for source_identifier in entry["source_identifier"]:
+        if source_identifier["identifier_type"] == "PISSN":
+          journal_id = ET.SubElement(journal_id_list, "journal_id", {"type": "ISSN"})
+        elif source_identifier["identifier_type"] == "EISSN":
+          journal_id = ET.SubElement(journal_id_list, "journal_id", {"type": "ISSN"})
+        else:
+          journal_id = ET.SubElement(journal_id_list, "journal_id", {"type": source_identifier["identifier_type"]})
+        journal_id.text = source_identifier["identifier"]
 
   title_list = ET.SubElement(content, "title_list")
   for t in entry["title"]:
-    titles = ET.SubElement(title_list, "titles", {"lang": t.get("lang", "und")})
-    title = ET.SubElement(titles, "titles")
+    titles = ET.SubElement(title_list, "titles")
+    if t.get("lang"):
+      titles.set("lang", iso_639_1(t["lang"]))
+    title = ET.SubElement(titles, "title")
     title.text = t["title"]
 
   creator_list = ET.SubElement(content, "creator_list")
   for i, c in enumerate(entry["creator"]):
     creator = ET.SubElement(creator_list, "creator", {"sequence": str(i)})
     for name in c["creator_name"]:
-      names = ET.SubElement(creator, "names", {"lang": name.get("lang", "und")})
+      names = ET.SubElement(creator, "names")
+      if name.get("lang"):
+        names.set("lang", iso_639_1(name["lang"]))
       first_name = ET.SubElement(names, "first_name")
       first_name.text = name["name"]
     if c.get("name_identifier"):
@@ -201,6 +211,12 @@ def generate_jalc_xml(data_dir, output_dir, config):
       for identifier in c["name_identifier"]:
         id_code = ET.SubElement(researcher_id, "id_code", {"type": identifier.get("identifier_scheme", "")})
         id_code.text = identifier["identifier"]
+
+  if book_classification:
+    if entry.get("publisher"):
+      publisher = ET.SubElement(content, "publisher")
+      publisher_name = ET.SubElement(publisher, "publisher")
+      publisher_name.text = entry["publisher"][0]["publisher"]
 
   if entry.get("volume"):
     volume = ET.SubElement(content, "volume")
@@ -232,3 +248,12 @@ def generate_jalc_xml(data_dir, output_dir, config):
   with open(f"{output_dir}/{str(entry['id'])}/jalc.xml", "w") as file:
     ET.indent(root, space="\t", level=0)
     file.write(ET.tostring(root, encoding = "unicode", xml_declaration = True))
+
+def iso_639_1(lang):
+  if len(lang) > 2:
+    if not lang == "und":
+      return lang[:2]
+    else:
+      return "unk"
+  else:
+    return lang
