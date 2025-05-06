@@ -30,6 +30,17 @@ ns = {
 for key in ns.keys():
   ET.register_namespace(key, ns[key])
 
+def access_rights_uri(string):
+  match string:
+    case "embargoed access":
+      return "http://purl.org/coar/access_right/c_f1cf"
+    case "metadata only access":
+      return "http://purl.org/coar/access_right/c_14cb"
+    case "open access":
+      return "http://purl.org/coar/access_right/c_abf2"
+    case "restricted access":
+      return "http://purl.org/coar/access_right/c_16ec"
+
 def resource_type_uri(string):
   match string:
     case "conference paper":
@@ -231,6 +242,7 @@ def generate_xml(entry, ns, base_url):
 
   if entry.get("access_rights"):
     elem_access_rights = ET.SubElement(root, ET.QName(ns["dcterms"], "accessRights"))
+    elem_access_rights.set("rdf:resource", access_rights_uri(entry["access_rights"]))
     elem_access_rights.text = entry["access_rights"]
 
   if entry.get("rights"):
