@@ -1,5 +1,7 @@
 import yaml
 import xml.etree.ElementTree as ET
+import config
+from datetime import datetime
 from urllib.parse import urlparse, urljoin
 from logging import getLogger, DEBUG
 
@@ -88,7 +90,7 @@ def generate(data_dir, output_dir, base_url):
 
   body = ET.SubElement(root, "body")
   site_id = ET.SubElement(body, "site_id")
-  site_id.text = "dummy"
+  site_id.text = config.jalc_site_id()
 
   content = ET.SubElement(body, "content", {"sequence": "0"})
   if classification:
@@ -139,11 +141,36 @@ def generate(data_dir, output_dir, base_url):
         id_code = ET.SubElement(researcher_id, "id_code", {"type": identifier.get("identifier_scheme", "")})
         id_code.text = identifier["identifier"]
 
+  if entry.get("date"):
+    pub_date = None
+    date_granted = entry.get("date_granted")
+
+    for date in entry["date"]:
+      if date["date_type"] == "Issued":
+        pub_date = date["date"]
+      elif date_granted:
+        pub_date = date_granted
+      elif date["date_type"] == "Created":
+        pub_date = date["date"]
+      elif date["date_type"] == "Updated":
+        pub_date = date["date"]
+
+    if pub_date:
+      publication_date = ET.SubElement(content, "publication_date")
+      year = ET.SubElement(publication_date, "year")
+      year.text = str(pub_date.year).zfill(4)
+      month = ET.SubElement(publication_date, "month")
+      month.text = str(pub_date.month).zfill(2)
+      day = ET.SubElement(publication_date, "day")
+      day.text = str(pub_date.day).zfill(2)
+
   if book_classification:
+    publisher = ET.SubElement(content, "publisher")
+    publisher_name = ET.SubElement(publisher, "publisher_name")
     if entry.get("publisher"):
-      publisher = ET.SubElement(content, "publisher")
-      publisher_name = ET.SubElement(publisher, "publisher")
       publisher_name.text = entry["publisher"][0]["publisher"]
+    else:
+      publisher_name.text = config.organization()
 
   if entry.get("volume"):
     volume = ET.SubElement(content, "volume")
