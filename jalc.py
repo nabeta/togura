@@ -206,6 +206,10 @@ def generate(data_dir, output_dir, base_url):
           case _:
             funder_identifier.set("type", funding_reference["funder_identifier_type"])
         funder_identifier.text = funding_reference["funder_identifier"]
+      if funding_reference["award_number"]:
+        award_number_group = ET.SubElement(fund, "award_number_group")
+        award_number = ET.SubElement(award_number_group, "award_number")
+        award_number.text = funding_reference["award_number"]["award_number"]
 
   # JaLC XMLを出力する
   with open(f"{output_dir}/{str(entry['id'])}/jalc.xml", "w") as file:
