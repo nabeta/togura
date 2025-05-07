@@ -106,7 +106,7 @@ def generate(data_dir, output_dir, base_url):
     book_c = ET.SubElement(content, "book_classification")
     book_c.text = book_classification
 
-  if classification == "01":
+  if classification == "article":
     journal_id_list = ET.SubElement(content, "journal_id_list")
     if entry.get("source_identifier"):
       for source_identifier in entry["source_identifier"]:
@@ -164,6 +164,10 @@ def generate(data_dir, output_dir, base_url):
       day = ET.SubElement(publication_date, "day")
       day.text = str(pub_date.day).zfill(2)
 
+    if classification == "article":
+      elem_date = ET.SubElement(content, "date")
+      elem_date.text = pub_date.strftime("%Y%m%d")
+
   if book_classification:
     publisher = ET.SubElement(content, "publisher")
     publisher_name = ET.SubElement(publisher, "publisher_name")
@@ -180,13 +184,13 @@ def generate(data_dir, output_dir, base_url):
     issue = ET.SubElement(content, "issue")
     issue.text = entry["issue"]
 
-  if entry.get("pageStart"):
+  if entry.get("page_start"):
     first_page = ET.SubElement(content, "first_page")
-    first_page.text = entry["pageStart"]
+    first_page.text = entry["page_start"]
 
-  if entry.get("pageEnd"):
+  if entry.get("page_end"):
     last_page = ET.SubElement(content, "last_page")
-    last_page.text = entry["pageEnd"]
+    last_page.text = entry["page_end"]
 
   if entry.get("funding_reference"):
     fund_list = ET.SubElement(content, "fund_list")
@@ -195,7 +199,12 @@ def generate(data_dir, output_dir, base_url):
       funder_name = ET.SubElement(fund, "funder_name")
       funder_name.text = funding_reference["funder_name"][0].get("funder_name")
       if funding_reference.get("funder_identifier"):
-        funder_identifier = ET.SubElement(fund, "funder_identifier", {"type": funding_reference.get("funder_identifier_type", "Other")})
+        funder_identifier = ET.SubElement(fund, "funder_identifier")
+        match funding_reference["funder_identifier_type"]:
+          case "e-Rad_funder":
+            funder_identifier.set("type", "Other")
+          case _:
+            funder_identifier.set("type", funding_reference["funder_identifier_type"])
         funder_identifier.text = funding_reference["funder_identifier"]
 
   # JaLC XMLを出力する
