@@ -10,3 +10,9 @@ def base_url():
 def site_name():
   return config("config.yml")["site_name"]
 
+def organization():
+  return config("config.yml")["organization"]
+
+def jalc_site_id():
+  return config("config.yml")["jalc_site_id"]
+
