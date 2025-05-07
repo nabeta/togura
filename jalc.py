@@ -168,7 +168,7 @@ def generate(data_dir, output_dir, base_url):
       elem_date = ET.SubElement(content, "date")
       elem_date.text = pub_date.strftime("%Y%m%d")
 
-  if book_classification:
+  if content_classification.text in ["02", "03"]:
     publisher = ET.SubElement(content, "publisher")
     publisher_name = ET.SubElement(publisher, "publisher_name")
     if entry.get("publisher"):
