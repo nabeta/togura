@@ -308,6 +308,11 @@ def generate(entry, base_url):
       elem_related_identifier = ET.SubElement(elem_relation, ET.QName(ns["jpcoar"], "relatedIdentifier"), {"identifierType": relation["related_identifier"]["identifier_type"]})
       elem_related_identifier.text = relation["related_identifier"]["identifier"]
 
+  if entry.get("temporal"):
+    for temporal in entry["temporal"]:
+      elem_temporal = ET.SubElement(root, ET.QName(ns["dcterms"], "temporal"))
+      elem_temporal.text = temporal["temporal"]
+
   if entry.get("funding_reference"):
     add_funding_reference(entry, root)
 
