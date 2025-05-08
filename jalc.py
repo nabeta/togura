@@ -135,11 +135,57 @@ def generate(data_dir, output_dir, base_url):
         names.set("lang", iso_639_1(name["lang"]))
       first_name = ET.SubElement(names, "first_name")
       first_name.text = name["name"]
+
+    if c.get("affiliation"):
+      affiliations = ET.SubElement(creator, "affiliations")
+      for i, affiliation in enumerate(c["affiliation"]):
+        elem_affiliation = ET.SubElement(affiliations, "affiliation", {"sequence": str(i)})
+        for affiliation_name in affiliation["affiliation_name"]:
+          elem_affiliation_name = ET.SubElement(elem_affiliation, "affiliation_name")
+          elem_affiliation_name.text = affiliation_name["name"]
+          if affiliation_name.get("lang"):
+            elem_affiliation_name.set("lang", iso_639_1(affiliation_name["lang"]))
+        elem_affiliation_identifier = ET.SubElement(elem_affiliation, "affiliation_identifier")
+        elem_affiliation_identifier.set("type", affiliation["identifier_scheme"])
+        elem_affiliation_identifier.text = affiliation["identifier"]
+
     if c.get("name_identifier"):
       researcher_id = ET.SubElement(creator, "researcher_id")
       for identifier in c["name_identifier"]:
         id_code = ET.SubElement(researcher_id, "id_code", {"type": identifier.get("identifier_scheme", "")})
         id_code.text = identifier["identifier"]
+
+  if entry.get("contributor") and content_classification.text == "03":
+    contributor_list = ET.SubElement(content, "contributor_list")
+    for i, c in enumerate(entry["contributor"]):
+      contributor = ET.SubElement(contributor_list, "contributor", {"sequence": str(i)})
+      if c.get("contributor_type"):
+        contributor.set("contributor_type", c["contributor_type"])
+      for name in c["contributor_name"]:
+        names = ET.SubElement(contributor, "names")
+        if name.get("lang"):
+          names.set("lang", iso_639_1(name["lang"]))
+        first_name = ET.SubElement(names, "first_name")
+        first_name.text = name["name"]
+
+      if c.get("affiliation"):
+        affiliations = ET.SubElement(contributor, "affiliations")
+        for i, affiliation in enumerate(c["affiliation"]):
+          elem_affiliation = ET.SubElement(affiliations, "affiliation", {"sequence": str(i)})
+          for affiliation_name in affiliation["affiliation_name"]:
+            elem_affiliation_name = ET.SubElement(elem_affiliation, "affiliation_name")
+            elem_affiliation_name.text = affiliation_name["name"]
+            if affiliation_name.get("lang"):
+              elem_affiliation_name.set("lang", iso_639_1(affiliation_name["lang"]))
+          elem_affiliation_identifier = ET.SubElement(elem_affiliation, "affiliation_identifier")
+          elem_affiliation_identifier.set("type", affiliation["identifier_scheme"])
+          elem_affiliation_identifier.text = affiliation["identifier"]
+
+      if c.get("name_identifier"):
+        researcher_id = ET.SubElement(contributor, "researcher_id")
+        for identifier in c["name_identifier"]:
+          id_code = ET.SubElement(researcher_id, "id_code", {"type": identifier.get("identifier_scheme", "")})
+          id_code.text = identifier["identifier"]
 
   if entry.get("date"):
     pub_date = None
@@ -167,6 +213,21 @@ def generate(data_dir, output_dir, base_url):
     if classification == "article":
       elem_date = ET.SubElement(content, "date")
       elem_date.text = pub_date.strftime("%Y%m%d")
+
+  if entry.get("date") and content_classification.text == "03":
+    date_list = ET.SubElement(content, "date_list")
+    for date in entry["date"]:
+      elem_date = ET.SubElement(date_list, "date")
+      elem_date.set("type", date["date_type"])
+      elem_date.text = str(date["date"])
+
+  if entry.get("relation"):
+    relation_list = ET.SubElement(content, "relation_list")
+    for relation in entry["relation"]:
+      related_content = ET.SubElement(relation_list, "related_content")
+      related_content.set("type", relation["related_identifier"]["identifier_type"])
+      related_content.set("relation", relation["relation_type"])
+      related_content.text = relation["related_identifier"]["identifier"]
 
   if content_classification.text in ["02", "03"]:
     publisher = ET.SubElement(content, "publisher")
