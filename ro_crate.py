@@ -1,8 +1,9 @@
 import os
 import glob
-import yaml
-import xml.etree.ElementTree as ET
+import mimetypes
 import tempfile
+import xml.etree.ElementTree as ET
+import yaml
 from rocrate.rocrate import ROCrate
 from rocrate.model.person import Person
 from logging import getLogger, DEBUG
@@ -26,7 +27,10 @@ def generate(data_dir, output_dir, root):
     if filename == "jpcoar20.yaml":
       continue
 
-    crate.add_file(file)
+    crate.add_file(file, properties = {
+      "contentSize": str(os.path.getsize(file)),
+      "encodingFormat": mimetypes.guess_type(file)[0]
+    })
 
   # 作成者を追加
   if entry.get("creator"):
@@ -43,7 +47,10 @@ def generate(data_dir, output_dir, root):
       ET.indent(root, space="\t", level=0)
       xml_file.write(ET.tostring(root, encoding = "unicode", xml_declaration = True))
       xml_file.seek(0)
-      crate.add_file(xml_file.name, dest_path = "jpcoar20.xml")
+      crate.add_file(xml_file.name, dest_path = "jpcoar20.xml", properties = {
+        "contentSize": str(os.path.getsize(xml_file.name)),
+        "encodingFormat": "application/xml"
+      })
 
     # ディレクトリを出力
     crate_dir = f"public/{entry_id}"
