@@ -16,6 +16,8 @@ def generate(output_dir, base_url):
       continue
     if data_dir == ".well-known":
       continue
+    if data_dir == "images":
+      continue
 
     file = f"{data_dir}/jpcoar20.xml"
     rl.add(Resource(urljoin(base_url, file), lastmod = datetime.datetime.fromtimestamp(os.path.getmtime(f"public/{file}"), datetime.timezone.utc).isoformat()))

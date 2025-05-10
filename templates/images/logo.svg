@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="65.25mm"
+   height="65.25mm"
+   viewBox="0 0 2610 2610"
+   version="1.1"
+   id="svg5"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:jsh="http://www.justsystem.co.jp/hanako13/svg">
+  <defs
+     id="defs1" />
+  <g
+     visibility="hidden"
+     jsh:type="region"
+     id="g2"
+     transform="translate(4.9999999,5)">
+    <rect
+       fill="none"
+       stroke="#444444"
+       stroke-width="10"
+       x="0"
+       y="0"
+       width="2600"
+       height="2600"
+       jsh:type="page"
+       id="rect1" />
+    <rect
+       fill="none"
+       stroke="#444444"
+       stroke-width="10"
+       stroke-dasharray="40, 40"
+       x="0"
+       y="0"
+       width="2600"
+       height="2600"
+       jsh:type="margin"
+       id="rect2" />
+  </g>
+  <g
+     id="Fig_0"
+     jsh:plane="A"
+     jsh:type="component"
+     jsh:subType="20"
+     jsh:x="69"
+     jsh:y="56"
+     jsh:width="2476"
+     jsh:height="2476"
+     jsh:cx="2582"
+     jsh:cy="2582"
+     jsh:rx="130"
+     jsh:ry="130"
+     transform="translate(4.9999999,5)">
+    <metadata
+       id="metadata2">
+      <jsh:extInfo
+         jsh:infoType="5"><![CDATA[BQA0AAEAAAAAAAAAAAAAAAAAAAAQJwAAECcAAHgAAAABAAAA8gEAAAAAAACB8BIAAAAAAA==]]></jsh:extInfo>
+    </metadata>
+    <g
+       id="Fig_0_0"
+       jsh:type="fill">
+      <path
+         fill="#ffffff"
+         fill-rule="evenodd"
+         fill-opacity="1"
+         d="m 224,91 c 0,0 2166,0 2166,0 66,0 120,54 120,120 0,0 0,2166 0,2166 0,66 -54,120 -120,120 0,0 -2166,0 -2166,0 -66,0 -120,-54 -120,-120 0,0 0,-2166 0,-2166 0,-66 54,-120 120,-120 z"
+         id="path2" />
+      <path
+         fill="none"
+         stroke="#000000"
+         stroke-width="47"
+         d="m 224,91 c 0,0 2166,0 2166,0 66,0 120,54 120,120 0,0 0,2166 0,2166 0,66 -54,120 -120,120 0,0 -2166,0 -2166,0 -66,0 -120,-54 -120,-120 0,0 0,-2166 0,-2166 0,-66 54,-120 120,-120 z"
+         id="Fig_0_0_0"
+         jsh:type="bezier" />
+    </g>
+  </g>
+  <g
+     id="Fig_1"
+     jsh:plane="A"
+     jsh:type="text"
+     jsh:x="214"
+     jsh:y="364"
+     jsh:width="2296"
+     jsh:height="2206"
+     transform="translate(4.9999999,5)">
+    <text
+       font-size="135px"
+       font-family="'ＭＳ 明朝', mincho"
+       jsh:wabunFont="ＭＳ 明朝"
+       jsh:oubunFont="Times New Roman"
+       jsh:lineAdjust="2"
+       jsh:lineSpace="62"
+       jsh:charSpace="0"
+       jsh:fontSize="135"
+       id="text3"><tspan
+         xml:space="preserve"
+         id="tspan3"><tspan
+           font-size="1044px"
+           fill="#000000"
+           stroke="none"
+           font-family="'Zen Maru Gothic'"
+           x="214 1258"
+           y="1392 1392"
+           jsh:fontSize="1044"
+           id="tspan2">鳥座</tspan></tspan></text>
+  </g>
+  <path
+     fill="none"
+     stroke="#000000"
+     stroke-width="23"
+     d="M 260,1672 H 2317"
+     id="Fig_2"
+     jsh:plane="A"
+     jsh:type="line" />
+  <g
+     id="Fig_3"
+     jsh:plane="A"
+     jsh:type="text"
+     jsh:x="565"
+     jsh:y="1666"
+     jsh:width="1480"
+     jsh:height="556"
+     transform="translate(4.9999999,5)">
+    <text
+       font-size="148px"
+       font-family="'ＭＳ 明朝', mincho"
+       jsh:wabunFont="ＭＳ 明朝"
+       jsh:oubunFont="Times New Roman"
+       jsh:lineAdjust="2"
+       jsh:lineSpace="56"
+       jsh:charSpace="0"
+       jsh:fontSize="148"
+       id="text5"><tspan
+         xml:space="preserve"
+         id="tspan5"><tspan
+           font-size="452px"
+           fill="#000000"
+           stroke="none"
+           font-family="Ubuntu"
+           x="565 821 1088 1349 1608 1782"
+           y="2100 2100 2100 2100 2100 2100"
+           jsh:fontSize="452"
+           id="tspan4">Togura</tspan></tspan></text>
+  </g>
+</svg>

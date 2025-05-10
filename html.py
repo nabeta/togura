@@ -1,7 +1,8 @@
-import os
-import glob
-import yaml
 import datetime
+import glob
+import os
+import shutil
+import yaml
 import config
 from jinja2 import Environment, FileSystemLoader
 from logging import getLogger, DEBUG
@@ -39,3 +40,6 @@ def generate(data_dir, output_dir, base_url):
   with open(f"{output_dir}/index.html", "w") as file:
     file.write(index_html)
     logger.debug("index.html")
+
+  # 画像ファイルをコピー
+  shutil.copytree("templates/images", f"{output_dir}/images", dirs_exist_ok = True)
