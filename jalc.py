@@ -1,3 +1,4 @@
+import os
 import yaml
 import xml.etree.ElementTree as ET
 import config
@@ -9,6 +10,8 @@ logger = getLogger(__name__)
 logger.setLevel(DEBUG)
 
 def generate(data_dir, output_dir, base_url):
+  entry_id = os.path.basename(data_dir).split("_")[0][:2]
+
   # メタデータYAMLファイルを開く
   with open(f"{data_dir}/jpcoar20.yaml", encoding = "utf-8") as file:
     entry = yaml.load(file, Loader = yaml.Loader)
@@ -100,7 +103,7 @@ def generate(data_dir, output_dir, base_url):
   doi.text = entry["identifier_registration"]["identifier"]
 
   url = ET.SubElement(content, "url")
-  url.text = urljoin(base_url, f"{entry['id']}/ro-crate-preview.html")
+  url.text = urljoin(base_url, f"{entry_id}/ro-crate-preview.html")
 
   if book_classification:
     book_c = ET.SubElement(content, "book_classification")
@@ -273,7 +276,7 @@ def generate(data_dir, output_dir, base_url):
         award_number.text = funding_reference["award_number"]["award_number"]
 
   # JaLC XMLを出力する
-  with open(f"{output_dir}/{str(entry['id'])}/jalc.xml", "w") as file:
+  with open(f"{output_dir}/{str(entry_id)}/jalc.xml", "w") as file:
     ET.indent(root, space="\t", level=0)
     file.write(ET.tostring(root, encoding = "unicode", xml_declaration = True))
 

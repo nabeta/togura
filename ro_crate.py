@@ -12,6 +12,8 @@ logger.setLevel(DEBUG)
 
 def generate(data_dir, output_dir, root):
   """RO-Crateのディレクトリを出力する"""
+  entry_id = os.path.basename(data_dir).split("_")[0][:2]
+
   with open(f"{data_dir}/jpcoar20.yaml", encoding = "utf-8") as file:
     entry = yaml.load(file, Loader = yaml.Loader)
 
@@ -44,5 +46,5 @@ def generate(data_dir, output_dir, root):
       crate.add_file(xml_file.name, dest_path = "jpcoar20.xml")
 
     # ディレクトリを出力
-    crate_dir = f"{output_dir}/{str(entry['id'])}"
+    crate_dir = f"public/{entry_id}"
     crate.write(crate_dir)

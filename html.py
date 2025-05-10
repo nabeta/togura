@@ -26,12 +26,13 @@ def generate(data_dir, output_dir, base_url):
 
     with open(f"{path}/jpcoar20.yaml", encoding = "utf-8") as file:
       entry = yaml.load(file, Loader = yaml.Loader)
+      entry_id = os.path.basename(path).split("_")[0][:2]
       entries.append(entry)
-      with open(f"{output_dir}/{str(entry['id'])}/ro-crate-preview.html", "w") as file:
+      with open(f"{output_dir}/{entry_id}/ro-crate-preview.html", "w") as file:
         template_show.globals['now'] = datetime.datetime.now(datetime.UTC)
         show_html = template_show.render(entry = entry, files = files, base_url = config.base_url(), site_name = config.site_name())
         file.write(show_html)
-        logger.debug(f"{str(entry['id'])}.html")
+        logger.debug(f"{entry_id}.html")
 
   template_index.globals['now'] = datetime.datetime.now(datetime.UTC)
   index_html = template_index.render(entries = entries, site_name = config.site_name())
