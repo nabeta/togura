@@ -68,12 +68,13 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
 1. `config.example.yml`ファイルを同じフォルダに`config.yml`という名前でコピーします。
 1. `templates`フォルダを開き、`bootstrap.html`ファイルを同じフォルダに`head_custom.html`という名前でコピーします。
 1. `samples`フォルダを開き、さらにその中にある`00_sample`フォルダを開きます。`article.pdf`ファイルと`dataset.txt`ファイル、ならびにメタデータファイル`jpcoar20.yaml`が保存されていることを確認します。
-1. 同様に`samples`フォルダと同じ場所に保存されている`public`フォルダを開き、`.well-known`というフォルダしかないことを確認します。
+1. 同様に、`samples`フォルダと同じ場所に`work`フォルダと`public`フォルダが存在することを確認します。
+1. `00_sample`フォルダを`work`フォルダにコピーします。
 1. VSCodeに戻ってターミナルを開き、以下のコマンドを実行します。
     ```sh
     ./togura.py
     ```
-1. `public`フォルダの中に`1000`フォルダが作成され、その中に以下のファイルが作成されていることを確認します。
+1. `public`フォルダの中に`00`フォルダが作成され、その中に以下のファイルが作成されていることを確認します。
     - `article.pdf`
     - `dataset.txt`
     - `ro-crate-preview.html`: メタデータを表示するためのHTMLファイル。[RO-Crate](https://www.researchobject.org/ro-crate/)の規格に則ったファイル名になっています
