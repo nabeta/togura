@@ -6,9 +6,6 @@
    version="1.1"
    id="svg5"
    sodipodi:docname="Togura_logo.svg"
-   inkscape:export-filename="Togura_logo.png"
-   inkscape:export-xdpi="49.82682"
-   inkscape:export-ydpi="49.82682"
    inkscape:version="1.4 (86a8ad7, 2024-10-11)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -26,9 +23,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="1.38"
-     inkscape:cx="67.028986"
-     inkscape:cy="78.623188"
+     inkscape:zoom="2.76"
+     inkscape:cx="146.19565"
+     inkscape:cy="167.93478"
      inkscape:window-width="1920"
      inkscape:window-height="1111"
      inkscape:window-x="-9"
@@ -37,32 +34,6 @@
      inkscape:current-layer="svg5" />
   <defs
      id="defs1" />
-  <g
-     visibility="hidden"
-     jsh:type="region"
-     id="g2">
-    <rect
-       fill="none"
-       stroke="#444444"
-       stroke-width="10"
-       x="0"
-       y="0"
-       width="2600"
-       height="2600"
-       jsh:type="page"
-       id="rect1" />
-    <rect
-       fill="none"
-       stroke="#444444"
-       stroke-width="10"
-       stroke-dasharray="40, 40"
-       x="0"
-       y="0"
-       width="2600"
-       height="2600"
-       jsh:type="margin"
-       id="rect2" />
-  </g>
   <g
      id="Fig_0"
      jsh:plane="A"
