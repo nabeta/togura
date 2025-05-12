@@ -4,7 +4,6 @@ title: "JPCOARスキーマ2.0のJSON Schema（非公式）"
 type: object
 additionalProperties: false
 required:
-  - id
   - title
   - type
 properties:
