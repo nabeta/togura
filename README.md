@@ -70,7 +70,7 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
 1. `00_sample`フォルダを`work`フォルダにコピーします。
 1. VSCodeに戻ってターミナルを開き、以下のコマンドを実行します。
     ```sh
-    ./togura.py
+    python3 -X utf8 togura.pypython3 -X utf8 togura.py
     ```
 1. `public`フォルダの中に`00`フォルダが作成され、その中に以下のファイルが作成されていることを確認します。
     - `article.pdf`
@@ -106,7 +106,7 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
 
 VSCodeのターミナルで`togura.py`スクリプトを実行し、YAMLで作成したメタデータファイルをJPCOARスキーマのXMLファイルに変換します。
 ```sh
-./togura.py
+python3 -X utf8 togura.pypython3 -X utf8 togura.py
 ```
 スクリプトを実行すると、`public`フォルダの中に以下のファイルとフォルダが作成されます。
 
