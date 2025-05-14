@@ -39,7 +39,7 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
     - [Japanese Language Pack for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja)
     - [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
     - [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
-    画面右下に 「このリポジトリ 用のおすすめ拡張機能 をインストールしますか?」というメッセージが表示された場合、「インストール」を選んでください。ただし、この場合でも別途画面左側のウインドウでそれぞれの拡張機能に対して「インストール」ボタンを押す必要があります。
+        - 画面右下に 「このリポジトリ 用のおすすめ拡張機能 をインストールしますか?」というメッセージが表示された場合、「インストール」を選んでください。ただし、この場合でも別途画面左側のウインドウでそれぞれの拡張機能に対して「インストール」ボタンを押す必要があります。
 1. VSCodeの表示言語を切り替えます。画面上部のメニューから「表示」→「コマンド パレット」を選び、画面上部に表示されたウインドウに`display`と入力してEnterキーを押します。「日本語」を選び、メッセージに従ってVSCodeを再起動します。
 
 ### ツールの準備
