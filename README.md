@@ -62,10 +62,11 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
     ```sh
     pip install -r requirements.txt
     ```
+1. VSCodeの画面左側のファイル一覧から`config.yml`を開き、`site_name: 鳥座大学機関リポジトリ`と書かれている行のうち`鳥座大学機関リポジトリ`という文字列を、お好きな名前に変更します。
 
 ### 動作テスト
 
-1. Toguraを保存したフォルダを開きます。
+1. Windowsのエクスプローラーなどで、Toguraを保存したフォルダを開きます。
 1. `samples`フォルダを開き、さらにその中にある`00_sample`フォルダを開きます。`article.pdf`ファイルと`dataset.txt`ファイル、ならびにメタデータファイル`jpcoar20.yaml`が保存されていることを確認します。
 1. 同様に、`samples`フォルダと同じ場所に`work`フォルダと`public`フォルダが存在することを確認します。
 1. `00_sample`フォルダを`work`フォルダにコピーします。
@@ -79,14 +80,14 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
     - `ro-crate-preview.html`: メタデータを表示するためのHTMLファイル。[RO-Crate](https://www.researchobject.org/ro-crate/)の規格に則ったファイル名になっています
     - `ro-crate-metadata.json`: RO-CrateのメタデータJSONファイル
     - `jpcoar20.xml`: JPCOARスキーマのXMLファイル
-1. 同様に、`public`フォルダの中にResourceSyncのXML`capabilitylist.xml`と`resourcelist.xml`が作成されていることを確認します。
+1. 同様に、`public`フォルダの中にResourceSyncのXMLファイル`capabilitylist.xml`と`resourcelist.xml`が作成されていることを確認します。
 
 ### メタデータの書き方
 
 1. Windowsのエクスプローラーなどで、Toguraを保存したフォルダを開き、`work`フォルダの中に新しいフォルダを作成します。フォルダ名は以下の規則で作成する必要があります。
     - 1文字以上の半角数字で始まること
         - この数字がリポジトリの登録番号となり、公開する際のURLとして使用されます
-        - 登録番号重複していない番号を使用する必要がありますが、連番である必要はありません
+        - 登録番号は重複していない番号を使用する必要がありますが、連番である必要はありません
     - 数字の後ろに`_`（半角のアンダースコア）を含めること
     - `_`の後ろの文字は任意の文字列を入力可能
         - 資料名など、わかりやすいものであればなんでもかまいません
