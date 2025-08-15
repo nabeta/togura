@@ -218,7 +218,7 @@ def jpcoar_identifier_type(string):
 def generate(entry, base_url):
   """JPCOARスキーマのXMLを作成する"""
   root = ET.Element(ET.QName(ns["jpcoar"], "jpcoar"))
-  root.set(ET.QName(ns["xsi"], "schemaLocation"), "https://github.com/JPCOAR/schema/blob/master/2.0/ jpcoar_scm.xsd")
+  root.set(ET.QName(ns["xsi"], "schemaLocation"), "https://github.com/JPCOAR/schema/blob/master/2.0/jpcoar_scm.xsd")
 
   for title in entry["title"]:
     elem_title = ET.SubElement(root, ET.QName(ns["dc"], "title"), {
