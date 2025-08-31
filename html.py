@@ -37,14 +37,22 @@ def generate(data_dir, output_dir, base_url, per_page = 100):
         files.append(filename)
 
     with open(f"{path}/jpcoar20.yaml", encoding = "utf-8") as file:
-      print(path)
       entry = yaml.load(file, Loader = yaml.Loader)
+
+      # タイトルが空ならスキップ
+      if entry["title"] == []:
+        continue
+
       entry["id"] = os.path.basename(path).split("_")[0]
       entries.append(entry)
-      with open(f"{output_dir}/{entry['id']}/ro-crate-preview.html", "w") as file:
-        show_html = template_show.render(entry = entry, files = files, base_url = config.base_url(), site_name = config.site_name())
-        file.write(show_html)
-        logger.debug(f"{entry['id']}.html")
+      try:
+        with open(f"{output_dir}/{entry['id']}/ro-crate-preview.html", "w") as file:
+          show_html = template_show.render(entry = entry, files = files, base_url = config.base_url(), site_name = config.site_name())
+          file.write(show_html)
+          logger.debug(f"{entry['id']}.html")
+      except FileNotFoundError as e:
+        logger.error(f"metadata not found in {data_dir}")
+        continue
 
   indexes = list(chunked(entries, per_page))
   for i, index_entries in enumerate(indexes):

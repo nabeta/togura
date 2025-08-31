@@ -102,10 +102,15 @@ def generate():
       entry = yaml.load(file, Loader = yaml.Loader)
       entry["id"] = entry_id
 
-      root = jpcoar.generate(entry, base_url)
-      jpcoar.add_directory_file(path, entry, root, base_url)
-      ro_crate.generate(path, output_dir, root)
-      jalc.generate(path, output_dir, base_url)
+      try:
+        root = jpcoar.generate(entry, base_url)
+        jpcoar.add_directory_file(path, entry, root, base_url)
+        ro_crate.generate(path, output_dir, root)
+        jalc.generate(path, output_dir, base_url)
+      except KeyError as e:
+        logger.error(f"invalid metadata in {path}")
+        continue
+
   html.generate(data_dir, output_dir, base_url)
   resourcesync.generate(output_dir, base_url)
 

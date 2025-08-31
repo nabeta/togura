@@ -133,7 +133,7 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
     if record.xml.find(".//jpcoar:jpcoar/jpcoar:file", ns) is not None:
       files = []
       for file in record.xml.findall(".//jpcoar:jpcoar/jpcoar:file", ns):
-        uri = mime_type = extents = None
+        uri = label = mime_type = extents = None
         if file.find(".//jpcoar:URI", ns) is not None:
           uri = file.find(".//jpcoar:URI", ns).text
         if file.find(".//jpcoar:mimeType", ns) is not None:
