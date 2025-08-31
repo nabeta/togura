@@ -115,6 +115,15 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
           "identifier_type": source_identifier.get("identifierType")
         })
 
+    if record.xml.find(".//jpcoar:jpcoar/jpcoar:sourceTitle", ns) is not None:
+      source_titles = []
+      for source_title in record.xml.findall(".//jpcoar:jpcoar/jpcoar:sourceTitle", ns):
+        d = {"source_title": source_title.text}
+        lang = source_title.get("{http://www.w3.org/XML/1998/namespace}lang")
+        if lang is not None:
+          d["lang"] = lang
+        source_titles.append(d)
+
     volume = issue = page_start = page_end = None
 
     if record.xml.find(".//jpcoar:volume", ns) is not None:
@@ -157,10 +166,11 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
       "subject": subjects,
       "publisher": publishers,
       "date": dates,
+      "language": languages,
       "type": resource_type,
       "version": version,
-      "language": languages,
       "source_identifier": source_identifiers,
+      "source_title": source_titles,
       "volume": volume,
       "issue": issue,
       "page_start": page_start,
