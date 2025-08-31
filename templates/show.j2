@@ -29,11 +29,7 @@
               <dt class="col-sm-2">ファイル形式</dt>
               <dd class="col-sm-10">{{ file.mime_type }}</dd>
               <dt class="col-sm-2">URI</dt>
-              <dd class="col-sm-10">
-                {{ file.uri }}
-                <br />
-                <a href="./{{ file.uri|filename }}">ダウンロード</a>
-              </dd>
+              <dd class="col-sm-10"><a href="{{ file.uri }}">{{ file.uri }}</a></dd>
               <dt class="col-sm-2">大きさ</dt>
               <dd class="col-sm-10">
                 {% for extent in file.extent %}
@@ -44,6 +40,10 @@
                 <dt class="col-sm-2">{{ date.date_type }}</dt>
                 <dd class="col-sm-10">{{ date.date }}</dd>
               {% endfor %}
+            {% endfor %}
+            {% for file in files %}
+              <dt class="col-sm-2">URI</dt>
+              <dd class="col-sm-10"><a href="./{{ file }}">{{ base_url }}/{{ entry.id }}/{{ file }}</a></dd>
             {% endfor %}
           </dl>
         </dd>
