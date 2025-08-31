@@ -185,7 +185,7 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
       for file in files:
         if file['uri'] is not None:
           if urlparse(file['uri']).hostname == urlparse(base_url).hostname and urlparse(file['uri']).scheme == urlparse(base_url).scheme:
-            response = requests.get(file['uri'])
+            response = requests.get(file['uri'], allow_redirects=False)
             if response.status_code == requests.codes.ok:
               with open(f"{dir_name}/{file['uri'].split('/')[-1]}", "wb") as f:
                 f.write(response.content)
