@@ -13,7 +13,7 @@ logger.setLevel(DEBUG)
 
 def generate(data_dir, output_dir, root):
   """RO-Crateのディレクトリを出力する"""
-  entry_id = os.path.basename(data_dir).split("_")[0][:2]
+  entry_id = os.path.basename(data_dir).split("_")[0]
 
   with open(f"{data_dir}/jpcoar20.yaml", encoding = "utf-8") as file:
     entry = yaml.load(file, Loader = yaml.Loader)

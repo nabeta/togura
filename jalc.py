@@ -10,7 +10,7 @@ logger = getLogger(__name__)
 logger.setLevel(DEBUG)
 
 def generate(data_dir, output_dir, base_url):
-  entry_id = os.path.basename(data_dir).split("_")[0][:2]
+  entry_id = os.path.basename(data_dir).split("_")[0]
 
   # メタデータYAMLファイルを開く
   with open(f"{data_dir}/jpcoar20.yaml", encoding = "utf-8") as file:
