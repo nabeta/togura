@@ -175,7 +175,7 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
       title = "__title_is_blank__"
     else:
       # タイトルの改行コードを削除、先頭50文字のみを取得
-      title = re.sub(r'[<>:"/\\|?*]', '_', ' '.join(titles[0]['title'].splitlines())[:50])
+      title = re.sub(r'[<>:"/\\|?*]', '_', ' '.join(titles[0]['title'].splitlines())[:50]).strip()
 
     dir_name = f"./{export_dir}/{identifier}_{title}"
     os.makedirs(dir_name, exist_ok = True)
