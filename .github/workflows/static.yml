@@ -25,7 +25,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Python 3.13
         uses: actions/setup-python@v5
         with:
@@ -37,7 +37,7 @@ jobs:
           echo -e "site_name: 鳥座大学機関リポジトリ\nbase_url: https://nabeta.github.io/togura/\norganization: 鳥座大学\nlogo_filename: logo.png\njalc_site_id: dummy\n" > config.yml
           cp templates/bootstrap.html templates/head_custom.html
           rsync -a samples/ work/
-          python ./togura.py
+          python ./togura.py generate
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
