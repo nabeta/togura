@@ -124,7 +124,7 @@ python3 -X utf8 ./togura.py generate
     - `ro-crate-metadata.json`: RO-CrateのメタデータJSONファイル
     - `jpcoar20.xml`: JPCOARスキーマのXMLファイル
 
-メタデータの編集は`work`フォルダの中のファイルのみを用いて行います。`public`フォルダの中に作成されたファイルは編集しないでください。編集しても、再度`togura.py`スクリプトを実行することで上書きされます。
+メタデータの編集は`work`フォルダの中のファイルのみを用いて行います。`public`フォルダの中に作成されたファイルは編集しないでください。編集しても、再度`togura.py generate`コマンドを実行することで上書きされます。
 
 ### 他の機関リポジトリからの移行
 
