@@ -184,9 +184,13 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
       for file in files:
         if file['uri'] is not None:
           if urlparse(file['uri']).hostname == urlparse(base_url).hostname and urlparse(file['uri']).scheme == urlparse(base_url).scheme:
-            with open(f"{dir_name}/{file['uri'].split('/')[-1]}", "wb") as f:
-              f.write(requests.get(file['uri']).content)
-              logger.debug(f"downloaded {file['uri']}")
+            response = requests.get(file['uri'])
+            if response.requests.codes.ok:
+              with open(f"{dir_name}/{file['uri'].split('/')[-1]}", "wb") as f:
+                f.write(response.content)
+                logger.debug(f"downloaded {file['uri']}")
+            else:
+              logger.debug(f"skipped {file['uri']}")
 
     # メタデータの作成
     with open(f"{dir_name}/jpcoar20.yaml", "w") as file:
