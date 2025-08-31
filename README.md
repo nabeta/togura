@@ -204,6 +204,7 @@ python3 -X utf8 ./togura.py migrate --base-url https://another.repo.example.ac.j
 
 ## 参考資料
 
+- [Togura（とぐら、鳥座）: 超省力機関リポジトリ](https://doi.org/10.34477/0002000593)
 - [Hussein Suleman. Designing Repositories in Poor Countries, Open Repositories 2023, 2023.](https://doi.org/10.5281/zenodo.8111568)
     - [Simple DL](https://github.com/slumou/simpledl)
 - [Super – Simple – Static – Sustainable: a low resource repository jam](https://or2024.openrepositories.org/program-registration/workshops-and-tutorials/w02/) （Open Repositories 2024のワークショップ）

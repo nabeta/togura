@@ -1,5 +1,6 @@
 from sickle import Sickle
 from logging import getLogger, DEBUG
+from urllib.parse import urlparse
 import os
 import requests
 import xml.etree.ElementTree as ET
