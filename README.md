@@ -128,7 +128,7 @@ python3 -X utf8 ./togura.py generate
 
 ### 他の機関リポジトリからの移行
 
-JPCOARスキーマ1.0でのOAI-PMHの出力に対応している機関リポジトリに登録されている資料を、Toguraに移行することができます。移行には`togura.py migrate`コマンドを使用します。
+JPCOARスキーマ1.0でのOAI-PMHの出力に対応している機関リポジトリから、登録されている資料をToguraに移行することができます。移行には`togura.py migrate`コマンドを使用します。
 
 指定できる項目は以下のとおりです。
 
@@ -138,7 +138,7 @@ JPCOARスキーマ1.0でのOAI-PMHの出力に対応している機関リポジ�
 - `--metadata-prefix`: 取得するメタデータの種類です。指定しない場合、自動的に`jpcoar_1.0`が指定されたものとして動作します。
 - `--export-dir`（必須）: 取得した資料のメタデータと本文ファイルを保存するフォルダ（ディレクトリ）です。任意の名前のフォルダを指定できます。
 
-以下が実行例です。実際に実行するときには、`--base-url`などを適宜変更してください。
+以下がコマンドの実行例です。実際に実行するときには、`--base-url`などを適宜変更してください。また、このコマンドでは本文ファイルのダウンロードを行うため、実行に時間がかかることにご注意ください。
 
 ```sh
 python3 -X utf8 ./togura.py migrate --base-url https://another.repo.example.ac.jp/oai \
@@ -146,7 +146,7 @@ python3 -X utf8 ./togura.py migrate --base-url https://another.repo.example.ac.j
   --export-dir another
 ```
 
-実行が完了すると、`--export-dir`で指定したフォルダ（上記の例では`another`）の中に各資料のフォルダが作成され、その中に本文ファイルとメタデータ`jpcoar20.yaml`が保存されています。この各資料のフォルダを`work`フォルダに移動し、`togura.py generate`コマンドを実行すると、移行した資料がToguraに登録されます。
+コマンドの実行が完了すると、`--export-dir`で指定したフォルダ（上記の例では`another`）の中に各資料のフォルダが作成され、その中に本文ファイルとメタデータ`jpcoar20.yaml`が保存されています。この各資料のフォルダを`work`フォルダに移動し、`togura.py generate`コマンドを実行すると、移行した資料がToguraに登録されます。
 
 ### リポジトリ用ファイルの公開
 
