@@ -110,7 +110,7 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
 
 ### リポジトリ用ファイルの出力
 
-VSCodeのターミナルで`togura.py`スクリプトを実行し、YAMLで作成したメタデータファイルをJPCOARスキーマのXMLファイルに変換します。
+VSCodeのターミナルで`togura.py generate`コマンドを実行し、YAMLで作成したメタデータファイルをJPCOARスキーマのXMLファイルに変換します。
 ```sh
 python3 -X utf8 ./togura.py generate
 ```
@@ -124,6 +124,28 @@ python3 -X utf8 ./togura.py generate
     - `jpcoar20.xml`: JPCOARスキーマのXMLファイル
 
 メタデータの編集は`work`フォルダの中のファイルのみを用いて行います。`public`フォルダの中に作成されたファイルは編集しないでください。編集しても、再度`togura.py`スクリプトを実行することで上書きされます。
+
+### 他の機関リポジトリからの移行
+
+JPCOARスキーマ1.0でのOAI-PMHの出力に対応している機関リポジトリに登録されている資料を、Toguraに移行することができます。移行には`togura.py migrate`コマンドを使用します。
+
+指定できる項目は以下のとおりです。
+
+- `--base-url`（必須）: OAI-PMHのベースURLです。JAIRO Cloudの場合、各リポジトリのトップページのURLに`/oai`を追加したものになります。
+- `--date-from`: 移行対象の開始日です。この日よりも後に登録・更新された資料を移行します。
+- `--date-until`: 移行対象の終了日です。この日よりも前に登録・更新された資料を移行します。
+- `--metadata-prefix`: 取得するメタデータの種類です。指定しない場合、自動的に`jpcoar_1.0`が指定されたものとして動作します。
+- `--export-dir`（必須）: 取得した資料のメタデータと本文ファイルを保存するフォルダ（ディレクトリ）です。任意の名前のフォルダを指定できます。
+
+以下が実行例です。実際に実行するときには、`--base-url`などを適宜変更してください。
+
+```sh
+python3 -X utf8 ./togura.py migrate --base-url https://another.repo.example.ac.jp/oai \n
+--date-from 2025-08-01 --date-until 2025-08-31 --metadata-prefix jpcoar_1.0 \n
+--export-dir another
+```
+
+実行が完了すると、`--export-dir`で指定したフォルダの中に各資料のフォルダが作成され、その中に本文ファイルとメタデータ`jpcoar20.yaml`が保存されています。このフォルダを`work`フォルダに移動し、`togura.py generate`コマンドを実行すると、移行した資料がToguraに登録されます。
 
 ### リポジトリ用ファイルの公開
 
