@@ -140,9 +140,9 @@ JPCOARスキーマ1.0でのOAI-PMHの出力に対応している機関リポジ�
 以下が実行例です。実際に実行するときには、`--base-url`などを適宜変更してください。
 
 ```sh
-python3 -X utf8 ./togura.py migrate --base-url https://another.repo.example.ac.jp/oai \n
---date-from 2025-08-01 --date-until 2025-08-31 --metadata-prefix jpcoar_1.0 \n
---export-dir another
+python3 -X utf8 ./togura.py migrate --base-url https://another.repo.example.ac.jp/oai \
+  --date-from 2025-08-01 --date-until 2025-08-31 --metadata-prefix jpcoar_1.0 \
+  --export-dir another
 ```
 
 実行が完了すると、`--export-dir`で指定したフォルダの中に各資料のフォルダが作成され、その中に本文ファイルとメタデータ`jpcoar20.yaml`が保存されています。このフォルダを`work`フォルダに移動し、`togura.py generate`コマンドを実行すると、移行した資料がToguraに登録されます。
