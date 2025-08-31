@@ -146,7 +146,7 @@ python3 -X utf8 ./togura.py migrate --base-url https://another.repo.example.ac.j
   --export-dir another
 ```
 
-実行が完了すると、`--export-dir`で指定したフォルダの中に各資料のフォルダが作成され、その中に本文ファイルとメタデータ`jpcoar20.yaml`が保存されています。このフォルダを`work`フォルダに移動し、`togura.py generate`コマンドを実行すると、移行した資料がToguraに登録されます。
+実行が完了すると、`--export-dir`で指定したフォルダ（上記の例では`another`）の中に各資料のフォルダが作成され、その中に本文ファイルとメタデータ`jpcoar20.yaml`が保存されています。この各資料のフォルダを`work`フォルダに移動し、`togura.py generate`コマンドを実行すると、移行した資料がToguraに登録されます。
 
 ### リポジトリ用ファイルの公開
 
