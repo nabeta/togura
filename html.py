@@ -7,19 +7,24 @@ import config
 from jinja2 import Environment, FileSystemLoader
 from logging import getLogger, DEBUG
 from more_itertools import chunked
+from urllib.parse import urlparse
+
+def filename(url):
+  return os.path.basename(urlparse(url).path)
 
 logger = getLogger(__name__)
 logger.setLevel(DEBUG)
+env = Environment(loader=FileSystemLoader('./', encoding='utf8'))
+env.filters['filename'] = filename
+template_index = env.get_template('templates/index.j2')
+template_index_page = env.get_template('templates/index_page.j2')
+template_show = env.get_template('templates/show.j2')
+template_show.globals['now'] = datetime.datetime.now(datetime.UTC)
+template_index_page.globals['now'] = datetime.datetime.now(datetime.UTC)
+template_index.globals['now'] = datetime.datetime.now(datetime.UTC)
 
 def generate(data_dir, output_dir, base_url, per_page = 100):
   """HTMLを作成する"""
-  env = Environment(loader=FileSystemLoader('./', encoding='utf8'))
-  template_index = env.get_template('templates/index.j2')
-  template_index_page = env.get_template('templates/index_page.j2')
-  template_show = env.get_template('templates/show.j2')
-  template_show.globals['now'] = datetime.datetime.now(datetime.UTC)
-  template_index_page.globals['now'] = datetime.datetime.now(datetime.UTC)
-  template_index.globals['now'] = datetime.datetime.now(datetime.UTC)
 
   entries = []
   for path in sorted(glob.glob(f"{data_dir}/*"), key=os.path.basename, reverse=True):
