@@ -36,12 +36,8 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
 
 1. Pythonをインストールします。3.11以降のバージョンをインストールしてください。Windowsをお使いの場合、[Microsoft Store](https://apps.microsoft.com/search?query=python&hl=ja-JP&gl=JP)からインストールできます。
 1. [Visual Studio Code](https://code.visualstudio.com/)(VSCode)をインストールします。Windowsをお使いの場合、こちらも[Microsoft Store](https://apps.microsoft.com/detail/xp9khm4bk9fz7q?hl=ja-JP&gl=JP)からインストールできます。
-1. VSCodeを起動し、画面上部のメニューから「表示」→「拡張機能」を選びます。画面左側のウインドウに拡張機能の一覧が表示されるので、以下の3つに対してそれぞれ「インストール」ボタンを押します。
-    - [Japanese Language Pack for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja)
-    - [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
-    - [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
-        - 画面右下に 「このリポジトリ 用のおすすめ拡張機能 をインストールしますか?」というメッセージが表示された場合、「インストール」を選んでください。ただし、この場合でも別途画面左側のウインドウでそれぞれの拡張機能に対して「インストール」ボタンを押す必要があります。
-1. VSCodeの表示言語を切り替えます。画面上部のメニューから「表示」→「コマンド パレット」を選び、画面上部に表示されたウインドウに`display`と入力してEnterキーを押します。「日本語」を選び、メッセージに従ってVSCodeを再起動します。
+1. VSCodeを起動し、画面上部のメニューから「View」→「Extensions」を選択します。画面左側に拡張機能のウインドウが表示されるので、`Japanese Language Pack`と入力すると、検索結果に"[Japanese Language Pack for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja)"が表示されるので、"Install"ボタンを押します。
+1. 画面右下に「Change Language and Restart」というボタンが表示されるので、ボタンを押してVSCodeを再起動します。
 
 ### ツールの準備
 
@@ -52,6 +48,10 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
 1. Toguraのフォルダにある`templates`フォルダを開き、`bootstrap.html`ファイルを同じフォルダに`head_custom.html`という名前でコピーします。
 1. VSCodeを起動して、メニューから「ファイル」→「フォルダーを開く」を選び、展開したフォルダを選びます。フォルダの選択画面では、`togura-main`フォルダを選択（シングルクリック）した状態で「開く」ボタンを押してください。
 1. 「このフォルダー内のファイルの作成者を信頼しますか?」と尋ねられたら、「はい、作成者を信頼します」を選びます。
+1. 画面上部のメニューから「表示」→「拡張機能」を選びます。画面左側のウインドウに拡張機能の一覧が表示されるので、以下の2つに対してそれぞれ「インストール」ボタンを押します。
+    - [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
+    - [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
+        - 画面右下に 「このリポジトリ 用のおすすめ拡張機能 をインストールしますか?」というメッセージが表示された場合、「インストール」を選んでください。ただし、この場合でも別途画面左側のウインドウでそれぞれの拡張機能に対して「インストール」ボタンを押す必要があります。
 1. VSCodeのメニューで「ファイル」→「名前をつけてワークスペースを保存」を選び、そのまま「保存」を選びます。
 1. VSCodeの画面上部のメニューから「ターミナル」→「新しいターミナル」を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドを実行して、Pythonのvenv環境（仮想環境）をインストールします。
     ```sh
