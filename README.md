@@ -46,22 +46,25 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
 1. 展開したフォルダを、「ドキュメント」フォルダなどのわかりやすいフォルダに移動します。Windowsの圧縮フォルダ機能でzipファイルを展開した場合、`togura-main`フォルダの中にもうひとつ`togura-main`フォルダが作成されていますので、そのフォルダを移動してください。
 1. Windowsのエクスプローラーなどで、先ほど移動したToguraのフォルダを開き、`config.example.yml`ファイルを同じフォルダに`config.yml`という名前でコピーします。
 1. Toguraのフォルダにある`templates`フォルダを開き、`bootstrap.html`ファイルを同じフォルダに`head_custom.html`という名前でコピーします。
-1. VSCodeを起動して、メニューから「ファイル」→「フォルダーを開く」を選び、展開したフォルダを選びます。フォルダの選択画面では、`togura-main`フォルダを選択（シングルクリック）した状態で「開く」ボタンを押してください。
+1. VSCodeのメニューから「ファイル」→「フォルダーを開く」を選び、展開したフォルダを選びます。フォルダの選択画面では、`togura-main`フォルダを選択（シングルクリック）した状態で「開く」ボタンを押してください。
 1. 「このフォルダー内のファイルの作成者を信頼しますか?」と尋ねられたら、「はい、作成者を信頼します」を選びます。
 1. 画面上部のメニューから「表示」→「拡張機能」を選びます。画面左側のウインドウに拡張機能の一覧が表示されるので、以下の2つに対してそれぞれ「インストール」ボタンを押します。
     - [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
     - [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
         - 画面右下に 「このリポジトリ 用のおすすめ拡張機能 をインストールしますか?」というメッセージが表示された場合、「インストール」を選んでください。ただし、この場合でも別途画面左側のウインドウでそれぞれの拡張機能に対して「インストール」ボタンを押す必要があります。
 1. VSCodeのメニューで「ファイル」→「名前をつけてワークスペースを保存」を選び、そのまま「保存」を選びます。
-1. VSCodeの画面上部のメニューから「ターミナル」→「新しいターミナル」を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドを実行して、Pythonのvenv環境（仮想環境）をインストールします。
-    ```sh
-    python -m venv .venv
+1. VSCodeの画面上部のメニューから「ターミナル」→「新しいターミナル」を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドを実行して、[uvコマンドをインストール](https://docs.astral.sh/uv/getting-started/installation/)します。
     ```
-    画面右下に「新しい環境が作成されました。これをワークスペース フォルダーに選択しますか?」というメッセージが表示されたら、「はい」を選びます。
-1. いったんVScodeを終了し、再起動して、VSCodeの画面上部のメニューから「ターミナル」→「新しいターミナル」を選びます。
+    # Windowsの場合
+    powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+    # macOSやLinuxの場合
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    ```
 1. ターミナルで以下のコマンドを実行して、必要なPythonのモジュールをインストールします。
     ```sh
-    pip install -r requirements.txt
+    uv venv
+    uv pip install -r requirements.txt
     ```
 1. VSCodeの画面左側のファイル一覧から`config.yml`を開き、以下の行を変更します。
     - `site_name: 鳥座大学機関リポジトリ`と書かれている行のうち、`鳥座大学機関リポジトリ`という文字列を、お好きな名前に変更します。
@@ -76,7 +79,7 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
 1. `00_sample`フォルダを`work`フォルダにコピーします。
 1. VSCodeに戻ってターミナルを開き、以下のコマンドを実行します。
     ```sh
-    python -X utf8 ./togura.py generate
+    uv run python -X utf8 ./togura.py generate
     ```
 1. `public`フォルダの中に`00`フォルダが作成され、その中に以下のファイルが作成されていることを確認します。
     - `article.pdf`
@@ -113,7 +116,7 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
 
 VSCodeのターミナルで`togura.py generate`コマンドを実行し、YAMLで作成したメタデータファイルをJPCOARスキーマのXMLファイルに変換します。
 ```sh
-python -X utf8 ./togura.py generate
+uv run python -X utf8 ./togura.py generate
 ```
 スクリプトを実行すると、`public`フォルダの中に以下のファイルとフォルダが作成されます。
 
@@ -141,7 +144,7 @@ JPCOARスキーマ1.0でのOAI-PMHの出力に対応している機関リポジ�
 以下がコマンドの実行例です。実際に実行するときには、`--base-url`などを適宜変更してください。また、このコマンドでは本文ファイルのダウンロードを行うため、実行に時間がかかることにご注意ください。
 
 ```sh
-python -X utf8 ./togura.py migrate --base-url https://another.repo.example.ac.jp/oai --date-from 2025-08-01 --date-until 2025-08-31 --metadata-prefix jpcoar_1.0 --export-dir another
+uv run python -X utf8 ./togura.py migrate --base-url https://another.repo.example.ac.jp/oai --date-from 2025-08-01 --date-until 2025-08-31 --metadata-prefix jpcoar_1.0 --export-dir another
 ```
 
 コマンドの実行が完了すると、`--export-dir`で指定したフォルダ（上記の例では`another`）の中に各資料のフォルダが作成され、その中に本文ファイルとメタデータ`jpcoar20.yaml`が保存されています。この各資料のフォルダを`work`フォルダに移動し、`togura.py generate`コマンドを実行すると、移行した資料がToguraに登録されます。
