@@ -148,9 +148,10 @@ def generate(data_dir, output_dir, base_url):
           elem_affiliation_name.text = affiliation_name["name"]
           if affiliation_name.get("lang"):
             elem_affiliation_name.set("lang", iso_639_1(affiliation_name["lang"]))
-        elem_affiliation_identifier = ET.SubElement(elem_affiliation, "affiliation_identifier")
-        elem_affiliation_identifier.set("type", affiliation["identifier_scheme"])
-        elem_affiliation_identifier.text = affiliation["identifier"]
+        for affiliation_identifier in affiliation["name_identifier"]:
+          elem_affiliation_identifier = ET.SubElement(elem_affiliation, "affiliation_identifier")
+          elem_affiliation_identifier.set("type", affiliation_identifier["identifier_scheme"])
+          elem_affiliation_identifier.text = affiliation_identifier["identifier"]
 
     if c.get("name_identifier"):
       researcher_id = ET.SubElement(creator, "researcher_id")
@@ -180,9 +181,10 @@ def generate(data_dir, output_dir, base_url):
             elem_affiliation_name.text = affiliation_name["name"]
             if affiliation_name.get("lang"):
               elem_affiliation_name.set("lang", iso_639_1(affiliation_name["lang"]))
-          elem_affiliation_identifier = ET.SubElement(elem_affiliation, "affiliation_identifier")
-          elem_affiliation_identifier.set("type", affiliation["identifier_scheme"])
-          elem_affiliation_identifier.text = affiliation["identifier"]
+          for affiliation_identifier in affiliation["name_identifier"]:
+            elem_affiliation_identifier = ET.SubElement(elem_affiliation, "affiliation_identifier")
+            elem_affiliation_identifier.set("type", affiliation_identifier["identifier_scheme"])
+            elem_affiliation_identifier.text = affiliation_identifier["identifier"]
 
       if c.get("name_identifier"):
         researcher_id = ET.SubElement(contributor, "researcher_id")

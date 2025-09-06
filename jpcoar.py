@@ -404,11 +404,12 @@ def add_creator(entry, root):
     if creator.get("affiliation"):
       for affiliation in creator["affiliation"]:
         elem_affiliation = ET.SubElement(elem_creator, ET.QName(ns["jpcoar"], "affiliation"))
-        elem_affiliation_identifier = ET.SubElement(elem_affiliation, ET.QName(ns["jpcoar"], "nameIdentifier"), {
-          "nameIdentifierScheme": affiliation["identifier_scheme"],
-          "nameIdentifierURI": affiliation["identifier"]
-        })
-        elem_affiliation_identifier.text = affiliation["identifier"]
+        for affiliation_identifier in affiliation["name_identifier"]:
+          elem_affiliation_identifier = ET.SubElement(elem_affiliation, ET.QName(ns["jpcoar"], "nameIdentifier"), {
+            "nameIdentifierScheme": affiliation_identifier["identifier_scheme"],
+            "nameIdentifierURI": affiliation_identifier["identifier"]
+          })
+          elem_affiliation_identifier.text = affiliation_identifier["identifier"]
         for affiliation_name in affiliation["affiliation_name"]:
           elem_affiliation_name = ET.SubElement(elem_affiliation, ET.QName(ns["jpcoar"], "affiliationName"), {
             "xml:lang": affiliation_name.get("lang", "und") or "und"
@@ -435,11 +436,12 @@ def add_contributor(entry, root):
     if contributor.get("affiliation"):
       for affiliation in contributor["affiliation"]:
         elem_affiliation = ET.SubElement(elem_contributor, ET.QName(ns["jpcoar"], "affiliation"))
-        elem_affiliation_identifier = ET.SubElement(elem_affiliation, ET.QName(ns["jpcoar"], "nameIdentifier"), {
-          "nameIdentifierScheme": affiliation["identifier_scheme"],
-          "nameIdentifierURI": affiliation["identifier"]
-        })
-        elem_affiliation_identifier.text = affiliation["identifier"]
+        for affiliation_identifier in affiliation["name_identifier"]:
+          elem_affiliation_identifier = ET.SubElement(elem_affiliation, ET.QName(ns["jpcoar"], "nameIdentifier"), {
+            "nameIdentifierScheme": affiliation_identifier["identifier_scheme"],
+            "nameIdentifierURI": affiliation_identifier["identifier"]
+          })
+        elem_affiliation_identifier.text = affiliation_identifier["identifier"]
         for affiliation_name in affiliation["affiliation_name"]:
           elem_affiliation_name = ET.SubElement(elem_affiliation, ET.QName(ns["jpcoar"], "affiliationName"), {
             "xml:lang": affiliation_name.get("lang", "und") or "und"

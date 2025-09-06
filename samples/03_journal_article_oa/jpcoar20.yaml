@@ -32,8 +32,9 @@ creator:
   - name: アダチ, ジュン
     lang: ja-Kana
   affiliation:
-  - identifier_scheme: ISNI
-    identifier: http://www.isni.org/isni/0000000121691048
+  - name_identifier:
+    - identifier_scheme: ISNI
+      identifier: http://www.isni.org/isni/0000000121691048
     affiliation_name:
     - name: 東京大学
       lang: ja

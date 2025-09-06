@@ -181,21 +181,38 @@
             "type": "array",
             "items": {
               "additionalProperties": false,
-              "required": [
-                "identifier"
-              ],
               "properties": {
-                "identifier": {
-                  "type": "string"
-                },
-                "identifier_scheme": {
-                  "type": "string"
+                "name_identifier": {
+                  "type": "array",
+                  "items": {
+                    "additionalProperties": false,
+                    "required": [
+                      "identifier"
+                    ],
+                    "properties": {
+                      "identifier": {
+                        "type": "string"
+                      },
+                      "identifier_scheme": {
+                        "type": "string",
+                        "enum": [
+                          "kakenhi",
+                          "ISNI",
+                          "Ringgold",
+                          "GRID",
+                          "ROR"
+                        ]
+                      }
+                    }
+                  }
                 },
                 "affiliation_name": {
                   "type": "array",
-                  "additionalProperties": false,
                   "items": {
                     "type": "object",
+                    "required": [
+                      "name"
+                    ],
                     "additionalProperties": false,
                     "properties": {
                       "name": {
@@ -273,31 +290,35 @@
             "type": "array",
             "items": {
               "additionalProperties": false,
-              "required": [
-                "identifier"
-              ],
               "properties": {
-                "identifier": {
-                  "type": "string"
-                },
-                "identifier_scheme": {
-                  "type": "string"
+                "name_identifier": {
+                  "type": "array",
+                  "items": {
+                    "additionalProperties": false,
+                    "required": [
+                      "identifier"
+                    ],
+                    "properties": {
+                      "identifier": {
+                        "type": "string"
+                      },
+                      "identifier_scheme": {
+                        "type": "string",
+                        "enum": [
+                          "kakenhi",
+                          "ISNI",
+                          "Ringgold",
+                          "GRID",
+                          "ROR"
+                        ]
+                      }
+                    }
+                  }
                 },
                 "affiliation_name": {
                   "type": "array",
-                  "additionalProperties": false,
                   "items": {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "properties": {
-                      "name": {
-                        "type": "string"
-                      },
-                      "lang": {
-                        "type": "string",
-                        "pattern": "^[a-z]{2}(-[A-Za-z]+)?$"
-                      }
-                    }
+                    "type": "object"
                   }
                 }
               }
