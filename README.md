@@ -163,7 +163,7 @@ uv run python -X utf8 ./togura.py migrate --base-url https://another.repo.exampl
 1. 展開したディレクトリに含まれるすべてのフォルダとファイルを、これまで使っていたToguraのフォルダに上書きコピーします。
 1. VSCodeを起動し、ターミナルで以下のコマンドを実行して、必要なPythonのモジュールを更新します。
     ```sh
-    pip install -r requirements.txt
+    uv pip install -r requirements.txt
     ```
 
 ### フォルダの構成
