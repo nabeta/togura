@@ -55,7 +55,7 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
 1. VSCodeのメニューで「ファイル」→「名前をつけてワークスペースを保存」を選び、そのまま「保存」を選びます。
 1. VSCodeの画面上部のメニューから「ターミナル」→「新しいターミナル」を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドを実行して、Pythonのvenv環境（仮想環境）をインストールします。
     ```sh
-    python3 -m venv .venv
+    python -m venv .venv
     ```
     画面右下に「新しい環境が作成されました。これをワークスペース フォルダーに選択しますか?」というメッセージが表示されたら、「はい」を選びます。
 1. いったんVScodeを終了し、再起動して、VSCodeの画面上部のメニューから「ターミナル」→「新しいターミナル」を選びます。
@@ -76,7 +76,7 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
 1. `00_sample`フォルダを`work`フォルダにコピーします。
 1. VSCodeに戻ってターミナルを開き、以下のコマンドを実行します。
     ```sh
-    python3 -X utf8 ./togura.py generate
+    python -X utf8 ./togura.py generate
     ```
 1. `public`フォルダの中に`00`フォルダが作成され、その中に以下のファイルが作成されていることを確認します。
     - `article.pdf`
@@ -113,7 +113,7 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
 
 VSCodeのターミナルで`togura.py generate`コマンドを実行し、YAMLで作成したメタデータファイルをJPCOARスキーマのXMLファイルに変換します。
 ```sh
-python3 -X utf8 ./togura.py generate
+python -X utf8 ./togura.py generate
 ```
 スクリプトを実行すると、`public`フォルダの中に以下のファイルとフォルダが作成されます。
 
@@ -141,7 +141,7 @@ JPCOARスキーマ1.0でのOAI-PMHの出力に対応している機関リポジ�
 以下がコマンドの実行例です。実際に実行するときには、`--base-url`などを適宜変更してください。また、このコマンドでは本文ファイルのダウンロードを行うため、実行に時間がかかることにご注意ください。
 
 ```sh
-python3 -X utf8 ./togura.py migrate --base-url https://another.repo.example.ac.jp/oai \
+python -X utf8 ./togura.py migrate --base-url https://another.repo.example.ac.jp/oai \
   --date-from 2025-08-01 --date-until 2025-08-31 --metadata-prefix jpcoar_1.0 \
   --export-dir another
 ```
