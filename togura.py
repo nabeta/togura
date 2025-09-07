@@ -4,6 +4,7 @@ import glob
 import logging
 import os
 import re
+import shutil
 import sys
 import yaml
 from datetime import datetime, date, timedelta
@@ -31,6 +32,11 @@ def main():
     title = "サブコマンド",
     dest = "subcommand",
     required = True
+  )
+
+  setup_parser = subparser.add_parser(
+    "setup",
+    help = "初期設定を行います。"
   )
 
   generate_parser = subparser.add_parser(
@@ -61,6 +67,8 @@ def main():
   args = parser.parse_args()
 
   match args.subcommand:
+    case "setup":
+      setup()
     case "generate":
       generate()
     case "migrate":
@@ -81,6 +89,27 @@ def main():
       migrate.migrate(args.base_url, metadata_prefix, date_from, date_until, args.export_dir)
     case _:
       main()
+
+def setup():
+  # テンプレートのヘッダーファイルをコピーする
+  if not os.path.isfile("./templates/head_custom.html"):
+    shutil.copyfile("./templates/bootstrap.html", "./templates/head_custom.html")
+
+  # 設定ファイルを作成する
+  organization = input("組織名を入力してください（初期値: 鳥座大学）:").strip() or "鳥座大学"
+  default_site_name = f"{organization}機関リポジトリ"
+  default_base_url = "https://togura.example.jp"
+  site_name = input(f"機関リポジトリの名称を入力してください（初期値: {default_site_name}）:").strip() or default_site_name
+  base_url = input(f"機関リポジトリのトップページのURLを入力してください（初期値: {default_base_url}）:").strip() or default_base_url
+
+  with open("./config.yaml", "w", encoding = "utf-8") as file:
+    yaml.dump({
+      "organization": organization,
+      "site_name": site_name,
+      "base_url": base_url,
+      "logo_filename": "logo.png",
+      "jalc_site_id": "dummy"
+    },  file, allow_unicode=True)
 
 def generate():
   data_dir = "./work"
