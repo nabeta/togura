@@ -278,7 +278,7 @@ def generate(data_dir, output_dir, base_url):
         award_number.text = funding_reference["award_number"]["award_number"]
 
   # JaLC XMLを出力する
-  with open(f"{output_dir}/{str(entry_id)}/jalc.xml", "w") as file:
+  with open(f"{output_dir}/{str(entry_id)}/jalc.xml", "w", encoding = "utf-8") as file:
     ET.indent(root, space="\t", level=0)
     file.write(ET.tostring(root, encoding = "unicode", xml_declaration = True))
 

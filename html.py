@@ -46,7 +46,7 @@ def generate(data_dir, output_dir, base_url, per_page = 100):
       entry["id"] = os.path.basename(path).split("_")[0]
       entries.append(entry)
       try:
-        with open(f"{output_dir}/{entry['id']}/ro-crate-preview.html", "w") as file:
+        with open(f"{output_dir}/{entry['id']}/ro-crate-preview.html", "w", encoding = "utf-8") as file:
           show_html = template_show.render(entry = entry, files = files, base_url = config.base_url(), site_name = config.site_name())
           file.write(show_html)
           logger.debug(f"{entry['id']}.html")
@@ -67,13 +67,13 @@ def generate(data_dir, output_dir, base_url, per_page = 100):
 
     # 分割した一覧ページ（index1.htmlなど）を作成
     index_page_html = template_index_page.render(entries = index_entries, page = page, per_page = per_page, previous_page = previous_page, next_page = next_page, site_name = config.site_name())
-    with open(f"{output_dir}/index{page}.html", "w") as file:
+    with open(f"{output_dir}/index{page}.html", "w", encoding = "utf-8") as file:
       file.write(index_page_html)
       logger.debug(f"index{page}.html")
 
     # index.htmlを生成。最近の登録10件を含む
     index_html = template_index.render(entries = entries[0:10], total_pages = len(indexes), site_name = config.site_name())
-    with open(f"{output_dir}/index.html", "w") as file:
+    with open(f"{output_dir}/index.html", "w", encoding = "utf-8") as file:
       file.write(index_html)
       logger.debug(f"index.html")
 

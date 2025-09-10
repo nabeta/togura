@@ -204,10 +204,10 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
               logger.debug(f"skipped {file['uri']}")
 
     # メタデータの作成
-    with open(f"{dir_name}/jpcoar20.yaml", "w") as file:
+    with open(f"{dir_name}/jpcoar20.yaml", "w", encoding = "utf-8") as file:
       yaml.safe_dump(filtered_entry, file, encoding="utf-8", allow_unicode=True, sort_keys=False)
 
-    with open(f"{dir_name}/jpcoar20.yaml", "r+") as file:
+    with open(f"{dir_name}/jpcoar20.yaml", "r+", encoding = "utf-8") as file:
       content = file.read()
       file.seek(0, 0)
       file.write("# yaml-language-server: $schema=../../schema/jpcoar.json\n\n" + content)
