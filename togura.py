@@ -44,6 +44,15 @@ def main():
     help = "HTMLファイルとメタデータファイルを出力します。"
   )
 
+  check_expired_embargo_parser = subparser.add_parser(
+    "check_expired_embargo",
+    help = "エンバーゴ期間が終了している資料を出力します。"
+  )
+
+  check_expired_embargo_parser.add_argument(
+    '--dir', type=str, help='ファイルの保存先のディレクトリ'
+  )
+
   migrate_parser = subparser.add_parser(
     "migrate",
     help = "他の機関リポジトリから本文ファイルとメタデータファイルをToguraに移行します。"
@@ -71,6 +80,12 @@ def main():
       setup()
     case "generate":
       generate()
+    case "check_expired_embargo":
+      if args.dir is None:
+        base_dir = "work"
+      else:
+        base_dir = args.dir
+      check_expired_embargo(base_dir)
     case "migrate":
       if args.metadata_prefix is None:
         metadata_prefix = "jpcoar_1.0"
@@ -142,6 +157,16 @@ def generate():
 
   html.generate(data_dir, output_dir, base_url)
   resourcesync.generate(output_dir, base_url)
+
+# エンバーゴ期間が終了している資料の一覧を出力する
+def check_expired_embargo(base_dir):
+  for file in glob.glob(f"{base_dir}/*/jpcoar20.yaml"):
+    with open(file, encoding = "utf-8") as f:
+      entry = yaml.safe_load(f)
+      if entry.get("access_rights") == "embargoed access" and entry.get("date"):
+        for d in entry["date"]:
+          if d["date_type"] == "Available" and d["date"] <= date.today():
+            print(f"{d['date']}\t{file}")
 
 if __name__ == "__main__":
   main()

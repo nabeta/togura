@@ -158,6 +158,40 @@ uv run python -X utf8 ./togura.py migrate --base-url https://another.repo.exampl
 
 `public`フォルダに保存されたフォルダとファイルの一式を、Webサーバにアップロードします。アップロードの方法は、FTPクライアントやWeb管理画面など、お使いのWebサーバによって異なりますので、サーバの管理者（大学のIT担当部署・レンタルサーバの業者など）におたずねください。
 
+### エンバーゴ期間が終了している資料のチェック
+
+`togura.py check_expired_embargo`コマンドを用いて、エンバーゴ期間が終了している資料の一括チェックを行うことができます。具体的には、以下の条件にあてはまる資料の一覧を出力することができます。
+
+- メタデータの`access_rights`が`embargoed access`になっている
+- メタデータの`date`の`date_type`が`Available`、かつ`date`が実行日よりも前の日付になっている
+
+指定できる項目は以下のとおりです。
+
+- `--dir`: チェック対象のフォルダを指定します。個別の資料のフォルダではなく、`work`フォルダのような、資料の一式が保存されているフォルダを指定してください。指定しない場合、`work`が指定されたものとして動作します。
+
+以下がコマンドの実行例です。
+
+```sh
+uv run python -X utf8 ./togura.py check_expired_embargo --dir work
+```
+
+出力結果は以下のようになります。メタデータに記述した利用可能日（`date_type`に`Available`を指定している`date`）と、資料のメタデータの保存場所が出力されますので、メタデータの`access_rights`の値を`open access`などに変更してください。
+
+```
+2016-04-01	work/02_journal_article_embargoed/jpcoar20.yaml
+2016-04-01	work/04_journal_article_accepted_embargoed/jpcoar20.yaml
+```
+
+出力結果はテキストファイルに書き出すこともできます。以下の実行例は、`archive`フォルダに保存されている資料のエンバーゴ期間をチェックし、結果を`expired_embargo.txt`というファイルに書き出す例です。この例では、`expired_embargo.txt`ファイルはToguraのフォルダに保存されます。
+
+```sh
+# Windowsの場合
+uv run python -X utf8 ./togura.py check_expired_embargo --dir archive | Tee-Object -FilePath expired_embargo.txt
+
+# macOSやLinuxの場合
+uv run python -X utf8 ./togura.py check_expired_embargo --dir archive | tee expired_embargo.txt
+```
+
 ### 公開した資料の取り下げ
 
 以下の手順で実施します。
