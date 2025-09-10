@@ -189,6 +189,9 @@ uv run python -X utf8 ./togura.py migrate --base-url https://another.repo.exampl
 - `samples`: メタデータのサンプルのフォルダ
 - `schema`: メタデータスキーマの定義ファイル（開発者用）
 - `templates`: HTMLテンプレートファイル
+    - `index.j2`: トップページのテンプレート
+    - `index.j2`: 2ページ目以降の資料一覧画面のテンプレート
+    - `show.j2`: 資料詳細画面のテンプレート
 - `test`: テスト用スクリプトを保存するフォルダ（開発者用）
 - `work`: 作業用フォルダ
     - このフォルダに保存されたファイルを編集すること
