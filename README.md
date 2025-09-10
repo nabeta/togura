@@ -59,12 +59,13 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
     # macOSやLinuxの場合
     curl -LsSf https://astral.sh/uv/install.sh | sh
     ```
+1. **VSCodeをいったん終了して、もう一度起動します。この操作を実行しないと、これ以降の`uv`コマンドが動作しないので、必ず実行してください。**
+1. 先ほどと同様にVSCodeのメニューから「ファイル」→「フォルダーを開く」を選び、toguraのフォルダを選びます。
 1. ターミナルで以下のコマンドを実行して、必要なPythonのモジュールをインストールします。
     ```sh
     uv venv
     uv pip install -r requirements.txt
     ```
-1. VSCodeをいったん終了して、再度起動します。先ほどと同様にVSCodeのメニューから「ファイル」→「フォルダーを開く」を選び、toguraのフォルダを選びます。
 1. ターミナルで以下のコマンドを実行して、Toguraの初期設定を行います。このコマンドでは、設定ファイル`config.yaml`と、テンプレートのファイル`templates/head_custom.html`が作成されます。
     ```sh
     uv run python -X utf8 togura.py setup
