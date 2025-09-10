@@ -2,7 +2,6 @@ import os
 import yaml
 
 def config(file):
-  print(file)
   with open(file, encoding = "utf-8") as f:
     return yaml.load(f, Loader = yaml.Loader)
 

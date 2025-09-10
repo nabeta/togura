@@ -32,11 +32,9 @@
               {{ entry.title[0].title }}
             </a>
             {% if not entry.file is not defined %}
-              {% if not entry.file[0].date is not defined %}
-                {% if entry.file[0].date|length > 0 %}
-                  ({{ entry.file[0].date[0].date }})
-                {% endif %}
-              {% endif %}
+              {% for file in entry.file %}
+                {{ file.date }}
+              {% endfor %}
             {% endif %}
           </li>
         {% endfor %}
