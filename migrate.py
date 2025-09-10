@@ -64,6 +64,27 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
           "creator_name": creator_names
         })
 
+    contributors = []
+    for contributor in record.xml.findall(".//jpcoar:contributor", ns):
+      contributors = []
+      if contributor.find("./jpcoar:contributorName", ns) is not None:
+        contributor_names = []
+        for contributor_name in creator.findall("./jpcoar:contributorName", ns):
+          d = {"name": contributor_name.text}
+          lang = contributor_name.get("{http://www.w3.org/XML/1998/namespace}lang")
+          if lang is not None:
+            d["lang"] = lang
+          contributor_names.append(d)
+
+        contributors.append({
+          "contributor_type": contributor.get("contributorType")
+          "contributor_name": contributor_names
+        })
+
+    access_rights = None
+    if record.xml.find(".//jpcoar:jpcoar/dcterms:accessRights", ns) is not None:
+      access_rights = record.xml.find(".//jpcoar:jpcoar/dcterms:accessRights", ns).text
+
     subjects = None
     if record.xml.find(".//jpcoar:subject", ns) is not None:
       subjects = []
@@ -164,8 +185,10 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
     entry = {
       "title": titles,
       "creator": creators,
+      "contributor": contributors.
       "subject": subjects,
       "publisher": publishers,
+      "acccess_rights": access_rights,
       "date": dates,
       "language": languages,
       "type": resource_type,
