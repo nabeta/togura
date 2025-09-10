@@ -1,6 +1,8 @@
 .venv/
-work/
+archive/
 public/
+work/
 __pycache__/
 *.code-workspace
+config.yaml
 config.yml
