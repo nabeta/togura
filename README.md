@@ -182,7 +182,7 @@ uv run python -X utf8 ./togura.py migrate --base-url https://another.repo.exampl
 
 ### フォルダの構成
 
-- `archive`: 作業済みのファイルを保存するフォルダ（未使用）
+- `archive`: 作業済み・取り下げ済みのファイルを保存するフォルダ
 - `public`: 公開用のファイルが出力されるフォルダ
     - データを公開するには、このフォルダの中身をWebサーバにアップロードすること
     - このフォルダに保存されたファイルは編集しないこと
