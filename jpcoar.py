@@ -455,12 +455,12 @@ def generate(entry, base_url):
 
   # 39 大きさ
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/39
-  #if entry.get("extent"):
-  #  for d in entry["extent"]:
-  #    extent = ET.SubElement(root, ET.QName(ns["dcterms"], "extent"), {
-  #      "xml:lang": d.get("lang", "und") or "und"
-  #    })
-  #    extent.text = d["extent"]
+  if entry.get("extent"):
+    for d in entry["extent"]:
+      extent = ET.SubElement(root, ET.QName(ns["dcterms"], "extent"), {
+        "xml:lang": d.get("lang", "und") or "und"
+      })
+      extent.text = d["extent"]
 
   # 43 ファイル情報
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/43
