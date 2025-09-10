@@ -140,15 +140,15 @@ JPCOARスキーマ1.0でのOAI-PMHの出力に対応している機関リポジ�
 指定できる項目は以下のとおりです。
 
 - `--base-url`（必須）: OAI-PMHのベースURLです。JAIRO Cloudの場合、各リポジトリのトップページのURLに`/oai`を追加したものになります。たとえばリポジトリのトップページのURLが`https://jpcoar.repo.nii.ac.jp`の場合、OAI-PMHのベースURLは`https://jpcoar.repo.nii.ac.jp/oai`になります。
-- `--date-from`: 移行対象の開始日です。この日よりも後に登録・更新された資料を移行します。指定しない場合、自動的に30日前の日付が指定されたものとして動作します。
-- `--date-until`: 移行対象の終了日です。この日よりも前に登録・更新された資料を移行します。指定しない場合、自動的に実行時の日付が指定されたものとして動作します。
-- `--metadata-prefix`: 取得するメタデータの種類です。指定しない場合、自動的に`jpcoar_1.0`が指定されたものとして動作します。
 - `--export-dir`（必須）: 取得した資料のメタデータと本文ファイルを保存するフォルダ（ディレクトリ）です。任意の名前のフォルダを指定できます。
+- `--date-from`: 移行対象の開始日で、この日よりも後に登録・更新された資料を移行します。`yyyy-MM-dd`（年4桁・月2桁・日2桁の半角数字、半角ハイフン区切り）形式で指定します。指定しない場合、自動的に30日前の日付が指定されたものとして動作します。
+- `--date-until`: 移行対象の終了日で、この日よりも前に登録・更新された資料を移行します。`yyyy-MM-dd`（年4桁・月2桁・日2桁の半角数字、半角ハイフン区切り）形式で指定します。指定しない場合、自動的に実行時の日付が指定されたものとして動作します。
+- `--metadata-prefix`: 取得するメタデータの種類です。`jpcoar_1.0`か`jpcoar_2.0`を指定します。指定しない場合、自動的に`jpcoar_1.0`が指定されたものとして動作します。
 
 以下がコマンドの実行例です。実際に実行するときには、`--base-url`などを適宜変更してください。また、このコマンドでは本文ファイルのダウンロードを行うため、実行に時間がかかることにご注意ください。
 
 ```sh
-uv run python -X utf8 ./togura.py migrate --base-url https://another.repo.example.ac.jp/oai --date-from 2025-08-01 --date-until 2025-08-31 --metadata-prefix jpcoar_1.0 --export-dir another
+uv run python -X utf8 ./togura.py migrate --base-url https://another.repo.example.ac.jp/oai --export-dir another --date-from 2025-08-01 --date-until 2025-08-31 --metadata-prefix jpcoar_1.0
 ```
 
 コマンドの実行が完了すると、`--export-dir`で指定したフォルダ（上記の例では`another`）の中に各資料のフォルダが作成され、その中に本文ファイルとメタデータ`jpcoar20.yaml`が保存されています。この各資料のフォルダを`work`フォルダに移動し、`togura.py generate`コマンドを実行すると、移行した資料がToguraに登録されます。
