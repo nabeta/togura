@@ -15,7 +15,8 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
   records = sickle.ListRecords(
     **{"metadataPrefix": metadata_prefix,
     "from": date_from,
-    "until": date_until
+    "until": date_until,
+    "ignore_deleted": True
   })
 
   if metadata_prefix == "jpcoar_2.0":
