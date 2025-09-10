@@ -120,7 +120,7 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
 
 ### リポジトリ用ファイルの出力
 
-VSCodeのターミナルで`togura.py generate`コマンドを実行し、YAMLで作成したメタデータファイルをJPCOARスキーマのXMLファイルに変換します。
+VSCodeのターミナルで`togura.py generate`コマンドを実行し、YAMLで作成したメタデータファイルをHTMLファイルとJPCOARスキーマのXMLファイルに変換します。
 ```sh
 uv run python -X utf8 ./togura.py generate
 ```
