@@ -31,9 +31,13 @@
               {% endfor %}.
               {{ entry.title[0].title }}
             </a>
+
             {% if not entry.file is not defined %}
               {% for file in entry.file %}
-                {{ file.date }}
+                {% for date in file.date %}
+                  {{ date["date_type"] }}:
+                  {{ date["date"] }}
+                {% endfor %}
               {% endfor %}
             {% endif %}
           </li>
