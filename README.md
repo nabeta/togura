@@ -169,7 +169,7 @@ uv run python -X utf8 ./togura.py migrate --base-url https://another.repo.exampl
 
 ### バックアップ
 
-バックアップは`togura`フォルダをコピーするだけで行えます。外付けディスクなどにコピーしておいてください。
+バックアップはToguraのフォルダをコピーするだけで行えます。外付けディスクなどにコピーしておいてください。
 
 ### ツールの更新
 
