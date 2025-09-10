@@ -52,13 +52,14 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
         - 画面右下に 「このリポジトリ 用のおすすめ拡張機能 をインストールしますか?」というメッセージが表示された場合、「インストール」を選んでください。ただし、この場合でも別途画面左側のウインドウでそれぞれの拡張機能に対して「インストール」ボタンを押す必要があります。
 1. VSCodeのメニューで「ファイル」→「名前をつけてワークスペースを保存」を選び、そのまま「保存」を選びます。
 1. VSCodeの画面上部のメニューから「ターミナル」→「新しいターミナル」を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドを実行して、[uvコマンドをインストール](https://docs.astral.sh/uv/getting-started/installation/)します。
-    ```
-    # Windowsの場合
-    powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-
-    # macOSやLinuxの場合
-    curl -LsSf https://astral.sh/uv/install.sh | sh
-    ```
+    - Windowsの場合:
+        ```
+        powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+        ```
+    - macOSやLinuxの場合
+        ```sh
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        ```
 1. **VSCodeをいったん終了して、もう一度起動します。この操作を実行しないと、これ以降の`uv`コマンドが動作しないので、必ず実行してください。**
 1. 先ほどと同様にVSCodeのメニューから「ファイル」→「フォルダーを開く」を選び、toguraのフォルダを選びます。
 1. ターミナルで以下のコマンドを実行して、必要なPythonのモジュールをインストールします。
@@ -183,14 +184,14 @@ uv run python -X utf8 ./togura.py check_expired_embargo --dir work
 ```
 
 出力結果はテキストファイルに書き出すこともできます。以下の実行例は、`archive`フォルダに保存されている資料のエンバーゴ期間をチェックし、結果を`expired_embargo.txt`というファイルに書き出す例です。この例では、`expired_embargo.txt`ファイルはToguraのフォルダに保存されます。
-
-```sh
-# Windowsの場合
-uv run python -X utf8 ./togura.py check_expired_embargo --dir archive | Tee-Object -FilePath expired_embargo.txt
-
-# macOSやLinuxの場合
-uv run python -X utf8 ./togura.py check_expired_embargo --dir archive | tee expired_embargo.txt
-```
+- Windowsの場合:
+    ```
+    uv run python -X utf8 ./togura.py check_expired_embargo --dir archive | Tee-Object -FilePath expired_embargo.txt
+    ```
+- macOSやLinuxの場合:
+    ```sh
+    uv run python -X utf8 ./togura.py check_expired_embargo --dir archive | tee expired_embargo.txt
+    ```
 
 ### 公開した資料の取り下げ
 
