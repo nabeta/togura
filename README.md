@@ -64,6 +64,7 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
     uv venv
     uv pip install -r requirements.txt
     ```
+1. VSCodeをいったん終了して、再度起動します。「ファイル」から「ファイルでワークスペースを開く」を選び、先ほど保存したワークススペースのファイルを開きます。
 1. ターミナルで以下のコマンドを実行して、Toguraの初期設定を行います。このコマンドでは、設定ファイル`config.yaml`と、テンプレートのファイル`templates/head_custom.html`が作成されます。
     ```sh
     uv run python -X utf8 togura.py setup
