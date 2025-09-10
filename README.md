@@ -39,7 +39,7 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
 1. VSCodeを起動し、画面上部のメニューから「View」→「Extensions」を選択します。画面左側に拡張機能のウインドウが表示されるので、`Japanese Language Pack`と入力すると、検索結果に"[Japanese Language Pack for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja)"が表示されるので、"Install"ボタンを押します。
 1. 画面右下に「Change Language and Restart」というボタンが表示されるので、ボタンを押してVSCodeを再起動します。
 
-### ツールの準備
+### Toguraの実行準備
 
 1. Toguraのzipファイルを以下のリンクからダウンロードし、適当なフォルダに展開します。
     https://github.com/nabeta/togura/archive/refs/heads/main.zip
@@ -207,7 +207,7 @@ uv run python -X utf8 ./togura.py check_expired_embargo --dir work
 
 バックアップはToguraのフォルダをコピーするだけで行えます。外付けディスクなどにコピーしておいてください。
 
-### ツールの更新
+### Toguraの更新
 
 1. [Toguraのダウンロードリンク](https://github.com/nabeta/togura/archive/refs/heads/main.zip)からzipファイルをダウンロードし、適当なディレクトリに展開します。
 1. 展開したディレクトリに含まれるすべてのフォルダとファイルを、これまで使っていたToguraのフォルダに上書きコピーします。
