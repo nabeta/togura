@@ -77,7 +77,7 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
           contributor_names.append(d)
 
         contributors.append({
-          "contributor_type": contributor.get("contributorType")
+          "contributor_type": contributor.get("contributorType"),
           "contributor_name": contributor_names
         })
 
@@ -185,7 +185,7 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
     entry = {
       "title": titles,
       "creator": creators,
-      "contributor": contributors.
+      "contributor": contributors,
       "subject": subjects,
       "publisher": publishers,
       "acccess_rights": access_rights,
