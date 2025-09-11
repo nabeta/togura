@@ -407,7 +407,7 @@ def generate(entry, base_url):
       # https://schema.irdb.nii.ac.jp/ja/schema/2.0/20-.2
       if relation.get("related_title") is not None:
         for related_title in relation["related_title"]:
-          elem_related_title = ET.SubElement(relation, ET.QName(ns["jpcoar"], "related_title"))
+          elem_related_title = ET.SubElement(elem_relation, ET.QName(ns["jpcoar"], "related_title"))
           elem_related_title.text = related_title["related_title"]
           if related_title.get("lang") is not None:
             elem_related_title.set("xml:lang", d_name["lang"])
