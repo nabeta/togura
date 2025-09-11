@@ -268,12 +268,13 @@ def generate(data_dir, output_dir, base_url):
       funder_name.text = funding_reference["funder_name"][0].get("funder_name")
       if funding_reference.get("funder_identifier"):
         funder_identifier = ET.SubElement(fund, "funder_identifier")
-        match funding_reference["funder_identifier_type"]:
-          case "e-Rad_funder":
-            funder_identifier.set("type", "Other")
-          case _:
-            funder_identifier.set("type", funding_reference["funder_identifier_type"])
-        funder_identifier.text = funding_reference["funder_identifier"]
+        if funding_reference["funder_identifier"].get("funder_identifier_type"):
+          match funding_reference["funder_identifier"]["funder_identifier_type"]:
+            case "e-Rad_funder":
+              funder_identifier.set("type", "Other")
+            case _:
+              funder_identifier.set("type", funding_reference["funder_identifier"]["funder_identifier_type"])
+          funder_identifier.text = funding_reference["funder_identifier"]["funder_identifier"]
       if funding_reference["award_number"]:
         award_number_group = ET.SubElement(fund, "award_number_group")
         award_number = ET.SubElement(award_number_group, "award_number")

@@ -725,9 +725,9 @@ def add_funding_reference(entry, root):
     # https://schema.irdb.nii.ac.jp/ja/schema/2.0/23-.1
     if funding_reference.get("funder_identifier"):
       elem_funder_identifier = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "funderIdentifier"), {
-        "funderIdentifierType": funding_reference["funder_identifier_type"]
+        "funderIdentifierType": funding_reference["funder_identifier"]["funder_identifier_type"]
       })
-      elem_funder_identifier.text = funding_reference["funder_identifier"]
+      elem_funder_identifier.text = funding_reference["funder_identifier"]["funder_identifier"]
 
     # 助成機関名
     # https://schema.irdb.nii.ac.jp/ja/schema/2.0/23-.2
