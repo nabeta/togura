@@ -1,7 +1,7 @@
 [project]
 name = "togura"
 version = "0.1.0"
-description = "超シンプルな機関リポジトリ"
+description = "極めてシンプルな機関リポジトリ"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
