@@ -65,6 +65,8 @@ def resource_type_uri(string):
       return "http://purl.org/coar/resource_type/c_12cc"
     case "map":
       return "http://purl.org/coar/resource_type/c_12cd"
+    case "conference object":
+      return "http://purl.org/coar/resource_type/c_c94f"
     case "conference output":
       return "http://purl.org/coar/resource_type/c_c94f"
     case "conference presentation":
@@ -222,11 +224,20 @@ def generate(entry, base_url):
 
   # 1 タイトル
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/1
-  for title in entry["title"]:
-    elem_title = ET.SubElement(root, ET.QName(ns["dc"], "title"), {
-      "xml:lang": title.get("lang", "und") or "und"
-    })
-    elem_title.text = title["title"]
+  for d in entry["title"]:
+    title = ET.SubElement(root, ET.QName(ns["dc"], "title"))
+    title.text = d["title"]
+    if d.get("lang") is not None:
+      title.set("xml:lang", d["lang"])
+
+  # 2 その他のタイトル
+  # https://schema.irdb.nii.ac.jp/ja/schema/2.0/2
+  if entry.get("alternative"):
+    for d in entry["alternative"]:
+      alternative = ET.SubElement(root, ET.QName(ns["dcterms"], "alternative"))
+      alternative.text = d["title"]
+      if d.get("lang") is not None:
+        alternative.set("xml:lang", d["lang"])
 
   # 3 作成者
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/3
@@ -241,81 +252,129 @@ def generate(entry, base_url):
   # 5 アクセス権
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/5
   if entry.get("access_rights"):
-    elem_access_rights = ET.SubElement(root, ET.QName(ns["dcterms"], "accessRights"))
-    elem_access_rights.set("rdf:resource", access_rights_uri(entry["access_rights"]))
-    elem_access_rights.text = entry["access_rights"]
+    access_rights = ET.SubElement(root, ET.QName(ns["dcterms"], "accessRights"))
+    access_rights.set("rdf:resource", access_rights_uri(entry["access_rights"]))
+    access_rights.text = entry["access_rights"]
 
   # 6 権利情報
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/6
   if entry.get("rights"):
-    for rights in entry["rights"]:
-      elem_rights = ET.SubElement(root, ET.QName(ns["dc"], "rights"), {
-        "xml:lang": rights.get("lang", "und") or "und"
-      })
-      if rights.get("rights_uri"):
-        elem_rights.set(ET.QName(ns["rdf"], "resource"), rights["rights_uri"])
-      elem_rights.text = rights["rights"]
+    for d in entry["rights"]:
+      rights = ET.SubElement(root, ET.QName(ns["dc"], "rights"))
+      rights.text = d["rights"]
+      if d.get("rights_uri"):
+        rights.set(ET.QName(ns["rdf"], "resource"), d["rights_uri"])
+      if d.get("lang") is not None:
+        rights.set("xml:lang", d["lang"])
+
+  # 7 権利者情報
+  # https://schema.irdb.nii.ac.jp/ja/schema/2.0/7
+  if entry.get("rights_holder"):
+    for d in entry["rights_holder"]:
+      rights_holder = ET.SubElement(root, ET.QName(ns["jpcoar"], "rightsHolder"))
+      # 権利者識別子
+      # https://schema.irdb.nii.ac.jp/ja/schema/2.0/7-.1
+      if d.get("name_identifier"):
+        for d_identifier in d["name_identifier"]:
+          name_identifier = ET.SubElement(rights_holder, ET.QName(ns["jpcoar"], "nameIdentifier"), {
+            "nameIdentifierScheme": d_identifier["identifier_scheme"],
+            "nameIdentifierURI": d_identifier["identifier"]
+          })
+          name_identifier.text = name_identifier["identifier"]
+      # 権利者名
+      # https://schema.irdb.nii.ac.jp/ja/schema/2.0/7-.2
+      if d.get("rights_holder_name"):
+        for d_name in d["rights_holder_name"]:
+          rights_holder_name = ET.SubElement(rights_holder, ET.QName(ns["jpcoar"], "rightsHolderName"))
+          rights_holder_name.text = d_name["name"]
+          if d_name.get("lang") is not None:
+            rights_holder_name.set("xml:lang", d_name["lang"])
 
   # 8 主題
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/8
   if entry.get("subject"):
-    for subject in entry["subject"]:
-      elem_subject = ET.SubElement(root, ET.QName(ns["jpcoar"], "subject"), {
-        "xml:lang": subject.get("lang", "und") or "und"
-      })
-      if subject.get("subject_scheme"):
-        elem_subject.set("subjectScheme", subject["subject_scheme"])
-      if subject.get("subject_uri"):
-        elem_subject.set("subjectURI", subject["subject_uri"])
-      elem_subject.text = subject["subject"]
+    for d in entry["subject"]:
+      subject = ET.SubElement(root, ET.QName(ns["jpcoar"], "subject"))
+      subject.text = d["subject"]
+      if d.get("subject_scheme"):
+        subject.set("subjectScheme", d["subject_scheme"])
+      if d.get("subject_uri"):
+        subject.set("subjectURI", d["subject_uri"])
+      if d.get("lang") is not None:
+        subject.set("xml:lang", d["lang"])
 
   # 9 内容記述
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/9
   if entry.get("description"):
-    for description in entry["description"]:
-      elem_description = ET.SubElement(root, ET.QName(ns["datacite"], "description"), {
-        "descriptionType": description["description_type"],
-        "xml:lang": description.get("lang", "und") or "und",
-      })
-      elem_description.text = description["description"]
+    for d in entry["description"]:
+      description = ET.SubElement(root, ET.QName(ns["datacite"], "description"))
+      description.text = d["description"]
+      if d.get("description_type") is not None:
+        description.set("descriptionType", d["description_type"])
+      if d.get("lang") is not None:
+        description.set("xml:lang", d["lang"])
 
   # 10 出版者
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/10
   if entry.get("publisher"):
-    for publisher in entry["publisher"]:
-      elem_publisher = ET.SubElement(root, ET.QName(ns["dc"], "publisher"), {
-        "xml:lang": publisher.get("lang", "und") or "und"
-      })
-      elem_publisher.text = publisher["publisher"]
+    for d in entry["publisher"]:
+      publisher = ET.SubElement(root, ET.QName(ns["dc"], "publisher"))
+      publisher.text = d["publisher"]
+      if d.get("lang") is not None:
+        publisher.set("xml:lang", d["lang"])
+
+  # 11 出版者情報
+  # https://schema.irdb.nii.ac.jp/ja/schema/2.0/11
+  if entry.get("jpcoar_publisher"):
+    for d in entry["jpcoar_publisher"]:
+      jpcoar_publisher = ET.SubElement(root, ET.QName(ns["jpcoar"], "publisher"))
+      for d_name in d["publisher_name"]:
+        jpcoar_publisher_name = ET.SubElement(jpcoar_publisher, ET.QName(ns["jpcoar"], "publisherName"))
+        jpcoar_publisher_name.text = d_name["publisher_name"]
+        if d_name.get("lang") is not None:
+          jpcoar_publisher_name.set("xml:lang", d_name["lang"])
 
   # 12 日付
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/12
   if entry.get("date"):
-    for date in entry["date"]:
-      elem_date = ET.SubElement(root, ET.QName(ns["datacite"], "date"), {"dateType": date["date_type"]})
-      elem_date.text = str(date["date"])
+    for d in entry["date"]:
+      date = ET.SubElement(root, ET.QName(ns["datacite"], "date"), {"dateType": d["date_type"]})
+      date.text = str(d["date"])
+
+  # 13 日付（リテラル）
+  # https://schema.irdb.nii.ac.jp/ja/schema/2.0/13
+  if entry.get("dcterms_date"):
+    for d in entry["dcterms_date"]:
+      date = ET.SubElement(root, ET.QName(ns["dcterms"], "date"))
+      date.text = str(d["date"])
 
   # 14 言語
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/14
   if entry.get("language"):
-    for language in entry["language"]:
-      elem_language = ET.SubElement(root, ET.QName(ns["dc"], "language"))
-      elem_language.text = language
+    for d in entry["language"]:
+      language = ET.SubElement(root, ET.QName(ns["dc"], "language"))
+      language.text = d
 
   # 15 資源タイプ
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/15
-  elem_resource_type = ET.SubElement(root, ET.QName(ns["dc"], "type"), {
+  resource_type = ET.SubElement(root, ET.QName(ns["dc"], "type"), {
     ET.QName(ns["rdf"], "resource"): resource_type_uri(entry["type"])
   })
-  elem_resource_type.text = entry["type"]
+  resource_type.text = entry["type"]
+
+  # 16 バージョン情報
+  # https://schema.irdb.nii.ac.jp/ja/schema/2.0/16
+  if entry.get("version"):
+    version = ET.SubElement(root, ET.QName(ns["datacite"], "version"))
+    version.text = entry["version"]
 
   # 17 出版タイプ
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/17
   if entry.get("text_version"):
-    elem_text_version = ET.SubElement(root, ET.QName(ns["oaire"], "version"), {
+    text_version = ET.SubElement(root, ET.QName(ns["oaire"], "version"), {
       ET.QName(ns["rdf"], "resource"): text_version_uri(entry["text_version"])
     })
-    elem_text_version.text = entry["text_version"]
+    text_version.text = entry["text_version"]
 
   # 18 識別子
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/18
@@ -324,10 +383,10 @@ def generate(entry, base_url):
   # 19 ID登録
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/19
   if entry.get("identifier_registration"):
-    elem_identifier_registration = ET.SubElement(root, ET.QName(ns["jpcoar"], "identifierRegistration"), {
+    identifier_registration = ET.SubElement(root, ET.QName(ns["jpcoar"], "identifierRegistration"), {
       "identifierType": entry["identifier_registration"]["identifier_type"]
     })
-    elem_identifier_registration.text = entry["identifier_registration"]["identifier"]
+    identifier_registration.text = entry["identifier_registration"]["identifier"]
 
   # 20 関連情報
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/20
@@ -336,18 +395,54 @@ def generate(entry, base_url):
       elem_relation = ET.SubElement(root, ET.QName(ns["jpcoar"], "relation"))
       if relation.get("relation_type") is not None:
         elem_relation.set("relationType", relation["relation_type"])
-      elem_related_identifier = ET.SubElement(elem_relation, ET.QName(ns["jpcoar"], "relatedIdentifier"))
-      if relation["related_identifier"] is not None:
+      # 関連識別子
+      # https://schema.irdb.nii.ac.jp/ja/schema/2.0/20-.1
+      if relation.get("related_identifier") is not None:
+        elem_related_identifier = ET.SubElement(elem_relation, ET.QName(ns["jpcoar"], "relatedIdentifier"))
         elem_related_identifier.text = relation["related_identifier"]["identifier"]
         if relation["related_identifier"].get("identifier_type"):
           elem_related_identifier.set("identifierType", relation["related_identifier"]["identifier_type"])
 
+      # 関連名称
+      # https://schema.irdb.nii.ac.jp/ja/schema/2.0/20-.2
+      if relation.get("related_title") is not None:
+        for related_title in relation["related_title"]:
+          elem_related_title = ET.SubElement(relation, ET.QName(ns["jpcoar"], "related_title"))
+          elem_related_title.text = related_title["related_title"]
+          if related_title.get("lang") is not None:
+            elem_related_title.set("xml:lang", d_name["lang"])
+
+
   # 21 時間的範囲
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/21
   if entry.get("temporal"):
-    for temporal in entry["temporal"]:
-      elem_temporal = ET.SubElement(root, ET.QName(ns["dcterms"], "temporal"))
-      elem_temporal.text = temporal["temporal"]
+    for d in entry["temporal"]:
+      temporal = ET.SubElement(root, ET.QName(ns["dcterms"], "temporal"))
+      temporal.text = d["temporal"]
+      if d.get("lang") is not None:
+        temporal.set("xml:lang", d["lang"])
+
+  # 22 位置情報
+  # https://schema.irdb.nii.ac.jp/ja/schema/2.0/22
+  if entry.get("geo_location"):
+    for d in entry["geo_location"]:
+      geo_location = ET.SubElement(root, ET.QName(ns["datacite"], "geoLocation"))
+      # 位置情報（点）
+      # https://schema.irdb.nii.ac.jp/ja/schema/2.0/22-.1
+      if d.get("geo_location_point"):
+        geo_location_point = ET.SubElement(geo_location, ET.QName(ns["datacite"], "geoLocationPoint"))
+        geo_location_point.text = d["geo_location_point"]
+
+      # 位置情報（空間）
+      # https://schema.irdb.nii.ac.jp/ja/schema/2.0/22-.2
+      # TODO
+
+      # 位置情報（自由記述）
+      # https://schema.irdb.nii.ac.jp/ja/schema/2.0/22-.3
+      if d.get("geo_location_place"):
+        for d_place in d["geo_location_place"]:
+          geo_location_place = ET.SubElement(geo_location, ET.QName(ns["datacite"], "geoLocationPlace"))
+          geo_location_place.text = d_place
 
   # 23 助成情報
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/23
@@ -357,18 +452,18 @@ def generate(entry, base_url):
   # 24 収録物識別子
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/24
   if entry.get("source_identifier"):
-    for source_identifier in entry["source_identifier"]:
-      elem_source_identifier = ET.SubElement(root, ET.QName(ns["jpcoar"], "sourceIdentifier"), {"identifierType": source_identifier["identifier_type"]})
-      elem_source_identifier.text = source_identifier["identifier"]
+    for d in entry["source_identifier"]:
+      source_identifier = ET.SubElement(root, ET.QName(ns["jpcoar"], "sourceIdentifier"), {"identifierType": d["identifier_type"]})
+      source_identifier.text = d["identifier"]
 
   # 25 収録物名
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/25
   if entry.get("source_title"):
-    for source_title in entry["source_title"]:
-      elem_source_title = ET.SubElement(root, ET.QName(ns["jpcoar"], "sourceTitle"), {
-        "xml:lang": source_title.get("lang", "und") or "und"
-      })
-      elem_source_title.text = source_title["source_title"]
+    for d in entry["source_title"]:
+      source_title = ET.SubElement(root, ET.QName(ns["jpcoar"], "sourceTitle"))
+      source_title.text = d["source_title"]
+      if d.get("lang") is not None:
+        source_title.set("xml:lang", d["lang"])
 
   # 26 巻
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/26
@@ -410,10 +505,10 @@ def generate(entry, base_url):
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/32
   if entry.get("degree_name"):
     for d in entry["degree_name"]:
-      degree_name = ET.SubElement(root, ET.QName(ns["dcndl"], "degreeName"), {
-        "xml:lang": d.get("lang", "und") or "und"
-      })
+      degree_name = ET.SubElement(root, ET.QName(ns["dcndl"], "degreeName"))
       degree_name.text = d["degree_name"]
+      if d.get("lang") is not None:
+        degree_name.set("xml:lang", d["lang"])
 
   # 33 学位授与年月日
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/33
@@ -432,19 +527,39 @@ def generate(entry, base_url):
         })
         name_identifier.text = i["identifier"]
       for i in d["degree_grantor_name"]:
-        degree_grantor_name = ET.SubElement(degree_grantor, ET.QName(ns["jpcoar"], "degreeGrantorName"), {
-          "xml:lang": i.get("lang", "und") or "und"
-        })
+        degree_grantor_name = ET.SubElement(degree_grantor, ET.QName(ns["jpcoar"], "degreeGrantorName"))
         degree_grantor_name.text = i["name"]
+        if i.get("lang") is not None:
+          degree_grantor_name.set("xml:lang", i["lang"])
+
+  # 35 会議記述
+  # https://schema.irdb.nii.ac.jp/ja/schema/2.0/35
+  if entry.get("conference"):
+    conference = ET.SubElement(root, ET.QName(ns["jpcoar"], "conference"))
+    for d in entry["conference"]:
+      conference_name = ET.SubElement(conference, ET.QName(ns["jpcoar"], "conferenceName"))
+      for d_name in d["conference_name"]:
+        conference_name.text = d_name["conference_name"]
+        if d.get("lang") is not None:
+          conference_name.set("xml:lang", d_name["lang"])
+
+  # 36 版
+  # https://schema.irdb.nii.ac.jp/ja/schema/2.0/36
+  if entry.get("edition"):
+    for d in entry["edition"]:
+      edition = ET.SubElement(root, ET.QName(ns["dcndl"], "edition"))
+      edition.text = d["edition"]
+      if d.get("lang") is not None:
+        edition.set("xml:lang", d["lang"])
 
   # 37 部編名
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/37
   if entry.get("volume_title"):
     for d in entry["volume_title"]:
-      volume_title = ET.SubElement(root, ET.QName(ns["dcndl"], "volumeTitle"), {
-        "xml:lang": d.get("lang", "und") or "und"
-      })
+      volume_title = ET.SubElement(root, ET.QName(ns["dcndl"], "volumeTitle"))
       volume_title.text = d["volume_title"]
+      if d.get("lang") is not None:
+        volume_title.set("xml:lang", d["lang"])
 
   # 38 原文の言語
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/38
@@ -457,15 +572,70 @@ def generate(entry, base_url):
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/39
   if entry.get("extent"):
     for d in entry["extent"]:
-      extent = ET.SubElement(root, ET.QName(ns["dcterms"], "extent"), {
-        "xml:lang": d.get("lang", "und") or "und"
-      })
+      extent = ET.SubElement(root, ET.QName(ns["dcterms"], "extent"))
       extent.text = d["extent"]
+      if d.get("lang") is not None:
+        extent.set("xml:lang", d["lang"])
+
+  # 40 物理的形態
+  # https://schema.irdb.nii.ac.jp/ja/schema/2.0/40
+  if entry.get("format"):
+    for d in entry["format"]:
+      format = ET.SubElement(root, ET.QName(ns["dcterms"], "format"))
+      format.text = d["format"]
+      if d.get("lang") is not None:
+        format.set("xml:lang", d["lang"])
+
+  # 41 所蔵機関
+  # https://schema.irdb.nii.ac.jp/ja/schema/2.0/41
+  if entry.get("holding_agent"):
+    holding_agent = ET.SubElement(root, ET.QName(ns["jpcoar"], "holdingAgent"))
+    if entry["holding_agent"]["holding_agent_name_identifier"] is not None:
+      holding_agent_name_identifier = ET.SubElement(holding_agent, ET.QName(ns["jpcoar"], "holdingAgentNameIdentifier"), {
+        "nameIdentifierScheme": entry["holding_agent"]["holding_agent_name_identifier"]["name_identifier_scheme"]
+      })
+      holding_agent_name_identifier.text = entry["holding_agent"]["holding_agent_name_identifier"]["identifier"]
+    for d_name in entry["holding_agent"]["holding_agent_name"]:
+      holding_agent_name = ET.SubElement(holding_agent, ET.QName(ns["jpcoar"], "holdingAgentName"))
+      holding_agent_name.text = d_name["holding_agent_name"]
+      if d_name.get("lang") is not None:
+        holding_agent_name.set("xml:lang", d_name["lang"])
+
+  # 42 データセットシリーズ
+  # https://schema.irdb.nii.ac.jp/ja/schema/2.0/42
+  if entry.get("dataset_series"):
+    dataset_series = ET.SubElement(root, ET.QName(ns["jpcoar"], "datasetSeries"))
+    dataset_series.text = str(entry["dataset_series"])
 
   # 43 ファイル情報
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/43
+  # TODO
   if entry.get("file"):
     add_file(entry, root)
+
+  # 44 カタログ
+  # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44
+  # TODO
+  if entry.get("catalog"):
+    catalog = ET.SubElement(root, ET.QName(ns["jpcoar"], "catalog"))
+
+    # タイトル
+    # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.3
+    if entry["catalog"].get("title"):
+      for d_title in entry["catalog"]["title"]:
+        title = ET.SubElement(catalog, ET.QName(ns["dc"], "title"))
+        title.text = d_title["title"]
+        if d_title.get("lang") is not None:
+          title.set("xml:lang", d_title["lang"])
+
+    # 主題
+    # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.5
+    if entry["catalog"].get("subject"):
+      for d_subject in entry["catalog"]["subject"]:
+        subject = ET.SubElement(catalog, ET.QName(ns["jpcoar"], "subject"))
+        subject.text = d_subject["subject"]
+        if d_subject.get("lang") is not None:
+          subject.set("xml:lang", d_subject["lang"])
 
   logger.debug(f"{str(entry['id'])} created")
   return root
@@ -483,10 +653,10 @@ def add_creator(entry, root):
         elem_name_identifier.text = name_identifier["identifier"]
     if creator.get("creator_name"):
       for creator_name in creator["creator_name"]:
-        elem_creator_name = ET.SubElement(elem_creator, ET.QName(ns["jpcoar"], "creatorName"), {
-          "xml:lang": creator_name.get("lang", "und") or "und"
-        })
+        elem_creator_name = ET.SubElement(elem_creator, ET.QName(ns["jpcoar"], "creatorName"))
         elem_creator_name.text = creator_name["name"]
+        if creator_name.get("lang") is not None:
+          elem_creator_name.set("xml:lang", creator_name["lang"])
     if creator.get("affiliation"):
       for affiliation in creator["affiliation"]:
         elem_affiliation = ET.SubElement(elem_creator, ET.QName(ns["jpcoar"], "affiliation"))
@@ -497,15 +667,17 @@ def add_creator(entry, root):
           })
           elem_affiliation_identifier.text = affiliation_identifier["identifier"]
         for affiliation_name in affiliation["affiliation_name"]:
-          elem_affiliation_name = ET.SubElement(elem_affiliation, ET.QName(ns["jpcoar"], "affiliationName"), {
-            "xml:lang": affiliation_name.get("lang", "und") or "und"
-          })
+          elem_affiliation_name = ET.SubElement(elem_affiliation, ET.QName(ns["jpcoar"], "affiliationName"))
           elem_affiliation_name.text = affiliation_name["name"]
+          if affiliation_name.get("lang") is not None:
+            elem_affiliation_name.set("xml:lang", affiliation_name["lang"])
 
 def add_contributor(entry, root):
   """寄与者をメタデータに追加する"""
   for contributor in entry["contributor"]:
     elem_contributor = ET.SubElement(root, ET.QName(ns["jpcoar"], "contributor"))
+    if contributor.get("contributor_type") is not None:
+      elem_contributor.set("contributorType", contributor["contributor_type"])
     if contributor.get("name_identifier"):
       for name_identifier in contributor["name_identifier"]:
         elem_name_identifier = ET.SubElement(elem_contributor, ET.QName(ns["jpcoar"], "nameIdentifier"), {
@@ -515,10 +687,10 @@ def add_contributor(entry, root):
         elem_name_identifier.text = name_identifier["identifier"]
     if contributor.get("contributor_name"):
       for contributor_name in contributor["contributor_name"]:
-        elem_contributor_name = ET.SubElement(elem_contributor, ET.QName(ns["jpcoar"], "contributorName"), {
-          "xml:lang": contributor_name.get("lang", "und") or "und"
-        })
+        elem_contributor_name = ET.SubElement(elem_contributor, ET.QName(ns["jpcoar"], "contributorName"))
         elem_contributor_name.text = contributor_name["name"]
+        if contributor_name.get("lang") is not None:
+          elem_contributor_name.set("xml:lang", contributor_name["lang"])
     if contributor.get("affiliation"):
       for affiliation in contributor["affiliation"]:
         elem_affiliation = ET.SubElement(elem_contributor, ET.QName(ns["jpcoar"], "affiliation"))
@@ -529,12 +701,13 @@ def add_contributor(entry, root):
           })
         elem_affiliation_identifier.text = affiliation_identifier["identifier"]
         for affiliation_name in affiliation["affiliation_name"]:
-          elem_affiliation_name = ET.SubElement(elem_affiliation, ET.QName(ns["jpcoar"], "affiliationName"), {
-            "xml:lang": affiliation_name.get("lang", "und") or "und"
-          })
+          elem_affiliation_name = ET.SubElement(elem_affiliation, ET.QName(ns["jpcoar"], "affiliationName"))
           elem_affiliation_name.text = affiliation_name["name"]
+          if affiliation_name.get("lang") is not None:
+            elem_affiliation_name.set("xml:lang", affiliation_name["lang"])
 
 def add_identifier(entry, root, base_url):
+  """識別子をメタデータに追加する"""
   elem_identifier = ET.SubElement(root, ET.QName(ns["jpcoar"], "identifier"), {"identifierType": "URI"})
   elem_identifier.text = urljoin(base_url, f"{entry['id']}/ro-crate-preview.html")
 
@@ -548,41 +721,67 @@ def add_funding_reference(entry, root):
   for funding_reference in entry["funding_reference"]:
     elem_funding_reference = ET.SubElement(root, ET.QName(ns["jpcoar"], "fundingReference"))
 
+    # 助成機関識別子
+    # https://schema.irdb.nii.ac.jp/ja/schema/2.0/23-.1
     if funding_reference.get("funder_identifier"):
       elem_funder_identifier = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "funderIdentifier"), {
         "funderIdentifierType": funding_reference["funder_identifier_type"]
       })
       elem_funder_identifier.text = funding_reference["funder_identifier"]
 
+    # 助成機関名
+    # https://schema.irdb.nii.ac.jp/ja/schema/2.0/23-.2
     for funder_name in funding_reference["funder_name"]:
-      elem_funder_name = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "funderName"), {
-        "xml:lang": funder_name.get("lang", "und") or "und"
-      })
+      elem_funder_name = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "funderName"))
       elem_funder_name.text = funder_name["funder_name"]
+      if funder_name.get("lang") is not None:
+          elem_funder_name.set("xml:lang", funder_name["lang"])
 
+    # プログラム情報識別子
+    # https://schema.irdb.nii.ac.jp/ja/schema/2.0/23-.3
+    if funding_reference.get("funding_stream_identifier"):
+      funding_stream_identifier = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "fundingStreamIdentifier"))
+      if funding_reference["funding_stream_identifier"].get("funding_stream_identifier"):
+        funding_stream_identifier.text = funding_reference["funding_stream_identifier"]["funding_stream_identifier"]
+      if funding_reference["funding_stream_identifier"].get("funding_stream_identifier_type"):
+        funding_stream_identifier.set(
+          "fundingStreamIdentifierType", funding_reference["funding_stream_identifier"]["funding_stream_identifier_type"]
+        )
+      if funding_reference["funding_stream_identifier"].get("funding_stream_identifier_type_uri"):
+        funding_stream_identifier.set(
+          "fundingStreamIdentifierTypeURI", funding_reference["funding_stream_identifier"]["funding_stream_identifier_type_uri"]
+        )
+
+    # プログラム情報
+    # https://schema.irdb.nii.ac.jp/ja/schema/2.0/23-.4
     if funding_reference.get("funding_stream"):
       for funding_stream in funding_reference["funding_stream"]:
-        elem_funding_stream = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "fundingStream"), {
-          "xml:lang": funding_stream.get("lang", "und") or "und"
-        })
+        elem_funding_stream = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "fundingStream"))
         elem_funding_stream.text = funding_stream["funding_stream"]
+        if funding_stream.get("lang") is not None:
+          elem_funding_stream.set("xml:lang", funding_stream["lang"])
 
+    # 研究課題番号
+    # https://schema.irdb.nii.ac.jp/ja/schema/2.0/23-.5
     if funding_reference.get("award_number"):
       elem_award_number = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "awardNumber"), {
         "awardNumberType": funding_reference["award_number"]["award_number_type"]
        })
+      elem_award_number.text = funding_reference["award_number"]["award_number"]
       if funding_reference["award_number"].get("award_uri"):
         elem_award_number.set("awardURI", funding_reference["award_number"]["award_uri"])
-      elem_award_number.text = funding_reference["award_number"]["award_number"]
 
+    # 研究課題名
+    # https://schema.irdb.nii.ac.jp/ja/schema/2.0/23-.6
     if funding_reference.get("award_title"):
       for award_title in funding_reference["award_title"]:
-        elem_award_title = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "awardTitle"), {
-          "xml:lang": award_title.get("lang", "und") or "und"
-        })
+        elem_award_title = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "awardTitle"))
         elem_award_title.text = award_title["award_title"]
+        if award_title.get("lang") is not None:
+          elem_award_title.set("xml:lang", award_title["lang"])
 
 def add_file(entry, root):
+  """ファイルの情報をメタデータに追加する"""
   if entry.get("file"):
     for file in entry["file"]:
       elem_file = ET.SubElement(root, ET.QName(ns["jpcoar"], "file"))
@@ -611,7 +810,7 @@ def add_file(entry, root):
           elem_file_date.text = str(date["date"])
 
 def add_directory_file(data_dir, entry, root, base_url):
-  """ファイルの情報をメタデータに追加する"""
+  """実ファイルの情報をメタデータに追加する"""
   for file in glob.glob(f"{data_dir}/*"):
     filename = os.path.basename(file)
     if filename == "jpcoar20.yaml":

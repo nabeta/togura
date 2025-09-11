@@ -209,15 +209,16 @@ def generate(data_dir, output_dir, base_url):
     if pub_date:
       publication_date = ET.SubElement(content, "publication_date")
       year = ET.SubElement(publication_date, "year")
-      year.text = str(pub_date.year).zfill(4)
-      month = ET.SubElement(publication_date, "month")
-      month.text = str(pub_date.month).zfill(2)
-      day = ET.SubElement(publication_date, "day")
-      day.text = str(pub_date.day).zfill(2)
+      if type(pub_date) is date:
+        year.text = str(pub_date.year).zfill(4)
+        month = ET.SubElement(publication_date, "month")
+        month.text = str(pub_date.month).zfill(2)
+        day = ET.SubElement(publication_date, "day")
+        day.text = str(pub_date.day).zfill(2)
 
-    if classification == "article":
-      elem_date = ET.SubElement(content, "date")
-      elem_date.text = pub_date.strftime("%Y%m%d")
+        if classification == "article":
+          elem_date = ET.SubElement(content, "date")
+          elem_date.text = pub_date.strftime("%Y%m%d")
 
   if entry.get("date") and content_classification.text == "03":
     date_list = ET.SubElement(content, "date_list")
@@ -230,8 +231,9 @@ def generate(data_dir, output_dir, base_url):
     relation_list = ET.SubElement(content, "relation_list")
     for relation in entry["relation"]:
       related_content = ET.SubElement(relation_list, "related_content")
-      related_content.set("type", relation["related_identifier"]["identifier_type"])
-      related_content.set("relation", relation["relation_type"])
+      if relation["related_identifier"].get("identifier_type"):
+        related_content.set("type", relation["related_identifier"]["identifier_type"])
+        related_content.set("relation", relation["relation_type"])
       related_content.text = relation["related_identifier"]["identifier"]
 
   if content_classification.text in ["02", "03"]:

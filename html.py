@@ -75,7 +75,7 @@ def generate(data_dir, output_dir, base_url, per_page = 100):
     index_html = template_index.render(entries = entries[0:10], total_pages = len(indexes), site_name = config.site_name())
     with open(f"{output_dir}/index.html", "w", encoding = "utf-8") as file:
       file.write(index_html)
-      logger.debug(f"index.html")
+      logger.debug(f"{output_dir}/index.html")
 
   # 画像ファイルをコピー
   shutil.copytree("templates/images", f"{output_dir}/images", dirs_exist_ok = True)

@@ -785,18 +785,21 @@
             }
           },
           "related_title": {
-            "type": "object",
-            "required": [
-              "related_title"
-            ],
-            "additionalProperties": false,
-            "properties": {
-              "related_title": {
-                "type": "string"
-              },
-              "lang": {
-                "type": "string",
-                "pattern": "^[a-z]{2}(-[A-Za-z]+)?$"
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "related_title"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "related_title": {
+                  "type": "string"
+                },
+                "lang": {
+                  "type": "string",
+                  "pattern": "^[a-z]{2}(-[A-Za-z]+)?$"
+                }
               }
             }
           }
@@ -871,21 +874,29 @@
       "type": "array",
       "items": {
         "type": "object",
-        "additionalProperties": false,
         "properties": {
           "funder_identifier": {
-            "type": "string"
-          },
-          "funder_identifier_type": {
-            "type": "string",
-            "enum": [
-              "Crossref Funder",
-              "e-Rad_funder",
-              "GRID",
-              "ISNI",
-              "ROR",
-              "Other"
-            ]
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "funder_identifier": {
+                "type": "string"
+              },
+              "funder_identifier_type": {
+                "type": "string",
+                "enum": [
+                  "Crossref Funder",
+                  "e-Rad_funder",
+                  "GRID",
+                  "ISNI",
+                  "ROR",
+                  "Other"
+                ]
+              },
+              "funder_identifier_type_uri": {
+                "type": "string"
+              }
+            }
           },
           "funder_name": {
             "type": "array",
@@ -1116,18 +1127,21 @@
         "additionalProperties": false,
         "properties": {
           "conference_name": {
-            "type": "object",
-            "required": [
-              "conference_name"
-            ],
-            "additionalProperties": false,
-            "properties": {
-              "conference_name": {
-                "type": "string"
-              },
-              "lang": {
-                "type": "string",
-                "pattern": "^[a-z]{2}(-[A-Za-z]+)?$"
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "conference_name"
+              ],
+              "properties": {
+                "conference_name": {
+                  "type": "string"
+                },
+                "lang": {
+                  "type": "string",
+                  "pattern": "^[a-z]{2}(-[A-Za-z]+)?$"
+                }
               }
             }
           },
@@ -1135,15 +1149,21 @@
             "type": "integer"
           },
           "conference_sponsor": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "conference_sponsor": {
-                "type": "string"
-              },
-              "lang": {
-                "type": "string",
-                "pattern": "^[a-z]{2}(-[A-Za-z]+)?$"
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "conference_sponsor"
+              ],
+              "properties": {
+                "conference_sponsor": {
+                  "type": "string"
+                },
+                "lang": {
+                  "type": "string",
+                  "pattern": "^[a-z]{2}(-[A-Za-z]+)?$"
+                }
               }
             }
           },
@@ -1160,31 +1180,40 @@
             }
           },
           "conference_venue": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "conference_venue": {
-                "type": "string"
-              },
-              "lang": {
-                "type": "string",
-                "pattern": "^[a-z]{2}(-[A-Za-z]+)?$"
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "conference_venue"
+              ],
+              "properties": {
+                "conference_venue": {
+                  "type": "string"
+                },
+                "lang": {
+                  "type": "string",
+                  "pattern": "^[a-z]{2}(-[A-Za-z]+)?$"
+                }
               }
             }
           },
           "conference_place": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "conference_place"
-            ],
-            "properties": {
-              "conference_place": {
-                "type": "string"
-              },
-              "lang": {
-                "type": "string",
-                "pattern": "^[a-z]{2}(-[A-Za-z]+)?$"
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "conference_place"
+              ],
+              "properties": {
+                "conference_place": {
+                  "type": "string"
+                },
+                "lang": {
+                  "type": "string",
+                  "pattern": "^[a-z]{2}(-[A-Za-z]+)?$"
+                }
               }
             }
           },
