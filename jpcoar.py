@@ -955,8 +955,12 @@ def add_identifier(entry, root, base_url):
 
   if entry.get("identifier"):
     for identifier in entry["identifier"]:
-      elem_identifier = ET.SubElement(root, ET.QName(ns["jpcoar"], "identifier"), {"identifierType": jpcoar_identifier_type(identifier)})
-      elem_identifier.text = identifier
+      # TODO: URI形式になっていない識別子の扱いを検討する
+      try:
+        elem_identifier = ET.SubElement(root, ET.QName(ns["jpcoar"], "identifier"), {"identifierType": jpcoar_identifier_type(identifier)})
+        elem_identifier.text = identifier
+      except AttributeError:
+        continue
 
 def add_funding_reference(entry, root):
   """助成情報をメタデータに追加する"""
