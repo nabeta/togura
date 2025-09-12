@@ -258,9 +258,9 @@
               </dt>
               <dd class="col-sm-10">
                 <dl class="row">
-                  <dt class="col-sm-2">{{ funding_reference.funder_identifier_type }}</dt>
+                  <dt class="col-sm-2">{{ funding_reference.funder_identifier.funder_identifier_type }}</dt>
                   <dd class="col-sm-10">
-                    {{ funding_reference.funder_identifier }}
+                    {{ funding_reference.funder_identifier.funder_identifier }}
                   </dd>
                   {% for funder_name in funding_reference.funder_name %}
                     <dt class="col-sm-2">{{ funder_name.lang }}</dt>
