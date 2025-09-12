@@ -675,23 +675,58 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
 
         # 主催機関
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/35-.3
-        # TODO
+        conference_sponsors = None
+        if conference.find("./jpcoar:conferenceSponsor", ns) is not None:
+          conference_sponsors = []
+          for conference_sponsor in conference.findall("./jpcoar:conferenceSponsor", ns):
+            d = {"conference_sponsor": conference_sponsor.text}
+            lang = conference_sponsor.get("{http://www.w3.org/XML/1998/namespace}lang")
+            if lang is not None:
+              d["lang"] = lang
+            conference_sponsors.append(d)
 
         # 開催期間
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/35-.4
-        # TODO
+        conference_date = None
+        conf_date = conference.find("./jpcoar:conferenceDate", ns)
+        if conf_date is not None:
+          conference_date = {}
+          if conf_date.get("startDay"):
+            conference_date["start_day"] = conf_date["startDay"]
+          if conf_date.get("startMonth"):
+            conference_date["start_month"] = conf_date["startMonth"]
+          if conf_date.get("startYear"):
+            conference_date["start_year"] = conf_date["startYear"]
+          if conf_date.get("endDay"):
+            conference_date["end_day"] = conf_date["endDay"]
+          if conf_date.get("endMonth"):
+            conference_date["end_month"] = conf_date["endMonth"]
+          if conf_date.get("endYear"):
+            conference_date["end_year"] = conf_date["endYear"]
 
         # 開催会場
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/35-.5
-        # TODO
+        conference_venues = None
+        if conference.find("./jpcoar:conferenceVenue", ns) is not None:
+          conference_venues = []
+          for conference_venue in conference.findall("./jpcoar:conferenceVenue", ns):
+            d = {"conference_venue": conference_venue.text}
+            lang = conference_venue.get("{http://www.w3.org/XML/1998/namespace}lang")
+            if lang is not None:
+              d["lang"] = lang
+            conference_venues.append(d)
 
         # 開催地
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/35-.6
-        conference_place = conference.find("./jpcoar:conferencePlace", ns)
-        place = {"conference_place": conference_place.text}
-        lang = conference_place.get("{http://www.w3.org/XML/1998/namespace}lang")
-        if lang is not None:
-            place["lang"] = lang
+        conference_places = None
+        if conference.find("./jpcoar:conferencePlace", ns) is not None:
+          conference_places = []
+          for conference_place in conference.findall("./jpcoar:conferencePlace", ns):
+            d = {"conference_place": conference_place.text}
+            lang = conference_place.get("{http://www.w3.org/XML/1998/namespace}lang")
+            if lang is not None:
+              d["lang"] = lang
+            conference_places.append(d)
 
         # 開催国
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/35-.7
@@ -703,8 +738,12 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
 
         if sequence is not None:
           conf["conference_sequence"] = sequence.text
-        if place is not None:
-          conf["conference_place"] = place
+        if conference_sponsors is not None:
+          conf["conference_sponsor"] = conference_sponsors
+        if conference_venues is not None:
+          conf["conference_venue"] = conference_venues
+        if conference_places is not None:
+          conf["conference_place"] = conference_places
         if country is not None:
           conf["conference_country"] = country.text
 
@@ -840,38 +879,48 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
     c = record.xml.find(".//jpcoar:jpcoar/jpcoar:catalog", ns)
     catalog = None
     if c is not None:
-      catalog = {}
-
       # 提供機関
       # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.1
-      # TODO
+      if c.find("./jpcoar:contributor", ns) is not None:
+        catalog_contributors = []
+        for catalog_contributor in c.findall("./jpcoar:contributor", ns):
+          d = {"contributor_name": catalog_contributor.text}
+          lang = catalog_contributor.get("{http://www.w3.org/XML/1998/namespace}lang")
+          if lang is not None:
+            d["lang"] = lang
+          catalog_contributors.append(d)
 
       # 識別子
       # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.2
-      # TODO
+      if c.find("./jpcoar:identifier", ns) is not None:
+        catalog_identifiers = []
+        for catalog_identifier in c.findall("./jpcoar:identifier", ns):
+          catalog_identifiers.append(catalog_identifier.text)
 
       # タイトル
       # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.3
-      catalog_titles = []
-      for title in c.findall("./jpcoar:title", ns):
-        d = {"title": title.text}
-        lang = title.get("{http://www.w3.org/XML/1998/namespace}lang")
-        if lang is not None:
-          d["lang"] = lang
-        catalog_titles.append(d)
+      if c.find("./jpcoar:title", ns) is not None:
+        catalog_titles = []
+        for title in c.findall("./jpcoar:title", ns):
+          d = {"title": title.text}
+          lang = title.get("{http://www.w3.org/XML/1998/namespace}lang")
+          if lang is not None:
+            d["lang"] = lang
+          catalog_titles.append(d)
 
       # 内容記述
       # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.4
-      catalog_descriptions = []
-      for description in c.findall("./datacite:description", ns):
-        d = {"description": description.text}
-        description_type = description.get("descriptionType")
-        if description_type is not None:
-          d["description_type"] = description_type
-        lang = description.get("{http://www.w3.org/XML/1998/namespace}lang")
-        if lang is not None:
-          d["lang"] = lang
-        catalog_descriptions.append(d)
+      if c.find("./datacite:description", ns) is not None:
+        catalog_descriptions = []
+        for description in c.findall("./datacite:description", ns):
+          d = {"description": description.text}
+          description_type = description.get("descriptionType")
+          if description_type is not None:
+            d["description_type"] = description_type
+          lang = description.get("{http://www.w3.org/XML/1998/namespace}lang")
+          if lang is not None:
+            d["lang"] = lang
+          catalog_descriptions.append(d)
 
       # 主題
       # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.5
@@ -899,11 +948,15 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
       # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.9
       # TODO
 
-      catalog = {
-        "title": catalog_titles,
-        "description": catalog_descriptions,
-        "subject": catalog_subjects
-      }
+      catalog = {}
+      if catalog_identifiers is not None:
+        catalog["identifier"] = catalog_identifiers
+      if catalog_titles is not None:
+        catalog["title"] = catalog_titles
+      if catalog_descriptions is not None:
+        catalog["description"] = catalog_descriptions
+      if catalog_subjects is not None:
+        catalog["subject"] = catalog_subjects
       if catalog_access_rights is not None:
         catalog["access_rights"] = catalog_access_rights.text
 

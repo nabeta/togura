@@ -564,9 +564,9 @@ def generate(entry, base_url):
     degree_grantor = ET.SubElement(root, ET.QName(ns["jpcoar"], "degreeGrantor"))
     for d in entry["degree_grantor"]:
       for i in d["name_identifier"]:
-        name_identifier = ET.SubElement(degree_grantor, ET.QName(ns["jpcoar"], "nameIdentifier"), {
-          "nameIdentifierScheme": i.get("name_identifier_scheme", "unk")
-        })
+        name_identifier = ET.SubElement(degree_grantor, ET.QName(ns["jpcoar"], "nameIdentifier"))
+        if i.get("name_identifier_scheme"):
+          name_identifier.set("nameIdentifierScheme", i["name_identifier_scheme"])
         name_identifier.text = i["identifier"]
       for i in d["degree_grantor_name"]:
         degree_grantor_name = ET.SubElement(degree_grantor, ET.QName(ns["jpcoar"], "degreeGrantorName"))
@@ -579,11 +579,75 @@ def generate(entry, base_url):
   if entry.get("conference"):
     conference = ET.SubElement(root, ET.QName(ns["jpcoar"], "conference"))
     for d in entry["conference"]:
+      # 会議名
+      # https://schema.irdb.nii.ac.jp/ja/schema/2.0/35-.1
       conference_name = ET.SubElement(conference, ET.QName(ns["jpcoar"], "conferenceName"))
       for d_name in d["conference_name"]:
         conference_name.text = d_name["conference_name"]
-        if d.get("lang") is not None:
+        if d_name.get("lang") is not None:
           conference_name.set("xml:lang", d_name["lang"])
+
+      # 回次
+      # https://schema.irdb.nii.ac.jp/ja/schema/2.0/35-.2
+      if d.get("conference_sequence"):
+        conference_sequence = ET.SubElement(conference, ET.QName(ns["jpcoar"], "conferenceSequence"))
+        conference_sequence.text = str(d["conference_sequence"])
+
+      # 主催機関
+      # https://schema.irdb.nii.ac.jp/ja/schema/2.0/35-.3
+      if d.get("conference_sponsor"):
+        for d_sponsor in d["conference_sponsor"]:
+          conference_sponsor = ET.SubElement(conference, ET.QName(ns["jpcoar"], "conferenceSponsor"))
+          conference_sponsor.text = d_sponsor["conference_sponsor"]
+          if d_sponsor.get("lang") is not None:
+            conference_sponsor.set("xml:lang", d_sponsor["lang"])
+
+      # 開催期間
+      # https://schema.irdb.nii.ac.jp/ja/schema/2.0/35-.4
+      if d.get("conference_date"):
+        conference_date = ET.SubElement(conference, ET.QName(ns["jpcoar"], "conferenceDate"))
+        if d["conference_date"].get("conference_date") is not None:
+          conference_date.text = str(d["conference_date"]["conference_date"])
+          if d["conference_date"].get("lang") is not None:
+            conference_date.set("xml:lang", d["conference_date"]["lang"])
+        if d["conference_date"].get("start_day"):
+          conference_date.set("startDay", str(d["conference_date"]["start_day"]))
+        if d["conference_date"].get("start_month"):
+          conference_date.set("startMonth", str(d["conference_date"]["start_month"]))
+        if d["conference_date"].get("start_year"):
+          conference_date.set("startYear", str(d["conference_date"]["start_year"]))
+        if d["conference_date"].get("end_day"):
+          conference_date.set("endDay", str(d["conference_date"]["end_day"]))
+        if d["conference_date"].get("end_month"):
+          conference_date.set("endMonth", str(d["conference_date"]["end_month"]))
+        if d["conference_date"].get("end_year"):
+          conference_date.set("endYear", str(d["conference_date"]["end_year"]))
+
+      # 開催会場
+      # https://schema.irdb.nii.ac.jp/ja/schema/2.0/35-.5
+      if d.get("conference_venue"):
+        for d_venue in d["conference_venue"]:
+          conference_venue = ET.SubElement(conference, ET.QName(ns["jpcoar"], "conferenceVenue"))
+          conference_venue.text = d_venue["conference_venue"]
+          if d_venue.get("lang") is not None:
+            conference_venue.set("xml:lang", d_venue["lang"])
+
+      # 開催地
+      # https://schema.irdb.nii.ac.jp/ja/schema/2.0/35-.6
+      if d.get("conference_place"):
+        for d_place in d["conference_place"]:
+          conference_place = ET.SubElement(conference, ET.QName(ns["jpcoar"], "conferencePlace"))
+          conference_place.text = d_venue["conference_place"]
+          if d_place.get("lang") is not None:
+            conference_place.set("xml:lang", d_place["lang"])
+
+      # 開催国
+      # https://schema.irdb.nii.ac.jp/ja/schema/2.0/35-.7
+      if d.get("conference_country"):
+        conference_country = ET.SubElement(conference, ET.QName(ns["jpcoar"], "conferenceCountry"))
+        conference_country.text = d["conference_country"]["conference_country"]
+        if d["conference_country"].get("lang") is not None:
+          conference_country.set("xml:lang", d["conference_country"]["lang"])
 
   # 36 版
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/36
