@@ -61,75 +61,111 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
 
     # 3 作成者
     # https://schema.irdb.nii.ac.jp/ja/schema/2.0/3
-    # TODO
-    creators = []
-    for creator in record.xml.findall(".//jpcoar:jpcoar/jpcoar:creator", ns):
-      # 作成者識別子
-      # https://schema.irdb.nii.ac.jp/ja/schema/2.0/3-.1
-      creator_name_identifiers = []
-      if creator.find("./jpcoar:nameIdentifier", ns) is not None:
-        for name_identifier in creator.findall("./jpcoar:nameIdentifier", ns):
-          d = {
-            "identifier_scheme": name_identifier.get("nameIdentifierScheme")
-          }
-          if name_identifier.get("nameIdentifierURI") is not None:
-            d["identifier"] = name_identifier.get("nameIdentifierURI")
-          else:
-            d["identifier"] = name_identifier.text
-          creator_name_identifiers.append(d)
-
-      # 作成者姓名
-      # https://schema.irdb.nii.ac.jp/ja/schema/2.0/3-.2
-      creator_names = []
-      if creator.find("./jpcoar:creatorName", ns) is not None:
-        for creator_name in creator.findall("./jpcoar:creatorName", ns):
-          d = {"name": creator_name.text}
-          lang = creator_name.get("{http://www.w3.org/XML/1998/namespace}lang")
-          if lang is not None:
-            d["lang"] = lang
-          creator_names.append(d)
-
-      # 作成者所属
-      # https://schema.irdb.nii.ac.jp/ja/schema/2.0/3-.6
-      creator_affiliations = []
-      if creator.find("./jpcoar:affiliation", ns) is not None:
-        for affiliation in creator.findall("./jpcoar:affiliation", ns):
-          # 所属機関識別子
-          # https://schema.irdb.nii.ac.jp/ja/schema/2.0/3-.6-.1
-          name_identifiers = []
-          for name_identifier in affiliation.findall("./jpcoar:nameIdentifier", ns):
+    creators = None
+    if record.xml.find(".//jpcoar:jpcoar/jpcoar:creator", ns) is not None:
+      creators = []
+      for creator in record.xml.findall(".//jpcoar:jpcoar/jpcoar:creator", ns):
+        # 作成者識別子
+        # https://schema.irdb.nii.ac.jp/ja/schema/2.0/3-.1
+        creator_name_identifiers = []
+        if creator.find("./jpcoar:nameIdentifier", ns) is not None:
+          for name_identifier in creator.findall("./jpcoar:nameIdentifier", ns):
             d = {
-              "identifier_scheme": name_identifier.get("nameIdentifierScheme"),
-              "identifier": name_identifier.text
+              "identifier_scheme": name_identifier.get("nameIdentifierScheme")
             }
-            if name_identifier.get("nameIdentifierURI"):
-              d["name_identifier_uri"] = name_identifier.get("nameIdentifierURI")
-            name_identifiers.append(d)
+            if name_identifier.get("nameIdentifierURI") is not None:
+              d["identifier"] = name_identifier.get("nameIdentifierURI")
+            else:
+              d["identifier"] = name_identifier.text
+            creator_name_identifiers.append(d)
 
-          # 所属機関名
-          # https://schema.irdb.nii.ac.jp/ja/schema/2.0/3-.6-.2
-          affiliation_names = []
-          for affiliation_name in affiliation.findall("./jpcoar:affiliationName", ns):
-            d = {"name": affiliation_name.text}
-            lang = affiliation_name.get("{http://www.w3.org/XML/1998/namespace}lang")
+        # 作成者姓名
+        # https://schema.irdb.nii.ac.jp/ja/schema/2.0/3-.2
+        creator_names = []
+        if creator.find("./jpcoar:creatorName", ns) is not None:
+          for creator_name in creator.findall("./jpcoar:creatorName", ns):
+            d = {"name": creator_name.text}
+            lang = creator_name.get("{http://www.w3.org/XML/1998/namespace}lang")
             if lang is not None:
               d["lang"] = lang
-            affiliation_names.append(d)
+            creator_names.append(d)
 
-          creator_affiliations.append({
-            "name_identifier": name_identifiers,
-            "affiliation_name": affiliation_names
-          })
+        # 作成者姓
+        # https://schema.irdb.nii.ac.jp/ja/schema/2.0/3-.3
+        creator_family_names = None
+        if creator.find("./jpcoar:familyName", ns) is not None:
+          creator_family_names = []
+          for creator_family_name in creator.findall("./jpcoar:familyName", ns):
+            d = {"name": creator_family_name.text}
+            lang = creator_family_name.get("{http://www.w3.org/XML/1998/namespace}lang")
+            if lang is not None:
+              d["lang"] = lang
+            creator_family_names.append(d)
 
-      creators.append({
-        "name_identifier": creator_name_identifiers,
-        "creator_name": creator_names,
-        "affiliation": creator_affiliations
-      })
+        # 作成者名
+        # https://schema.irdb.nii.ac.jp/ja/schema/2.0/3-.4
+        creator_given_names = None
+        if creator.find("./jpcoar:givenName", ns) is not None:
+          creator_given_names = []
+          for creator_given_name in creator.findall("./jpcoar:givenName", ns):
+            d = {"name": creator_given_name.text}
+            lang = creator_given_name.get("{http://www.w3.org/XML/1998/namespace}lang")
+            if lang is not None:
+              d["lang"] = lang
+            creator_given_names.append(d)
+
+        # 作成者別名
+        # https://schema.irdb.nii.ac.jp/ja/schema/2.0/3-.5
+        creator_alternatives = None
+        if creator.find("./jpcoar:Alternative", ns) is not None:
+          creator_alternatives = []
+          for creator_alternative in creator.findall("./jpcoar:Alternative", ns):
+            d = {"name": creator_alternative.text}
+            lang = creator_alternative.get("{http://www.w3.org/XML/1998/namespace}lang")
+            if lang is not None:
+              d["lang"] = lang
+            creator_alternatives.append(d)
+
+        # 作成者所属
+        # https://schema.irdb.nii.ac.jp/ja/schema/2.0/3-.6
+        creator_affiliations = []
+        if creator.find("./jpcoar:affiliation", ns) is not None:
+          for affiliation in creator.findall("./jpcoar:affiliation", ns):
+            # 所属機関識別子
+            # https://schema.irdb.nii.ac.jp/ja/schema/2.0/3-.6-.1
+            name_identifiers = []
+            for name_identifier in affiliation.findall("./jpcoar:nameIdentifier", ns):
+              d = {
+                "identifier_scheme": name_identifier.get("nameIdentifierScheme"),
+                "identifier": name_identifier.text
+              }
+              if name_identifier.get("nameIdentifierURI"):
+                d["name_identifier_uri"] = name_identifier.get("nameIdentifierURI")
+              name_identifiers.append(d)
+
+            # 所属機関名
+            # https://schema.irdb.nii.ac.jp/ja/schema/2.0/3-.6-.2
+            affiliation_names = []
+            for affiliation_name in affiliation.findall("./jpcoar:affiliationName", ns):
+              d = {"name": affiliation_name.text}
+              lang = affiliation_name.get("{http://www.w3.org/XML/1998/namespace}lang")
+              if lang is not None:
+                d["lang"] = lang
+              affiliation_names.append(d)
+
+            creator_affiliations.append({
+              "name_identifier": name_identifiers,
+              "affiliation_name": affiliation_names
+            })
+
+        creators.append({
+          "name_identifier": creator_name_identifiers,
+          "creator_name": creator_names,
+          "affiliation": creator_affiliations
+        })
 
     # 4 寄与者
     # https://schema.irdb.nii.ac.jp/ja/schema/2.0/4
-    # TODO
     contributors = None
     if record.xml.find(".//jpcoar:jpcoar/jpcoar:contributor", ns) is not None:
       contributors = []
@@ -158,6 +194,42 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
             if lang is not None:
               d["lang"] = lang
             contributor_names.append(d)
+
+        # 寄与者姓
+        # https://schema.irdb.nii.ac.jp/ja/schema/2.0/4-.3
+        contributor_family_names = None
+        if contributor.find("./jpcoar:familyName", ns) is not None:
+          contributor_family_names = []
+          for contributor_family_name in contributor.findall("./jpcoar:familyName", ns):
+            d = {"name": contributor_family_name.text}
+            lang = contributor_family_name.get("{http://www.w3.org/XML/1998/namespace}lang")
+            if lang is not None:
+              d["lang"] = lang
+            contributor_family_names.append(d)
+
+        # 寄与者名
+        # https://schema.irdb.nii.ac.jp/ja/schema/2.0/4-.4
+        contributor_given_names = None
+        if contributor.find("./jpcoar:givenName", ns) is not None:
+          contributor_given_names = []
+          for contributor_given_name in contributor.findall("./jpcoar:givenName", ns):
+            d = {"name": contributor_given_name.text}
+            lang = contributor_given_name.get("{http://www.w3.org/XML/1998/namespace}lang")
+            if lang is not None:
+              d["lang"] = lang
+            contributor_given_names.append(d)
+
+        # 寄与者別名
+        # https://schema.irdb.nii.ac.jp/ja/schema/2.0/4-.5
+        contributor_alternatives = None
+        if contributor.find("./jpcoar:Alternative", ns) is not None:
+          contributor_alternatives = []
+          for contributor_alternative in contributor.findall("./jpcoar:Alternative", ns):
+            d = {"name": contributor_alternative.text}
+            lang = contributor_alternative.get("{http://www.w3.org/XML/1998/namespace}lang")
+            if lang is not None:
+              d["lang"] = lang
+            contributor_alternatives.append(d)
 
         # 寄与者所属
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/4-.6
