@@ -897,15 +897,15 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
       for file in record.xml.findall(".//jpcoar:jpcoar/jpcoar:file", ns):
         # 本文URI
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/43-.1
-        uri = None
+        file_uri = None
         if file.find("./jpcoar:URI", ns) is not None:
-          uri = file.find("./jpcoar:URI", ns).text
+          file_uri = file.find("./jpcoar:URI", ns).text
 
         # ファイルフォーマット
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/43-.2
-        mime_type = None
+        file_mime_type = None
         if file.find("./jpcoar:mimeType", ns) is not None:
-          mime_type = file.find("./jpcoar:mimeType", ns).text
+          file_mime_type = file.find("./jpcoar:mimeType", ns).text
 
         # サイズ
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/43-.3
@@ -933,10 +933,10 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
         if v is not None:
           file_version = v.text
 
-        if uri is not None:
-          d = {"uri": uri}
-        if mime_type is not None:
-          d["mime_type"] = mime_type
+        if file_uri is not None:
+          d = {"uri": file_uri}
+        if file_mime_type is not None:
+          d["mime_type"] = file_mime_type
         if file_extents is not None:
           d["extent"] = file_extents
         if file_dates is not None:
@@ -944,7 +944,9 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
             d["date"] = file_dates
         if file_version is not None:
           d["version"] = file_version
-        files.append(d)
+
+        if d.get("uri") is not None:
+          files.append(d)
 
     # 44 カタログ
     # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44
@@ -982,6 +984,7 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
 
       # 内容記述
       # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.4
+      catalog_descriptions = None
       if c.find("./datacite:description", ns) is not None:
         catalog_descriptions = []
         for description in c.findall("./datacite:description", ns):
@@ -996,29 +999,62 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
 
       # 主題
       # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.5
-      catalog_subjects = []
-      for subject in c.findall("./jpcoar:subject", ns):
-        d = {"subject": subject.text}
-        lang = subject.get("{http://www.w3.org/XML/1998/namespace}lang")
-        if lang is not None:
-          d["lang"] = lang
-        catalog_subjects.append(d)
+      catalog_subjects = None
+      if c.find("./jpcoar:subject", ns) is not None:
+        catalog_subjects = []
+        for subject in c.findall("./jpcoar:subject", ns):
+          d = {"subject": subject.text}
+          lang = subject.get("{http://www.w3.org/XML/1998/namespace}lang")
+          if lang is not None:
+            d["lang"] = lang
+          catalog_subjects.append(d)
 
       # ライセンス
       # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.6
-      catalog_access_rights = c.find("./dcterms:accessRights", ns)
+      catalog_licenses = None
+      if c.find("./jpcoar:license", ns) is not None:
+        catalog_licenses = []
+        for catalog_license in c.findall("./jpcoar:license", ns):
+          d = {"license": catalog_license.text}
+          license_type = catalog_license.get("licenseType")
+          if license_type is not None:
+            d["license_type"] = license_type
+          license_url = catalog_license.get("rdf:resource")
+          if license_url is not None:
+            d["license_uri"] = license_url
+          lang = catalog_license.get("{http://www.w3.org/XML/1998/namespace}lang")
+          if lang is not None:
+            d["lang"] = lang
+          catalog_licenses.append(d)
 
       # 権利情報
       # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.7
-      # TODO
+      catalog_rights = None
+      if c.find("./dc:rights", ns) is not None:
+        for catalog_right in c.findall("./dc:rights", ns):
+          d = {"rights": catalog_right.text}
+          rights_url = catalog_right.get("rdf:resource")
+          if rights_url is not None:
+            d["rights_uri"] = rights_url
+          lang = catalog_right.get("{http://www.w3.org/XML/1998/namespace}lang")
+          if lang is not None:
+            d["lang"] = lang
+          catalog_rights.append(d)
 
       # アクセス権
       # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.8
-      # TODO
+      catalog_access_rights = c.find("./dcterms:accessRights", ns)
 
       # 代表画像
       # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.9
-      # TODO
+      c_file = c.find("./jpcoar:file", ns)
+      catalog_file = None
+      if c_file is not None:
+        catalog_file = {
+          "uri": c_file.text
+        }
+        if c_file.get("objectType"):
+          catalog_file["object_type"] = c_file.get("objectType")
 
       catalog = {}
       if catalog_identifiers is not None:
@@ -1029,8 +1065,14 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
         catalog["description"] = catalog_descriptions
       if catalog_subjects is not None:
         catalog["subject"] = catalog_subjects
+      if catalog_licenses is not None:
+        catalog["license"] = catalog_licenses
+      if catalog_rights is not None:
+        catalog["rights"] = catalog_rights
       if catalog_access_rights is not None:
         catalog["access_rights"] = catalog_access_rights.text
+      if catalog_file is not None:
+        catalog["file"] = catalog_file
 
     entry = {
       "title": titles,
