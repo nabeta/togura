@@ -527,9 +527,17 @@
           "publication_place": {
             "type": "array",
             "items": {
-              "publication_place": {
-                "type": "string",
-                "pattern": "^[A-Z]{3}$"
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "publication_place": {
+                  "type": "string",
+                  "pattern": "^[A-Z]{3}$"
+                },
+                "lang": {
+                  "type": "string",
+                  "pattern": "^[a-z]{2}(-[A-Za-z]+)?$"
+                }
               }
             }
           }
@@ -847,16 +855,16 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "westBoundLongitude": {
+              "west_bound_longitude": {
                 "type": "number"
               },
-              "eastBoundLongitude": {
+              "east_bound_longitude": {
                 "type": "number"
               },
-              "southBoundLatitude": {
+              "south_bound_latitude": {
                 "type": "number"
               },
-              "northBoundLatitude": {
+              "north_bound_latitude": {
                 "type": "number"
               }
             }
@@ -1482,7 +1490,7 @@
                 "type": "string",
                 "format": "uri"
               },
-              "licence_type": {
+              "license_type": {
                 "type": "string",
                 "enum": [
                   "file",
@@ -1505,6 +1513,9 @@
               "rights": {
                 "type": "string"
               },
+              "rights_uri": {
+                "type": "string"
+              },
               "lang": {
                 "type": "string",
                 "pattern": "^[a-z]{2}(-[A-Za-z]+)?$"
@@ -1513,16 +1524,13 @@
           }
         },
         "access_rights": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "enum": [
-              "embargoed access",
-              "metadata only access",
-              "open access",
-              "restricted access"
-            ]
-          }
+          "type": "string",
+          "enum": [
+            "embargoed access",
+            "metadata only access",
+            "open access",
+            "restricted access"
+          ]
         },
         "file": {
           "type": "object",

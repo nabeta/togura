@@ -461,17 +461,38 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
 
     # 22 位置情報
     # https://schema.irdb.nii.ac.jp/ja/schema/2.0/22
-    # TODO
     geo_locations = None
     if record.xml.find(".//jpcoar:jpcoar/datacite:geoLocation", ns) is not None:
       geo_locations = []
       for geo_location in record.xml.findall(".//jpcoar:jpcoar/datacite:geoLocation", ns):
+        d = {}
+        # 位置情報（点）
+        # https://schema.irdb.nii.ac.jp/ja/schema/2.0/22-.1
+        if geo_location.find("./datacite:geoLocationPoint"):
+          d["geo_location_point"] = {
+            "point_longitude": geo_location.find("./datacite:geoLocationPoint/datacite:pointLongitude"),
+            "point_latitude": geo_location.find("./datacite:geoLocationPoint/datacite:pointLatitude")
+          }
+
+        # 位置情報（空間）
+        # https://schema.irdb.nii.ac.jp/ja/schema/2.0/22-.2
+        if geo_location.find("./datacite:geoLocationBox"):
+          d["geo_location_box"] = {
+            "west_bound_longitude": geo_location.find("./datacite:geoLocationBox/datacite:westBoundLongitude"),
+            "east_bound_longitude": geo_location.find("./datacite:geoLocationBox/datacite:eastBoundLongitude"),
+            "south_bound_latitude": geo_location.find("./datacite:geoLocationBox/datacite:southBoundLatitude"),
+            "north_bound_latitude": geo_location.find("./datacite:geoLocationBox/datacite:northBoundLatitude")
+          }
+
+        # 位置情報（自由記述）
+        # https://schema.irdb.nii.ac.jp/ja/schema/2.0/22-.2
         geo_location_places = []
         for geo_location_place in geo_location.findall("./datacite:geoLocationPlace"):
           geo_location_places.append(geo_location_place.text)
-        geo_locations.append({
-          "geo_location_place": geo_location_places
-        })
+        if len(geo_location_places) > 0:
+          d["geo_location_place"] = geo_location_places
+
+        geo_locations.append(d)
 
     # 23 助成情報
     # https://schema.irdb.nii.ac.jp/ja/schema/2.0/23
