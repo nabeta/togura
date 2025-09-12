@@ -244,8 +244,7 @@ catalog:
   rights:
   - rights: 二次利用の条件は原本の所蔵者によって異なる
     lang: ja
-  access_rights:
-  - open access
+  access_rights: open access
   file:
     object_type: thumbnail
     uri: https://xxx.xxx.xxx.xxx/xxx/thumbnail.jpg（準備中）
