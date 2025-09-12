@@ -73,6 +73,9 @@ def main():
   migrate_parser.add_argument(
     '--date-until', type=str, help='移行対象の終了日'
   )
+  migrate_parser.add_argument(
+    '--metadata-only', help='メタデータのみをダウンロードする', action='store_true'
+  )
   args = parser.parse_args()
 
   match args.subcommand:
@@ -101,7 +104,7 @@ def main():
       else:
         date_until = args.date_until
 
-      migrate.migrate(args.base_url, metadata_prefix, date_from, date_until, args.export_dir)
+      migrate.migrate(args.base_url, metadata_prefix, date_from, date_until, args.export_dir, args.metadata_only)
     case _:
       main()
 

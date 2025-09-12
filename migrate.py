@@ -10,7 +10,7 @@ import yaml
 logger = getLogger(__name__)
 logger.setLevel(DEBUG)
 
-def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
+def migrate(base_url, metadata_prefix, date_from, date_until, export_dir, metadata_only):
   sickle = Sickle(base_url)
   records = sickle.ListRecords(
     **{"metadataPrefix": metadata_prefix,
@@ -1175,17 +1175,18 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
     os.makedirs(dir_name, exist_ok = True)
 
     # ファイルのダウンロード
-    if files is not None:
-      for file in files:
-        if file.get("uri") is not None:
-          if urlparse(file['uri']).hostname == urlparse(base_url).hostname and urlparse(file['uri']).scheme == urlparse(base_url).scheme:
-            response = requests.get(file['uri'], allow_redirects=False)
-            if response.status_code == requests.codes.ok:
-              with open(f"{dir_name}/{file['uri'].split('/')[-1]}", "wb") as f:
-                f.write(response.content)
-                logger.debug(f"downloaded {file['uri']}")
-            else:
-              logger.debug(f"skipped {file['uri']}")
+    if metadata_only is False:
+      if files is not None:
+        for file in files:
+          if file.get("uri") is not None:
+            if urlparse(file['uri']).hostname == urlparse(base_url).hostname and urlparse(file['uri']).scheme == urlparse(base_url).scheme:
+              response = requests.get(file['uri'], allow_redirects=False)
+              if response.status_code == requests.codes.ok:
+                with open(f"{dir_name}/{file['uri'].split('/')[-1]}", "wb") as f:
+                  f.write(response.content)
+                  logger.debug(f"downloaded {file['uri']}")
+              else:
+                logger.debug(f"skipped {file['uri']}")
 
     # メタデータの作成
     with open(f"{dir_name}/jpcoar20.yaml", "w", encoding = "utf-8") as file:
