@@ -510,7 +510,7 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/20-.2
         related_titles = []
         for related_title in relation.findall("./jpcoar:relatedTitle", ns):
-          d_title = {"title": related_title.text}
+          d_title = {"related_title": related_title.text}
           lang = related_title.get("{http://www.w3.org/XML/1998/namespace}lang")
           if lang is not None:
             d_title["lang"] = lang

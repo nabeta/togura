@@ -436,8 +436,7 @@ def generate(entry, base_url):
           elem_related_title = ET.SubElement(elem_relation, ET.QName(ns["jpcoar"], "related_title"))
           elem_related_title.text = related_title["related_title"]
           if related_title.get("lang") is not None:
-            elem_related_title.set("xml:lang", d_name["lang"])
-
+            elem_related_title.set("xml:lang", related_title["lang"])
 
   # 21 時間的範囲
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/21
