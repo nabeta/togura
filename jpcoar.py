@@ -1006,10 +1006,10 @@ def add_funding_reference(entry, root):
     # 研究課題番号
     # https://schema.irdb.nii.ac.jp/ja/schema/2.0/23-.5
     if funding_reference.get("award_number"):
-      elem_award_number = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "awardNumber"), {
-        "awardNumberType": funding_reference["award_number"]["award_number_type"]
-       })
+      elem_award_number = ET.SubElement(elem_funding_reference, ET.QName(ns["jpcoar"], "awardNumber"))
       elem_award_number.text = funding_reference["award_number"]["award_number"]
+      if funding_reference["award_number"].get("award_number_type"):
+        elem_award_number.set("awardNumberType", funding_reference["award_number"]["award_number_type"])
       if funding_reference["award_number"].get("award_uri"):
         elem_award_number.set("awardURI", funding_reference["award_number"]["award_uri"])
 

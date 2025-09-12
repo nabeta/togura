@@ -311,21 +311,21 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
               d["identifier"] = name_identifier.text
             name_identifiers.append(d)
 
-      # 権利者名
-      # https://schema.irdb.nii.ac.jp/ja/schema/2.0/7-.2
-      if rights_holder.find("./jpcoar:rightsHolderName", ns) is not None:
-        rights_holder_names = []
-        for rights_holder_name in rights_holder.findall("./jpcoar:rightsHolderName", ns):
-          d = {"name": rights_holder_name.text}
-          lang = rights_holder_name.get("{http://www.w3.org/XML/1998/namespace}lang")
-          if lang is not None:
-            d["lang"] = lang
-          rights_holder_names.append(d)
+        # 権利者名
+        # https://schema.irdb.nii.ac.jp/ja/schema/2.0/7-.2
+        if rights_holder.find("./jpcoar:rightsHolderName", ns) is not None:
+          rights_holder_names = []
+          for rights_holder_name in rights_holder.findall("./jpcoar:rightsHolderName", ns):
+            d = {"name": rights_holder_name.text}
+            lang = rights_holder_name.get("{http://www.w3.org/XML/1998/namespace}lang")
+            if lang is not None:
+              d["lang"] = lang
+            rights_holder_names.append(d)
 
-        rights_holders.append({
-          "name_identifier": name_identifiers,
-          "rights_holder_name": rights_holder_names
-        })
+          rights_holders.append({
+            "name_identifier": name_identifiers,
+            "rights_holder_name": rights_holder_names
+          })
 
     # 8 主題
     # https://schema.irdb.nii.ac.jp/ja/schema/2.0/8
@@ -586,22 +586,45 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
 
         # 助成機関名
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/23-.2
-        funder_names = []
-        for funder_name in funding_reference.findall("./jpcoar:funderName", ns):
-          d_name = {"funder_name": funder_name.text}
-          lang = funder_name.get("{http://www.w3.org/XML/1998/namespace}lang")
-          if lang is not None:
-            d_name["lang"] = lang
-          funder_names.append(d_name)
-        d["funder_name"] = funder_names
+        funder_names = None
+        if funding_reference.find("./jpcoar:funderName", ns) is not None:
+          funder_names = []
+          for funder_name in funding_reference.findall("./jpcoar:funderName", ns):
+            d_name = {"funder_name": funder_name.text}
+            lang = funder_name.get("{http://www.w3.org/XML/1998/namespace}lang")
+            if lang is not None:
+              d_name["lang"] = lang
+            funder_names.append(d_name)
+          d["funder_name"] = funder_names
 
         # プログラム情報識別子
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/23-.3
-        # TODO
+        funding_stream_identifier = funding_reference.find("./jpcoar:fundingStreamIdentifier", ns)
+        if funding_stream_identifier is not None:
+          d["funding_stream_identifier"] = {
+            "funding_stream_identifier": funding_stream_identifier.text
+          }
+          if funding_stream_identifier.get("fundingStreamIdentifierType"):
+            d["funding_stream_identifier"]["funding_stream_identifier_type"] = funding_stream_identifier.get(
+              "fundingStreamIdentifierType"
+            )
+          if funding_stream_identifier.get("fundingStreamIdentifierTypeURI"):
+            d["funding_stream_identifier"]["funding_stream_identifier_type_uri"] = funding_stream_identifier.get(
+              "fundingStreamIdentifierTypeURI"
+            )
 
         # プログラム情報
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/23-.4
-        # TODO
+        funding_streams = None
+        if funding_reference.find("./jpcoar:fundingStream", ns) is None:
+          funding_streams = []
+          for funding_stream in funding_reference.findall("./jpcoar:fundingStream", ns):
+            d = {"funding_stream": funding_stream.text}
+            lang = funding_stream.get("{http://www.w3.org/XML/1998/namespace}lang")
+            if lang is not None:
+              d["lang"] = lang
+            funding_streams.append(d)
+          d["funding_stream"] = funding_streams
 
         # 研究課題番号
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/23-.5
@@ -609,7 +632,7 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
         award_number = funding_reference.find("./jpcoar:awardNumber", ns)
         if award_number is None:
           award_number = funding_reference.find("./datacite:awardNumber", ns)
-        if award_number:
+        if award_number is not None:
           d["award_number"] = {
             "award_number": award_number.text
           }
