@@ -714,14 +714,31 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir):
     if record.xml.find(".//jpcoar:jpcoar/jpcoar:degreeGrantor", ns) is not None:
       degree_grantors = []
       for degree_grantor in record.xml.findall(".//jpcoar:jpcoar/jpcoar:degreeGrantor", ns):
-        degree_grantor_names = []
-        for degree_grantor_name in degree_grantor.findall("./jpcoar:degreeGrantorName", ns):
-          d = {"degree_grantor_name": degree_grantor_name.text}
-          lang = degree_grantor_name.get("{http://www.w3.org/XML/1998/namespace}lang")
-          if lang is not None:
-            d["lang"] = lang
-          degree_grantor_names.append(d)
+        # 学位授与機関識別子
+        # https://schema.irdb.nii.ac.jp/ja/schema/2.0/34-.1
+        degree_grantor_identifiers = None
+        if degree_grantor.find("./jpcoar:nameIdentifier", ns) is not None:
+          degree_grantor_identifiers = []
+          for degree_grantor_identifier in degree_grantor.findall("./jpcoar:nameIdentifier", ns):
+            d = {"identifier": degree_grantor_identifier.text}
+            if degree_grantor_identifier.get("nameIdentifierScheme"):
+              d["name_identifier_scheme"] = degree_grantor_identifier.get("nameIdentifierScheme")
+            degree_grantor_identifiers.append(d)
+
+        # 学位授与機関名
+        # https://schema.irdb.nii.ac.jp/ja/schema/2.0/34-.2
+        degree_grantor_names = None
+        if degree_grantor.find("./jpcoar:degreeGrantorName", ns) is not None:
+          degree_grantor_names = []
+          for degree_grantor_name in degree_grantor.findall("./jpcoar:degreeGrantorName", ns):
+            d = {"name": degree_grantor_name.text}
+            lang = degree_grantor_name.get("{http://www.w3.org/XML/1998/namespace}lang")
+            if lang is not None:
+              d["lang"] = lang
+            degree_grantor_names.append(d)
+
         degree_grantors.append({
+          "name_identifier": degree_grantor_identifiers,
           "degree_grantor_name": degree_grantor_names
         })
 

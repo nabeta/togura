@@ -562,16 +562,19 @@ def generate(entry, base_url):
   if entry.get("degree_grantor"):
     degree_grantor = ET.SubElement(root, ET.QName(ns["jpcoar"], "degreeGrantor"))
     for d in entry["degree_grantor"]:
-      for i in d["name_identifier"]:
-        name_identifier = ET.SubElement(degree_grantor, ET.QName(ns["jpcoar"], "nameIdentifier"))
-        if i.get("name_identifier_scheme"):
-          name_identifier.set("nameIdentifierScheme", i["name_identifier_scheme"])
-        name_identifier.text = i["identifier"]
-      for i in d["degree_grantor_name"]:
-        degree_grantor_name = ET.SubElement(degree_grantor, ET.QName(ns["jpcoar"], "degreeGrantorName"))
-        degree_grantor_name.text = i["name"]
-        if i.get("lang") is not None:
-          degree_grantor_name.set("xml:lang", i["lang"])
+      if d.get("name_identifier"):
+        for i in d["name_identifier"]:
+          for i in d["name_identifier"]:
+            name_identifier = ET.SubElement(degree_grantor, ET.QName(ns["jpcoar"], "nameIdentifier"))
+            if i.get("name_identifier_scheme"):
+              name_identifier.set("nameIdentifierScheme", i["name_identifier_scheme"])
+            name_identifier.text = i["identifier"]
+      if d.get("degree_grantor_name"):
+        for i in d["degree_grantor_name"]:
+          degree_grantor_name = ET.SubElement(degree_grantor, ET.QName(ns["jpcoar"], "degreeGrantorName"))
+          degree_grantor_name.text = i["name"]
+          if i.get("lang") is not None:
+            degree_grantor_name.set("xml:lang", i["lang"])
 
   # 35 会議記述
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/35
