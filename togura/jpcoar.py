@@ -261,7 +261,8 @@ def generate(entry, base_url):
   if entry.get("rights"):
     for d in entry["rights"]:
       rights = ET.SubElement(root, ET.QName(ns["dc"], "rights"))
-      rights.text = d["rights"]
+      if d.get("rights"):
+        rights.text = d["rights"]
       if d.get("rights_uri"):
         rights.set(ET.QName(ns["rdf"], "resource"), d["rights_uri"])
       if d.get("lang") is not None:
