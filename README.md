@@ -283,7 +283,7 @@ ToguraのダウンロードをGitで実行された方は、`git pull`でTogura�
 # yaml-language-server: $schema=../../schema/jpcoar.json
 ```
 
-コマンドの実行に使用するターミナルには、VSCode内蔵以外のものを使用することも可能です。Windowsの場合、PowerShellや[Windows Terminal](https://apps.microsoft.com/detail/9n0dx20hk701?hl=ja-JP&gl=JP)が利用可能です。ターミナルのウインドウの位置を自由に設定したい場合は、こちらのほうがおすすめです。
+コマンドの実行に使用するターミナルには、VSCode内蔵以外のものを使用することも可能です。Windowsの場合、PowerShellや[Windows Terminal](https://apps.microsoft.com/detail/9n0dx20hk701?hl=ja-JP&gl=JP)が利用可能です。ターミナルのウインドウの位置を自由に設定したい場合は、こちらのほうがおすすめです。  
 VSCode内蔵以外のターミナルを使用する場合は、Toguraのコマンドの実行前に、ターミナルの作業フォルダをToguraのフォルダに変更する必要があります。以下の実行例は、Toguraのフォルダが`ドキュメント`→`togura`にある場合のものです。
 
 ```powershell
