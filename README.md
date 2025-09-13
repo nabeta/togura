@@ -91,21 +91,16 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
 
 ### 動作テスト
 
-1. Windowsのエクスプローラーなどで、Toguraのフォルダを開きます。
-1. `samples`フォルダを開き、さらにその中にある`00_sample`フォルダを開きます。`article.pdf`ファイルと`dataset.txt`ファイル、ならびにメタデータファイル`jpcoar20.yaml`が保存されていることを確認します。
-1. 同様に、`samples`フォルダと同じ場所に`work`フォルダと`public`フォルダが存在することを確認します。
-1. `00_sample`フォルダを`work`フォルダにコピーします。
+1. Windowsのエクスプローラーなどで、Toguraのフォルダを開きます。`samples`、`work`、`public`フォルダが存在することを確認します。
+1. `samples`フォルダを開き、サンプルの資料のフォルダが保存されていることを確認します。
+1. `work`フォルダと`public`フォルダを開き、それぞれ中身が空であることを確認します。
+    - お使いのパソコンで隠しファイルを表示する設定になっている場合、`.keep`ファイルや`.well-known`フォルダが表示されます。
+1. `samples`フォルダの中にある`00_sample`などのフォルダをすべて選択して、`work`フォルダにコピーします。
 1. VSCodeに戻ってターミナルを開き、以下のコマンドを実行します。
     ```sh
     uv run python -X utf8 ./togura.py generate
     ```
-1. `public`フォルダの中に`00`フォルダが作成され、その中に以下のファイルが作成されていることを確認します。
-    - `article.pdf`
-    - `dataset.txt`
-    - `ro-crate-preview.html`: メタデータを表示するためのHTMLファイル。[RO-Crate](https://www.researchobject.org/ro-crate/)の規格に則ったファイル名になっています
-    - `ro-crate-metadata.json`: RO-CrateのメタデータJSONファイル
-    - `jpcoar20.xml`: JPCOARスキーマのXMLファイル
-1. 同様に、`public`フォルダの中にResourceSyncのXMLファイル`capabilitylist.xml`と`resourcelist.xml`が作成されていることを確認します。
+1. `public`フォルダの中に作成されている`index.html`ファイルを開き、サンプルの資料の情報が表示されていることを確認します。
 
 ### メタデータの書き方
 
@@ -147,7 +142,7 @@ Toguraによるリポジトリの構築処理が完了しました。
 - 登録一覧のHTMLファイル`index.html`
 - 登録番号のついたフォルダ
     - 登録した論文ファイル・研究データファイル
-    - `ro-crate-preview.html`: メタデータを表示するためのHTMLファイル
+    - `ro-crate-preview.html`: メタデータを表示するためのHTMLファイル。[RO-Crate](https://www.researchobject.org/ro-crate/)の規格に則ったファイル名になっています
     - `ro-crate-metadata.json`: RO-CrateのメタデータJSONファイル
     - `jpcoar20.xml`: JPCOARスキーマのXMLファイル
 
