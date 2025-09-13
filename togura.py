@@ -161,6 +161,9 @@ def generate():
   html.generate(data_dir, output_dir, base_url)
   resourcesync.generate(output_dir, base_url)
 
+  print("Toguraによるリポジトリの構築処理が完了しました。")
+  sys.exit(0)
+
 # エンバーゴ期間が終了している資料の一覧を出力する
 def check_expired_embargo(base_dir):
   for file in glob.glob(f"{base_dir}/*/jpcoar20.yaml"):

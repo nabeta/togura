@@ -73,6 +73,11 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
     uv venv
     uv pip install -r requirements.txt
     ```
+
+    以下のようなメッセージがターミナルに表示されていれば、インストールは完了しています。もしエラーになっている場合、後述の「エラー対応」をごらんください。
+    ```
+    Audited 8 packages in 1.45s
+    ```
 1. ターミナルで以下のコマンドを実行して、Toguraの初期設定を行います。このコマンドでは、設定ファイル`config.yaml`と、テンプレートのファイル`templates/head_custom.html`が作成されます。
     ```sh
     uv run python -X utf8 togura.py setup
@@ -131,7 +136,13 @@ VSCodeのターミナルで`togura.py generate`コマンドを実行し、YAML�
 ```sh
 uv run python -X utf8 ./togura.py generate
 ```
-スクリプトを実行すると、`public`フォルダの中に以下のファイルとフォルダが作成されます。エクスプローラーなどで`index.html`や`ro-crate-preview.html`ファイルを開き、登録した資料の情報が表示されることを確認してください。
+スクリプトの実行が正常に完了すると、ターミナルに以下のメッセージが表示されます。もしこのメッセージが表示されず、エラーになっている場合は、後述の「エラー対応」をごらんください。
+
+```
+Toguraによるリポジトリの構築処理が完了しました。
+```
+
+また、`public`フォルダの中に以下のファイルとフォルダが作成されます。エクスプローラーなどで`index.html`や`ro-crate-preview.html`ファイルを開き、登録した資料の情報が表示されることを確認してください。
 
 - 登録一覧のHTMLファイル`index.html`
 - 登録番号のついたフォルダ
@@ -216,6 +227,38 @@ uv run python -X utf8 ./togura.py check_expired_embargo --dir work
 1. 同様に`work`フォルダを開き、取り下げ対象の資料のフォルダを別のフォルダに移動、もしくは削除します。Toguraのフォルダに存在する`archive`フォルダに移動することをおすすめします。
 1. 「リポジトリ用ファイルの出力」の手順に沿って、`togura.py generate`コマンドを実行し、ファイルを再作成します。
 1. 「リポジトリ用ファイルの公開」の手順に沿って、再作成したファイルをWebサーバにアップロードします。
+
+### エラー対応
+
+#### uvコマンドの実行時にエラーになる
+
+uvコマンドのインストールを実行したのにエラーになる場合、uvコマンドが認識されていない可能性があります。VSCodeを再起動してください。
+
+#### togura.py generateコマンドの実行時にエラーになる
+
+`KeyError:`と表示されている場合、メタデータのYAMLファイルに記述の誤りがある可能性があります。エラーの上部の"DEBUG:"と表示されている行に、エラーが発生している資料の登録番号が表示されています。
+`work`フォルダの中にある当該登録番号のフォルダから`jpcoar20.yaml`ファイルをVSCodeで開き、メタデータでエラーになっている箇所（赤の波線が表示されています）を確認してください。メタデータを修正したら、再度`togura.py generate`コマンドを実行してください。
+
+以下のエラーの例は、登録番号`00`の資料のメタデータで`title`の記述が抜けている場合のものです。この場合、`work`フォルダの中の`00_`から始まるフォルダを開き、`jpcoar20.yaml`ファイルを修正することになります。
+
+```
+DEBUG:jpcoar:00 created
+Traceback (most recent call last):
+  File "/home/nabeta/Documents/togura/./togura.py", line 178, in <module>
+    main()
+    ~~~~^^
+  File "/home/nabeta/Documents/togura/./togura.py", line 85, in main
+    generate()
+    ~~~~~~~~^^
+  File "/home/nabeta/Documents/togura/./togura.py", line 153, in generate
+    root = jpcoar.generate(entry, base_url)
+  File "/home/nabeta/Documents/togura/jpcoar.py", line 227, in generate
+    for d in entry["title"]:
+             ~~~~~^^^^^^^^^
+KeyError: 'title'
+```
+
+メタデータでエラーが表示されている箇所がないのに`togura.py generate`コマンドでエラーになる場合、Toguraの不具合が考えられますので、後述の「使い方の質問」に記載されている連絡先までお問い合わせください。
 
 ### バックアップ
 
