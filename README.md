@@ -80,7 +80,7 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
     ```
 1. ターミナルで以下のコマンドを実行して、Toguraの初期設定を行います。このコマンドでは、設定ファイル`config.yaml`と、テンプレートのファイル`templates/head_custom.html`が作成されます。
     ```sh
-    uv run python -X utf8 togura.py setup
+    uv run python -X utf8 ./togura.py setup
     ```
     以下の項目を質問されますので、入力してください。
     - 組織の名称: 大学名など、機関リポジトリを運用する組織の名称です。
