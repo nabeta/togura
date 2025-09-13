@@ -131,7 +131,7 @@ VSCodeのターミナルで`togura.py generate`コマンドを実行し、YAML�
 ```sh
 uv run python -X utf8 ./togura.py generate
 ```
-スクリプトを実行すると、`public`フォルダの中に以下のファイルとフォルダが作成されます。
+スクリプトを実行すると、`public`フォルダの中に以下のファイルとフォルダが作成されます。エクスプローラーなどで`index.html`や`ro-crate-preview.html`ファイルを開き、登録した資料の情報が表示されることを確認してください。
 
 - 登録一覧のHTMLファイル`index.html`
 - 登録番号のついたフォルダ
