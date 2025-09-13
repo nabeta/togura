@@ -234,18 +234,19 @@ uv run python -X utf8 ./togura.py check_expired_embargo --dir work
 
 メタデータの編集は、VSCodeのほかにも、メモ帳などUTF-8の扱えるテキストエディタで行うことができます。ただし、メタデータの項目のチェック機能が使えなくなりますのでご注意ください。また、メタデータの保存の際には、文字コードがUTF-8になっていることを確認してください。  
 メモ帳などVSCode以外のテキストエディタで作成したメタデータでも、VSCodeでToguraを実行することで、メタデータの項目のチェック機能が使えるようになります。チェック機能を有効にするには、上述の「メタデータの書き方」に沿った場所にメタデータのファイルを保存し、かつメタデータの1行目に以下の行を追加する必要があります。
-    ```yaml
-    # yaml-language-server: $schema=../../schema/jpcoar.json
-    ```
+
+```yaml
+# yaml-language-server: $schema=../../schema/jpcoar.json
+```
 
 コマンドの実行に使用するターミナルには、VSCode内蔵以外のものを使用することも可能です。Windowsの場合、PowerShellや[Windows Terminal](https://apps.microsoft.com/detail/9n0dx20hk701?hl=ja-JP&gl=JP)が利用可能です。ターミナルのウインドウの位置を自由に設定したい場合は、こちらのほうがおすすめです。
 VSCode内蔵以外のターミナルを使用する場合は、Toguraのコマンドの実行前に、ターミナルの作業フォルダをToguraのフォルダに変更する必要があります。以下の実行例は、Toguraのフォルダが`ドキュメント`→`togura`にある場合のものです。
 
-    ```powershell
-    # Windowsの場合
-    cd $home
-    cd "Documents\togura"
-    ```
+```powershell
+# Windowsの場合
+cd $home
+cd "Documents\togura"
+```
 
 ### フォルダの構成
 
