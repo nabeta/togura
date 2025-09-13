@@ -200,6 +200,8 @@
               {% for right in entry.rights %}
                 <dt class="col-sm-2">{{ right.lang }}</dt>
                 <dd class="col-sm-10">{{ right.rights }}</dd>
+                <dt class="col-sm-2">URI</dt>
+                <dd class="col-sm-10">{{ right.rights_uri }}</dd>
               {% endfor %}
             </dl>
           </dd>
