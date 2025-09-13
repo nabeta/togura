@@ -232,7 +232,7 @@ uv run python -X utf8 ./togura.py check_expired_embargo --dir work
 
 #### uvコマンドの実行時にエラーになる
 
-uvコマンドのインストールを実行したのにエラーになる場合、uvコマンドが認識されていない可能性があります。VSCodeを再起動してください。
+VSCodeでuvコマンドのインストールを実行したのにエラーになる場合、uvコマンドがVSCodeの環境で認識されていない可能性があります。VSCodeを再起動してください。
 
 #### togura.py generateコマンドの実行時にエラーになる
 
