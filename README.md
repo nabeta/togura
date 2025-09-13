@@ -248,6 +248,12 @@ cd $home
 cd "Documents\togura"
 ```
 
+```sh
+# macOS・Linuxの場合
+cd
+cd Documents/togura
+```
+
 ### フォルダの構成
 
 - `archive`: 作業済み・取り下げ済みのファイルを保存するフォルダ
