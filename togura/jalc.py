@@ -1,13 +1,14 @@
 import os
 import yaml
 import xml.etree.ElementTree as ET
-import config
+from togura.config import Config
 from datetime import datetime
 from urllib.parse import urlparse, urljoin
 from logging import getLogger, DEBUG
 
 logger = getLogger(__name__)
 logger.setLevel(DEBUG)
+conf = Config()
 
 def generate(data_dir, output_dir, base_url):
   entry_id = os.path.basename(data_dir).split("_")[0]
@@ -93,7 +94,7 @@ def generate(data_dir, output_dir, base_url):
 
   body = ET.SubElement(root, "body")
   site_id = ET.SubElement(body, "site_id")
-  site_id.text = config.jalc_site_id()
+  site_id.text = conf.jalc_site_id
 
   content = ET.SubElement(body, "content", {"sequence": "0"})
   if classification:
@@ -242,7 +243,7 @@ def generate(data_dir, output_dir, base_url):
     if entry.get("publisher"):
       publisher_name.text = entry["publisher"][0]["publisher"]
     else:
-      publisher_name.text = config.organization()
+      publisher_name.text = conf.organization
 
   if entry.get("volume"):
     volume = ET.SubElement(content, "volume")

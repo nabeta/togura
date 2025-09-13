@@ -9,13 +9,13 @@ import sys
 import yaml
 from datetime import datetime, date, timedelta
 from collections import Counter
-import config
-import html
-import jalc
-import jpcoar
-import migrate
-import resourcesync
-import ro_crate
+from togura.config import Config
+import togura.html as html
+import togura.jalc as jalc
+import togura.jpcoar as jpcoar
+import togura.migrate as migrate
+import togura.resourcesync as resourcesync
+import togura.ro_crate as ro_crate
 
 # ログ出力の設定
 logger = logging.getLogger(__name__)
@@ -132,7 +132,7 @@ def setup():
 def generate():
   data_dir = "./work"
   output_dir = "./public"
-  base_url = config.base_url()
+  base_url = Config().base_url
 
   paths  = sorted(glob.glob(f"{data_dir}/*"))
   if len(paths) != len(set(paths)):
