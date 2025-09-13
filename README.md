@@ -334,6 +334,8 @@ cd Documents/togura
 - ResourceSyncの`changelist.xml`を作成できるようにする
 - RO-Crateで出力する項目を追加する
 - [JaLCのWebAPI](https://japanlinkcenter.org/top/material/service_technical.html)を用いてDOIを直接付与できるようにする
+- CiNiiやJaLC、CrossrefやDataCiteの書誌情報を用いて、自動的にメタデータのYAMLファイルを作成する
+- [GakuNin RDMのコマンドラインツール](https://support.rdm.nii.ac.jp/usermanual/Setting-07/)と連携して、GakuNin RDMからファイルとメタデータの情報を取得する
 
 ## 使い方の質問
 
