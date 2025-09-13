@@ -74,7 +74,7 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
     uv pip install -r requirements.txt
     ```
 
-    以下のようなメッセージがターミナルに表示されていれば、インストールは完了しています。もしエラーになっている場合、後述の「エラーへの対応」をごらんください。
+    以下のようなメッセージがターミナルに表示されていれば、インストールは完了しています。もしエラーになっている場合、後述の「[エラーへの対応](#エラーへの対応)」をごらんください。
     ```
     Audited 8 packages in 1.45s
     ```
@@ -136,7 +136,7 @@ VSCodeのターミナルで`togura.py generate`コマンドを実行し、YAML�
 ```sh
 uv run python -X utf8 ./togura.py generate
 ```
-スクリプトの実行が正常に完了すると、ターミナルに以下のメッセージが表示されます。もしこのメッセージが表示されず、エラーになっている場合は、後述の「エラーへの対応」をごらんください。
+スクリプトの実行が正常に完了すると、ターミナルに以下のメッセージが表示されます。もしこのメッセージが表示されず、エラーになっている場合は、後述の「[エラーへの対応](#エラーへの対応)」をごらんください。
 
 ```
 Toguraによるリポジトリの構築処理が完了しました。
@@ -258,7 +258,7 @@ Traceback (most recent call last):
 KeyError: 'title'
 ```
 
-メタデータでエラーが表示されている箇所がないのに`togura.py generate`コマンドでエラーになる場合、Toguraの不具合が考えられますので、後述の「使い方の質問」に記載されている連絡先までお問い合わせください。
+メタデータでエラーが表示されている箇所がないのに`togura.py generate`コマンドでエラーになる場合、Toguraの不具合が考えられますので、後述の「[使い方の質問](#使い方の質問)」に記載されている連絡先までお問い合わせください。
 
 ### バックアップ
 
@@ -338,7 +338,7 @@ cd Documents/togura
 
 ## 使い方の質問
 
-使い方やエラーの対応でわからないことがある場合は、[Code4Lib JAPANのDiscord](https://wiki.code4lib.jp/#Code4Lib_JAPAN_Discord)でお知らせください。
+使い方やエラーの対応でわからないことがある場合は、[Code4Lib JAPANのDiscord](https://wiki.code4lib.jp/#Code4Lib_JAPAN_Discord)、もしくは[GitHubのIssues](https://github.com/nabeta/togura/issues)でお知らせください。
 
 ## 参考資料
 
