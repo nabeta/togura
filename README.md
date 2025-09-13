@@ -338,7 +338,7 @@ cd Documents/togura
 ## 使い方の質問
 
 使い方やエラーの対応でわからないことがある場合は、[Code4Lib JAPANのDiscord](https://wiki.code4lib.jp/#Code4Lib_JAPAN_Discord)、もしくは[GitHubのIssues](https://github.com/nabeta/togura/issues)でお知らせください。  
-[作者](#作者)にメールを送っていただいてもかまいませんが、返信が遅れることがあるため、できるだけDisCordかGitHubでの連絡をお願いします。
+[作者](#作者)にメールを送っていただいてもかまいませんが、返信が遅れることがあるため、できるだけDiscordかGitHubでの連絡をお願いします。
 
 ## 参考資料
 
