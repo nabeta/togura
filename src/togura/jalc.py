@@ -210,16 +210,15 @@ def generate(data_dir, output_dir, base_url):
     if pub_date:
       publication_date = ET.SubElement(content, "publication_date")
       year = ET.SubElement(publication_date, "year")
-      if type(pub_date) is date:
-        year.text = str(pub_date.year).zfill(4)
-        month = ET.SubElement(publication_date, "month")
-        month.text = str(pub_date.month).zfill(2)
-        day = ET.SubElement(publication_date, "day")
-        day.text = str(pub_date.day).zfill(2)
+      year.text = str(pub_date.year).zfill(4)
+      month = ET.SubElement(publication_date, "month")
+      month.text = str(pub_date.month).zfill(2)
+      day = ET.SubElement(publication_date, "day")
+      day.text = str(pub_date.day).zfill(2)
 
-        if classification == "article":
-          elem_date = ET.SubElement(content, "date")
-          elem_date.text = pub_date.strftime("%Y%m%d")
+      if classification == "article":
+        elem_date = ET.SubElement(content, "date")
+        elem_date.text = pub_date.strftime("%Y%m%d")
 
   if entry.get("date") and content_classification.text == "03":
     date_list = ET.SubElement(content, "date_list")

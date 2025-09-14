@@ -174,7 +174,18 @@ def validate(
           continue
 
     # case "togura-yaml":
-    # case "jalc-xml":
+    case "jalc-xml":
+      format_name = "JaLC XMLファイル"
+      schema = xmlschema.XMLSchema(f"{Path.cwd()}/schema/jalc/article.xsd")
+      for file in glob.glob(f"{Path.cwd()}/public/*/jalc.xml"):
+        try:
+          schema.validate(file)
+        except Exception as e:
+          typer.echo(f"以下の{format_name}にエラーがあります。")
+          typer.echo(file)
+          typer.echo(e)
+          # raise typer.Exit(code=1)
+          continue
 
   typer.echo(f"Toguraによる{format_name}のチェックが完了しました。")
   typer.Exit(code=0)
