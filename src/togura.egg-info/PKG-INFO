@@ -1,3 +1,24 @@
+Metadata-Version: 2.4
+Name: togura
+Version: 0.1.0a1
+Summary: 極めてシンプルな機関リポジトリ
+License-Expression: CC0-1.0
+Project-URL: Homepage, https://github.com/nabeta/togura
+Project-URL: Issues, https://github.com/nabeta/togura/issues
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: more-itertools>=10.8.0
+Requires-Dist: pytest>=8.4.2
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: resync>=2.0.1
+Requires-Dist: rocrate>=0.14.0
+Requires-Dist: setuptools>=80.9.0
+Requires-Dist: sickle>=0.7.0
+Requires-Dist: typer>=0.17.4
+Requires-Dist: xmlschema>=4.1.0
+Dynamic: license-file
+
 # Togura - 極めてシンプルな機関リポジトリ
 
 Togura（とぐら、[鳥座](https://ja.wiktionary.org/wiki/%E9%B3%A5%E5%BA%A7)）は、極めてシンプルな機関リポジトリを構築するためのアプリケーションです。

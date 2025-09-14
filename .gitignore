@@ -3,6 +3,8 @@ archive/
 public/
 work/
 __pycache__/
+build/
+dist/
+*.egg-info/
 *.code-workspace
 config.yaml
-config.yml

@@ -1,0 +1,2 @@
+[console_scripts]
+togura = togura.cli:app

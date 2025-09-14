@@ -1,14 +1,13 @@
 import os
 import yaml
+from pathlib import Path
 
 class Config(object):
   def __init__(self):
-    if os.path.isfile("./config.yaml"):
-      file = "config.yaml"
-    elif os.path.isfile("./config.yml"):
-      file = "config.yml"
-    with open(file, encoding = "utf-8") as f:
-      self.entry = yaml.safe_load(f)
+    file = f"{Path.cwd()}/config.yaml"
+    if os.path.isfile(file):
+      with open(file, encoding = "utf-8") as f:
+        self.entry = yaml.safe_load(f)
 
   @property
   def base_url(self):

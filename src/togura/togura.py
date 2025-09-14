@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+import typer
 import argparse
 import glob
 import logging
@@ -9,104 +9,17 @@ import sys
 import yaml
 from datetime import datetime, date, timedelta
 from collections import Counter
-from togura.config import Config
+import togura.config as config
 import togura.html as html
 import togura.jalc as jalc
-import togura.jpcoar as jpcoar
-import togura.migrate as migrate
-import togura.resourcesync as resourcesync
+import togura.jalc as jpcoar
+import togura.jalc as migrate
+import togura.jalc as resourcesync
 import togura.ro_crate as ro_crate
 
 # ログ出力の設定
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
-
-def main():
-  # 引数の取得
-  parser = argparse.ArgumentParser(
-    prog = "togura.py",
-    description = "Togura: 超シンプルな機関リポジトリ"
-  )
-
-  subparser = parser.add_subparsers(
-    title = "サブコマンド",
-    dest = "subcommand",
-    required = True
-  )
-
-  setup_parser = subparser.add_parser(
-    "setup",
-    help = "初期設定を行います。"
-  )
-
-  generate_parser = subparser.add_parser(
-    "generate",
-    help = "HTMLファイルとメタデータファイルを出力します。"
-  )
-
-  check_expired_embargo_parser = subparser.add_parser(
-    "check_expired_embargo",
-    help = "エンバーゴ期間が終了している資料を出力します。"
-  )
-
-  check_expired_embargo_parser.add_argument(
-    '--dir', type=str, help='ファイルの保存先のディレクトリ'
-  )
-
-  migrate_parser = subparser.add_parser(
-    "migrate",
-    help = "他の機関リポジトリから本文ファイルとメタデータファイルをToguraに移行します。"
-  )
-
-  migrate_parser.add_argument(
-    '--base-url', required=True, type=str, help='移行元のOAI-PMHのベースURL'
-  )
-  migrate_parser.add_argument(
-    '--export-dir', required=True, type=str, help='ファイルの保存先のディレクトリ'
-  )
-  migrate_parser.add_argument(
-    '--metadata-prefix', type=str, help='移行元のmetadataPrefix'
-  )
-  migrate_parser.add_argument(
-    '--date-from', type=str, help='移行対象の開始日'
-  )
-  migrate_parser.add_argument(
-    '--date-until', type=str, help='移行対象の終了日'
-  )
-  migrate_parser.add_argument(
-    '--metadata-only', help='メタデータのみをダウンロードする', action='store_true'
-  )
-  args = parser.parse_args()
-
-  match args.subcommand:
-    case "setup":
-      setup()
-    case "generate":
-      generate()
-    case "check_expired_embargo":
-      if args.dir is None:
-        base_dir = "work"
-      else:
-        base_dir = args.dir
-      check_expired_embargo(base_dir)
-    case "migrate":
-      if args.metadata_prefix is None:
-        metadata_prefix = "jpcoar_1.0"
-      else:
-        metadata_prefix = args.metadata_prefix
-      if args.date_from is None:
-        date_from = datetime.strftime(datetime.today() - timedelta(days = 30), '%Y-%m-%d')
-      else:
-        date_from = args.date_from
-
-      if args.date_until is None:
-        date_until = datetime.strftime(datetime.today(), '%Y-%m-%d')
-      else:
-        date_until = args.date_until
-
-      migrate.migrate(args.base_url, metadata_prefix, date_from, date_until, args.export_dir, args.metadata_only)
-    case _:
-      main()
 
 def setup():
   # テンプレートのヘッダーファイルをコピーする
@@ -132,7 +45,7 @@ def setup():
 def generate():
   data_dir = "./work"
   output_dir = "./public"
-  base_url = Config().base_url
+  base_url = config.base_url()
 
   paths  = sorted(glob.glob(f"{data_dir}/*"))
   if len(paths) != len(set(paths)):
@@ -161,9 +74,6 @@ def generate():
   html.generate(data_dir, output_dir, base_url)
   resourcesync.generate(output_dir, base_url)
 
-  print("Toguraによるリポジトリの構築処理が完了しました。")
-  sys.exit(0)
-
 # エンバーゴ期間が終了している資料の一覧を出力する
 def check_expired_embargo(base_dir):
   for file in glob.glob(f"{base_dir}/*/jpcoar20.yaml"):
@@ -174,5 +84,3 @@ def check_expired_embargo(base_dir):
           if d["date_type"] == "Available" and d["date"] <= date.today():
             print(f"{d['date']}\t{file}")
 
-if __name__ == "__main__":
-  main()

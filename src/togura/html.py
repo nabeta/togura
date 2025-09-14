@@ -7,6 +7,7 @@ from togura.config import Config
 from jinja2 import Environment, FileSystemLoader
 from logging import getLogger, DEBUG
 from more_itertools import chunked
+from pathlib import Path
 from urllib.parse import urlparse
 
 def filename(url):
@@ -14,14 +15,20 @@ def filename(url):
 
 logger = getLogger(__name__)
 logger.setLevel(DEBUG)
-env = Environment(loader=FileSystemLoader('./', encoding='utf8'))
+
+if os.path.isdir(f"{Path.cwd()}/templates"):
+  template_dir = f"{Path.cwd()}/templates"
+else:
+  template_dir = f"{os.path.dirname(__file__)}/templates"
+
+env = Environment(loader=FileSystemLoader(template_dir, encoding='utf8'))
 env.filters['filename'] = filename
-template_index = env.get_template('templates/index.j2')
-template_index_page = env.get_template('templates/index_page.j2')
-template_show = env.get_template('templates/show.j2')
-template_show.globals['now'] = datetime.datetime.now(datetime.UTC)
-template_index_page.globals['now'] = datetime.datetime.now(datetime.UTC)
+template_index = env.get_template("index.j2")
+template_index_page = env.get_template("index_page.j2")
+template_show = env.get_template("show.j2")
 template_index.globals['now'] = datetime.datetime.now(datetime.UTC)
+template_index_page.globals['now'] = datetime.datetime.now(datetime.UTC)
+template_show.globals['now'] = datetime.datetime.now(datetime.UTC)
 
 def generate(data_dir, output_dir, base_url, per_page = 100):
   """HTMLを作成する"""
