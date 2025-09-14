@@ -261,17 +261,6 @@ Toguraの不具合の可能性が高いので、「[使い方の質問](#使い�
 
 バックアップはToguraのフォルダをコピーするだけで行えます。外付けディスクなどにコピーしておいてください。
 
-### Toguraの更新
-
-1. [Toguraのダウンロードリンク](https://github.com/nabeta/togura/archive/refs/heads/main.zip)からzipファイルをダウンロードし、適当なディレクトリに展開します。
-1. 展開したディレクトリに含まれるすべてのフォルダとファイルを、これまで使っていたToguraのフォルダに上書きコピーします。
-1. VSCodeを起動し、ターミナルで以下のコマンドを実行して、必要なPythonのモジュールを更新します。
-    ```sh
-    uv pip install togura --upgrade
-    ```
-
-ToguraのダウンロードをGitで実行された方は、`git pull`でToguraを更新することができます。
-
 ### VSCode以外での動作
 
 メタデータの編集は、VSCodeのほかにも、メモ帳などUTF-8の扱えるテキストエディタで行うことができます。ただし、メタデータの項目のチェック機能が使えなくなりますのでご注意ください。また、メタデータの保存の際には、文字コードがUTF-8になっていることを確認してください。  
@@ -294,6 +283,14 @@ cd "Documents\togura"
 # macOS・Linuxの場合
 cd
 cd Documents/togura
+```
+
+### Toguraの更新
+
+VSCodeなどでターミナルを起動し、以下のコマンドを実行します。
+
+```sh
+uv pip install togura --upgrade
 ```
 
 ### Toguraのフォルダの構成
