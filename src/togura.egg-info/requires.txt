@@ -1,9 +1,0 @@
-more-itertools>=10.8.0
-pytest>=8.4.2
-pyyaml>=6.0
-resync>=2.0.1
-rocrate>=0.14.0
-setuptools>=80.9.0
-sickle>=0.7.0
-typer>=0.17.4
-xmlschema>=4.1.0
