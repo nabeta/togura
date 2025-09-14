@@ -1,6 +1,9 @@
 [project]
 name = "togura"
 version = "0.1.0a1"
+authors = [
+    { name = "Kosuke Tanabe", email = "nabeta@fastmail.fm" }
+]
 description = "極めてシンプルな機関リポジトリ"
 readme = "README.md"
 requires-python = ">=3.11"
