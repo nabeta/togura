@@ -54,8 +54,11 @@ def setup():
   organization = input("組織名を入力してください（初期値: 鳥座大学）:").strip() or "鳥座大学"
   default_site_name = f"{organization}機関リポジトリ"
   default_base_url = "https://togura.example.jp"
+  default_jalc_site_id = "SI/togura.dummy"
+
   site_name = input(f"機関リポジトリの名称を入力してください（初期値: {default_site_name}）:").strip() or default_site_name
   base_url = input(f"機関リポジトリのトップページのURLを入力してください（初期値: {default_base_url}）:").strip() or default_base_url
+  jalc_site_id = input(f"JaLCのサイトIDを入力してください（JaLC正会員のみ。初期値: {default_jalc_site_id}）:").strip() or default_jalc_site_id
 
   with open(f"{Path.cwd()}/config.yaml", "w", encoding = "utf-8") as file:
     yaml.dump({
@@ -63,7 +66,7 @@ def setup():
       "site_name": site_name,
       "base_url": base_url,
       "logo_filename": "logo.png",
-      "jalc_site_id": "dummy"
+      "jalc_site_id": jalc_site_id
     },  file, allow_unicode=True)
 
 @app.command()
