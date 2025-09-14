@@ -281,7 +281,7 @@ cd "Documents\togura"
 
 ```sh
 # macOS・Linuxの場合
-cd
+cd ~
 cd Documents/togura
 ```
 
