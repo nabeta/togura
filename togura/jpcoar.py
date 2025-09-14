@@ -402,7 +402,7 @@ def generate(entry, base_url):
       # https://schema.irdb.nii.ac.jp/ja/schema/2.0/20-.2
       if relation.get("related_title") is not None:
         for related_title in relation["related_title"]:
-          elem_related_title = ET.SubElement(elem_relation, ET.QName(ns["jpcoar"], "related_title"))
+          elem_related_title = ET.SubElement(elem_relation, ET.QName(ns["jpcoar"], "relatedTitle"))
           elem_related_title.text = related_title["related_title"]
           if related_title.get("lang") is not None:
             elem_related_title.set("xml:lang", related_title["lang"])
@@ -557,7 +557,7 @@ def generate(entry, base_url):
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/40
   if entry.get("format"):
     for d in entry["format"]:
-      format = ET.SubElement(root, ET.QName(ns["dcterms"], "format"))
+      format = ET.SubElement(root, ET.QName(ns["jpcoar"], "format"))
       format.text = d["format"]
       if d.get("lang") is not None:
         format.set("xml:lang", d["lang"])
@@ -765,8 +765,8 @@ def add_jpcoar_publisher(entry, root):
     for d_place in d["publication_place"]:
       jpcoar_publisher_place = ET.SubElement(jpcoar_publisher, ET.QName(ns["dcndl"], "publicationPlace"))
       jpcoar_publisher_place.text = d_place["publication_place"]
-      if d_place.get("lang") is not None:
-        jpcoar_publisher_place.set("xml:lang", d_place["lang"])
+      # if d_place.get("lang") is not None:
+      #   jpcoar_publisher_place.set("xml:lang", d_place["lang"])
 
 def add_identifier(entry, root, base_url):
   """識別子をメタデータに追加する"""
@@ -991,7 +991,7 @@ def add_file(entry, root):
         for date in file["date"]:
           elem_file_date = ET.SubElement(elem_file, ET.QName(ns["datacite"], "date"))
           if date.get("date_type"):
-            elem_file_uri.set("dateType", date["date_type"])
+            elem_file_date.set("dateType", date["date_type"])
           elem_file_date.text = str(date["date"])
 
       # バージョン情報
@@ -1036,74 +1036,80 @@ def add_catalog(entry, root):
   # 提供機関
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.1
   if entry["catalog"].get("contributor"):
-    for d_contributor in entry["catalog"]["contributor"]:
-      contributor = ET.SubElement(catalog, ET.QName(ns["jpcoar"], "contributor"))
-      contributor.text = d_contributor["contributor_name"]
-      if d_contributor.get("lang") is not None:
-        contributor.set("xml:lang", d_contributor["lang"])
+    add_contributor(entry["catalog"], catalog)
 
   # 識別子
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.2
   if entry["catalog"].get("identifier"):
-    for d_identifier in entry["catalog"]["identifier"]:
-      identifier = ET.SubElement(catalog, ET.QName(ns["jpcoar"], "identifier"))
-      identifier.text = d_identifier
+    for d in entry["catalog"]["identifier"]:
+      # TODO: URI形式になっていない識別子の扱いを検討する
+      try:
+        elem_identifier = ET.SubElement(catalog, ET.QName(ns["jpcoar"], "identifier"), {
+          "identifierType": jpcoar_identifier_type(d)
+        })
+        elem_identifier.text = d
+      except AttributeError:
+        continue
 
   # タイトル
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.3
   if entry["catalog"].get("title"):
-    for d_title in entry["catalog"]["title"]:
+    for d in entry["catalog"]["title"]:
       title = ET.SubElement(catalog, ET.QName(ns["dc"], "title"))
-      title.text = d_title["title"]
-      if d_title.get("lang") is not None:
-        title.set("xml:lang", d_title["lang"])
+      title.text = d["title"]
+      if d.get("lang") is not None:
+        title.set("xml:lang", d["lang"])
 
   # 内容記述
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.4
   if entry["catalog"].get("description"):
-    for d_description in entry["catalog"]["description"]:
+    for d in entry["catalog"]["description"]:
       description = ET.SubElement(catalog, ET.QName(ns["datacite"], "description"))
-      description.set("descriptionType", d_description["description_type"])
-      description.text = d_description["description"]
-      if d_description.get("lang") is not None:
-        description.set("xml:lang", d_description["lang"])
+      description.set("descriptionType", d["description_type"])
+      description.text = d["description"]
+      if d.get("lang") is not None:
+        description.set("xml:lang", d["lang"])
 
   # 主題
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.5
   if entry["catalog"].get("subject"):
-    for d_subject in entry["catalog"]["subject"]:
+    for d in entry["catalog"]["subject"]:
       subject = ET.SubElement(catalog, ET.QName(ns["jpcoar"], "subject"))
-      subject.text = d_subject["subject"]
-      if d_subject.get("lang") is not None:
-        subject.set("xml:lang", d_subject["lang"])
+      subject.text = d["subject"]
+      if d.get("subject_scheme"):
+        subject.set("subjectScheme", d["subject_scheme"])
+      if d.get("subject_uri"):
+        subject.set("subjectURI", d["subject_uri"])
+      if d.get("lang") is not None:
+        subject.set("xml:lang", d["lang"])
 
   # ライセンス
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.6
   if entry["catalog"].get("license"):
-    for d_license in entry["catalog"]["license"]:
+    for d in entry["catalog"]["license"]:
       license = ET.SubElement(catalog, ET.QName(ns["jpcoar"], "license"))
-      license.text = d_license["license"]
-      license.set("licenseType", d_license["license_type"])
-      if d_license.get("license_uri")is not None:
-        license.set("rdf:resource", d_license["license_uri"])
-      if d_license.get("lang") is not None:
-        license.set("xml:lang", d_license["lang"])
+      license.text = d["license"]
+      license.set("licenseType", d["license_type"])
+      if d.get("license_uri")is not None:
+        license.set("rdf:resource", d["license_uri"])
+      if d.get("lang") is not None:
+        license.set("xml:lang", d["lang"])
 
   # 権利情報
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.7
   if entry["catalog"].get("rights"):
-    for d_rights in entry["catalog"]["rights"]:
+    for d in entry["catalog"]["rights"]:
       rights = ET.SubElement(catalog, ET.QName(ns["dc"], "rights"))
-      rights.text = d_rights["rights"]
-      if d_rights.get("rights_uri")is not None:
-        rights.set("rdf:resource", d_rights["rights_uri"])
-      if d_rights.get("lang") is not None:
-        rights.set("xml:lang", d_rights["lang"])
+      rights.text = d["rights"]
+      if d.get("rights_uri")is not None:
+        rights.set("rdf:resource", d["rights_uri"])
+      if d.get("lang") is not None:
+        rights.set("xml:lang", d["lang"])
 
   # アクセス権
   # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.8
   if entry["catalog"].get("access_rights"):
-    catalog_access_rights = ET.SubElement(catalog, ET.QName(ns["dcterms"], "access_rights"))
+    catalog_access_rights = ET.SubElement(catalog, ET.QName(ns["dcterms"], "accessRights"))
     catalog_access_rights.text = entry["catalog"]["access_rights"]
 
   # 代表画像
