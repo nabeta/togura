@@ -15,7 +15,7 @@ def generate(data_dir, output_dir, base_url):
 
   # メタデータYAMLファイルを開く
   with open(f"{data_dir}/jpcoar20.yaml", encoding = "utf-8") as file:
-    entry = yaml.load(file, Loader = yaml.Loader)
+    entry = yaml.safe_load(file)
 
   # ID登録が記述されていなければ処理を終了する
   if entry.get("identifier_registration") is None:

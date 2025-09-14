@@ -88,7 +88,7 @@ def generate():
 
     yaml_path = f"{path}/jpcoar20.yaml"
     with open(yaml_path, encoding = "utf-8") as file:
-      entry = yaml.load(file, Loader = yaml.Loader)
+      entry = yaml.safe_load(file)
       entry["id"] = entry_id
 
       try:

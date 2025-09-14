@@ -45,7 +45,7 @@ def generate(data_dir, output_dir, base_url, per_page = 100):
         files.append(filename)
 
     with open(f"{path}/jpcoar20.yaml", encoding = "utf-8") as file:
-      entry = yaml.load(file, Loader = yaml.Loader)
+      entry = yaml.safe_load(file)
 
       # タイトルが空ならスキップ
       if entry["title"] == []:

@@ -59,7 +59,7 @@ def generate():
       raise Exception(f"エラー: 登録番号 {entry_id} の書式が正しくありません。半角の数字に変更してください。また、登録番号のあとに _ （アンダースコア）を入力していることを確認してください。")
 
     with open(f"{path}/jpcoar20.yaml", encoding = "utf-8") as file:
-      entry = yaml.load(file, Loader = yaml.Loader)
+      entry = yaml.safe_load(file)
       entry["id"] = entry_id
 
       #try:
