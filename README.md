@@ -361,10 +361,10 @@ sickle.oaiexceptions.NoRecordsMatch
     ```sh
     sudo apt-get install yq
     ```
-1. `schema/jpcoar.yaml`ファイルを編集します。
-1. yqコマンドで`schema/jpcoar.yaml`ファイルをJSON Schemaのファイルに変換します。
+1. `src/togura/schema/jpcoar.yaml`ファイルを編集します。
+1. yqコマンドで`src/togura/schema/jpcoar.yaml`ファイルをJSON Schemaのファイルに変換します。
     ```sh
-    yq . schema/jpcoar.yaml > schema/jpcoar.json
+    yq . src/togura/schema/jpcoar.yaml > src/togura/schema/jpcoar.json
     ```
 
 ## TODO
