@@ -576,7 +576,9 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir, metada
         # 助成機関識別子
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/23-.1
         funder_identifier = funding_reference.find("./jpcoar:funderIdentifier", ns)
-        if funder_identifier:
+        if funder_identifier is None:
+            funder_identifier = funding_reference.find("./datacite:funderIdentifier", ns)
+        if funder_identifier is not None:
           d["funder_identifier"] = {
             "funder_identifier": funder_identifier.text,
             "funder_identifier_type": funder_identifier.get("funderIdentifierType")
