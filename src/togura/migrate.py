@@ -70,8 +70,11 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir, metada
         creator_name_identifiers = []
         if creator.find("./jpcoar:nameIdentifier", ns) is not None:
           for name_identifier in creator.findall("./jpcoar:nameIdentifier", ns):
+            scheme = name_identifier.get("nameIdentifierScheme")
+            if scheme == "e-Rad":
+              scheme = "e-Rad_Researcher"
             d = {
-              "identifier_scheme": name_identifier.get("nameIdentifierScheme")
+              "identifier_scheme": scheme
             }
             if name_identifier.get("nameIdentifierURI") is not None:
               d["identifier"] = name_identifier.get("nameIdentifierURI")
@@ -175,8 +178,11 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir, metada
         contributor_name_identifiers = []
         if contributor.find("./jpcoar:nameIdentifier", ns) is not None:
           for name_identifier in contributor.findall("./jpcoar:nameIdentifier", ns):
+            scheme = name_identifier.get("nameIdentifierScheme")
+            if scheme == "e-Rad":
+              scheme = "e-Rad_Researcher"
             d = {
-              "identifier_scheme": name_identifier.get("nameIdentifierScheme")
+              "identifier_scheme": scheme
             }
             if name_identifier.get("nameIdentifierURI") is not None:
               d["identifier"] = name_identifier.get("nameIdentifierURI")
@@ -302,8 +308,11 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir, metada
         if rights_holder.find("./jpcoar:nameIdentifier", ns) is not None:
           name_identifiers = []
           for name_identifier in rights_holder.findall("./jpcoar:nameIdentifier", ns):
+            scheme = name_identifier.get("nameIdentifierScheme")
+            if scheme == "e-Rad":
+              scheme = "e-Rad_Researcher"
             d = {
-              "identifier_scheme": name_identifier.get("nameIdentifierScheme")
+              "identifier_scheme": scheme
             }
             if name_identifier.get("nameIdentifierURI") is not None:
               d["identifier"] = name_identifier.get("nameIdentifierURI")
