@@ -4,6 +4,7 @@ import re
 import shutil
 import sys
 import typer
+import xml.etree.ElementTree as ET
 import xmlschema
 import yaml
 from datetime import datetime, date, timedelta
@@ -179,8 +180,24 @@ def validate(
     # case "togura-yaml":
     case "jalc-xml":
       format_name = "JaLC XMLファイル"
-      schema = xmlschema.XMLSchema(f"{Path.cwd()}/schema/jalc/article.xsd")
       for file in glob.glob(f"{Path.cwd()}/public/*/jalc.xml"):
+        schema_file = None
+        classification = ET.parse(file).getroot().find(".//head/content_classification").text
+        match classification:
+          case "01":
+            schema_file = "article"
+          case "02":
+            schema_file = "book"
+          case "03":
+            schema_file = "research_data"
+          case "04":
+            schema_file = "e-learning"
+          case "99":
+            schema_file = "general_data"
+          case _:
+            schema_file = "article"
+
+        schema = xmlschema.XMLSchema(f"{Path.cwd()}/schema/XSDスキーマ/{schema_file}.xsd")
         try:
           schema.validate(file)
         except Exception as e:

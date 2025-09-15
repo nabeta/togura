@@ -222,9 +222,13 @@ uv run togura check-expired-embargo --dir work
 1. 「[リポジトリ公開用ファイルの出力](#リポジトリ公開用ファイルの出力)」の手順に沿って、`uv run togura generate`コマンドを実行し、ファイルを再作成します。
 1. 「[リポジトリ公開用ファイルのアップロード](#リポジトリ公開用ファイルのアップロード)」の手順に沿って、再作成したファイルをWebサーバにアップロードします。
 
-### JPCOARスキーマXMLファイルの出力チェック
+### JPCOARスキーマ・JaLC XMLファイルの出力チェック
 
-以下のコマンドで、JPCOARスキーマのXMLファイルが正しく`public`フォルダに出力されていることを確認することができます。[JPCOARスキーマのXML Schemaファイル](https://github.com/JPCOAR/schema/tree/master/2.0)を用いてチェックを行うので、インターネットに接続されている環境で実行する必要があります。
+Toguraでは、JPCOARスキーマやJaLCのXMLファイルが正しい書式で`public`フォルダに出力されているかどうかを確認することができます。
+
+#### JPCOARスキーマ
+
+JPCOARスキーマのXMLファイルの出力チェックは、以下のコマンドで行います。[GitHub上のXSDファイル](https://github.com/JPCOAR/schema/tree/master/2.0)を用いてチェックを行うので、インターネットに接続されている環境で実行する必要があります。
 
 ```sh
 uv run togura validate jpcoar20-xml
@@ -236,6 +240,43 @@ uv run togura validate jpcoar20-xml
 以下のJPCOARスキーマXMLファイルにエラーがあります。
 /home/nabeta/togura/public/00/jpcoar20.xml
 invalid XML syntax: mismatched tag: line 3, column 35
+```
+
+#### JaLC
+
+JaLCのXMLファイルの出力チェックを行うには、事前に以下の準備を行う必要があります。
+
+1. Toguraのフォルダの中に`schema`という名前のフォルダを作成します。
+1. [JaLCのWebサイト](https://japanlinkcenter.org/top/material/service_technical.html)から、XSDスキーマのzipファイルをダウンロードします。
+1. zipファイルを展開すると`XSDスキーマ`という名前のフォルダが作成されますので、そのまま`schema`フォルダの中にコピーします。
+
+出力チェックは以下のコマンドで行います。
+
+```sh
+uv run togura validate jalc-xml
+```
+
+出力にエラーがある場合、以下のようなメッセージが表示されます。
+
+```
+以下のJaLC XMLファイルにエラーがあります。
+/home/nabeta/togura/public/00/jalc.xml
+failed validating '' with XsdPatternFacets(['[0-9]+']):
+
+Reason: value doesn't match any pattern of ['[0-9]+']
+
+Schema component:
+
+  <xs:pattern xmlns:xs="http://www.w3.org/2001/XMLSchema" value="[0-9]+" />
+
+Instance type: <class 'xml.etree.ElementTree.Element'>
+
+Instance:
+
+  <year />
+
+Path: /root/body/content/publication_date/year
+
 ```
 
 ### エラーへの対応
