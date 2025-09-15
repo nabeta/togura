@@ -219,7 +219,6 @@ invalid XML syntax: mismatched tag: line 3, column 35
 
 JaLCのXMLファイルの出力チェックを行うには、事前に以下の準備を行う必要があります。
 
-1. Toguraのフォルダの中に`schema`という名前のフォルダを作成します。
 1. [JaLCのWebサイト](https://japanlinkcenter.org/top/material/service_technical.html)から、XSDスキーマのzipファイルをダウンロードします。
 1. zipファイルを展開すると`XSDスキーマ`という名前のフォルダが作成されますので、そのまま`schema`フォルダの中にコピーします。
 
@@ -345,11 +344,12 @@ sickle.oaiexceptions.NoRecordsMatch
     - データを公開するには、このフォルダの中身をWebサーバにアップロードすること
     - このフォルダに保存されたファイルは編集しないこと
 - `samples`: メタデータのサンプルのフォルダ
-- `schema`: メタデータスキーマの定義ファイルを保存するフォルダ（開発者用）
+- `schema`: メタデータスキーマの定義ファイルを保存するフォルダ
 - `templates`: HTMLテンプレートファイルを保存するフォルダ
-    - `index.j2`: トップページのテンプレート
-    - `index_page.j2`: 2ページ目以降の資料一覧画面のテンプレート
-    - `show.j2`: 資料詳細画面のテンプレート
+    - `images`: ロゴファイルを保存するフォルダ
+    - `index.j2`: トップページのテンプレートファイル
+    - `index_page.j2`: 2ページ目以降の資料一覧画面のテンプレートファイル
+    - `show.j2`: 資料詳細画面のテンプレートファイル
 - `work`: 作業用フォルダ
     - このフォルダに保存されたファイルを編集すること
 
