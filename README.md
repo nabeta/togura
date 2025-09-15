@@ -335,11 +335,12 @@ uv run togura migrate --base-url https://another.repo.example.ac.jp/oai --export
 sickle.oaiexceptions.NoRecordsMatch
 ```
 
-### Toguraのフォルダの構成
+### Toguraのフォルダとファイルの構成
 
 通常の作業では、`work`フォルダと`public`フォルダのみを使用します。
 
 - `archive`: 作業済み・取り下げ済みのファイルを保存するフォルダ
+- `config.yaml`: Toguraの設定ファイル
 - `public`: 公開用のファイルが出力されるフォルダ
     - データを公開するには、このフォルダの中身をWebサーバにアップロードすること
     - このフォルダに保存されたファイルは編集しないこと
@@ -349,7 +350,6 @@ sickle.oaiexceptions.NoRecordsMatch
     - `index.j2`: トップページのテンプレート
     - `index_page.j2`: 2ページ目以降の資料一覧画面のテンプレート
     - `show.j2`: 資料詳細画面のテンプレート
-- `test`: テスト用スクリプトを保存するフォルダ（開発者用）
 - `work`: 作業用フォルダ
     - このフォルダに保存されたファイルを編集すること
 
