@@ -1,4 +1,4 @@
-from sickle import Sickle
+from oaipmh_scythe import Scythe
 from logging import getLogger, DEBUG
 from urllib.parse import urlparse
 import os
@@ -11,10 +11,10 @@ logger = getLogger(__name__)
 logger.setLevel(DEBUG)
 
 def migrate(base_url, metadata_prefix, date_from, date_until, export_dir, metadata_only):
-  sickle = Sickle(base_url)
-  records = sickle.ListRecords(
-    **{"metadataPrefix": metadata_prefix,
-    "from": date_from,
+  scythe = Scythe(base_url)
+  records = scythe.list_records(
+    **{"metadata_prefix": metadata_prefix,
+    "from_": date_from,
     "until": date_until,
     "ignore_deleted": True
   })
