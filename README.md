@@ -39,25 +39,7 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
 1. [Visual Studio Code](https://code.visualstudio.com/)(VSCode)をインストールします。Windowsをお使いの場合、こちらも[Microsoft Store](https://apps.microsoft.com/detail/xp9khm4bk9fz7q?hl=ja-JP&gl=JP)からインストールできます。
 1. VSCodeを起動し、画面上部のメニューから「View」→「Extensions」を選択します。画面左側に拡張機能のウインドウが表示されるので、`Japanese Language Pack`と入力すると、検索結果に"[Japanese Language Pack for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja)"が表示されるので、"Install"ボタンを押します。
 1. 画面右下に「Change Language and Restart」というボタンが表示されるので、ボタンを押してVSCodeを再起動します。
-
-### Toguraの実行準備
-
-1. Toguraのzipファイルを以下のリンクからダウンロードし、適当なフォルダに展開します。
-    https://github.com/nabeta/togura/archive/refs/heads/main.zip
-    - Gitをお使いの方は、以下の方法でダウンロードすることも可能です。
-    ```sh
-    git clone https://github.com/nabeta/togura.git
-    ```
-1. 展開したフォルダを、「ドキュメント」フォルダなどのわかりやすいフォルダに移動します。Windowsの圧縮フォルダ機能でzipファイルを展開した場合、`togura-main`フォルダの中にもうひとつ`togura-main`フォルダが作成されていますので、そのフォルダを移動してください。以降、この展開したフォルダを「Toguraのフォルダ」と記述します。
-1. VSCodeのメニューから「ファイル」→「フォルダーを開く」を選び、Toguraのフォルダを選びます。フォルダの選択画面では、Toguraのフォルダを選択（シングルクリック）した状態で「開く」ボタンを押してください。
-1. 「このフォルダ内のファイルの作成者を信頼しますか?」と尋ねられたら、「はい、作成者を信頼します」を選びます。
-1. 画面上部のメニューから「表示」→「拡張機能」を選びます。画面左側のウインドウに拡張機能の一覧が表示されるので、以下の2つに対してそれぞれ「インストール」ボタンを押します。
-    - [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
-    - [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
-
-    画面右下に 「このリポジトリ 用のおすすめ拡張機能 をインストールしますか?」というメッセージが表示された場合、「インストール」を選んでください。ただし、この場合でも別途画面左側のウインドウでそれぞれの拡張機能に対して「インストール」ボタンを押す必要があります。
-1. VSCodeのメニューで「ファイル」→「名前をつけてワークスペースを保存」を選び、そのまま「保存」を選びます。
-1. VSCodeの画面上部のメニューから「ターミナル」→「新しいターミナル」を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドを実行して、[uvコマンドをインストール](https://docs.astral.sh/uv/getting-started/installation/)します。
+1. VSCodeの画面上部のメニューから「ターミナル」→「新しいターミナル」を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドを実行して、[uvコマンドをインストール](https://docs.astral.sh/uv/getting-started/installation/)します。なお、venvなどの環境でも動作しますが、以降のコマンドの実行例は適宜読み替えてください。
     - Windowsの場合:
         ```powershell
         powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
@@ -66,52 +48,75 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
         ```sh
         curl -LsSf https://astral.sh/uv/install.sh | sh
         ```
-1. **VSCodeをいったん終了して、もう一度起動します。この操作を実行しないと、これ以降の`uv`コマンドが動作しないので、必ず実行してください。**
-1. 先ほどと同様にVSCodeのメニューから「ファイル」→「フォルダーを開く」を選び、Toguraのフォルダを選びます。
-1. ターミナルで以下のコマンドを実行して、必要なPythonのモジュールをインストールします。
+1. **VSCodeをいったん終了します。この操作を実行しないと、これ以降のコマンドが動作しないので、必ず実行してください。**
+
+### Toguraの実行準備
+
+1. エクスプローラーなどで、Toguraの登録作業に利用するための空のフォルダを作成します。フォルダの名前はなんでもかまいませんが、半角英数小文字を使用することをおすすめします。以降、このフォルダを「Toguraのフォルダ」と記述します。
+1. VSCodeを起動し、メニューから「ファイル」→「フォルダーを開く」を選び、Toguraのフォルダを選んで開きます。
+1. 「このフォルダ内のファイルの作成者を信頼しますか?」と尋ねられたら、「はい、作成者を信頼します」を選びます。
+1. VSCodeの画面上部のメニューから「ターミナル」→「新しいターミナル」を選び、ターミナルを起動します。ターミナルで以下のコマンドを実行して、Toguraのモジュールをインストールします。
     ```sh
-    uv venv
-    uv pip install -r requirements.txt
+    uv venv; uv pip install togura
     ```
 
     以下のようなメッセージがターミナルに表示されていれば、インストールは完了しています。もしエラーになっている場合、後述の「[エラーへの対応](#エラーへの対応)」をごらんください。
     ```
-    Audited 8 packages in 1.45s
+    Installed 1 package in 6ms
     ```
-1. ターミナルで以下のコマンドを実行して、Toguraの初期設定を行います。このコマンドでは、設定ファイル`config.yaml`と、テンプレートのファイル`templates/head_custom.html`が作成されます。
+1. ターミナルで以下のコマンドを実行して、Toguraの初期設定を行います。末尾の`.`（ドット）の入力を忘れないようにしてください。
     ```sh
-    uv run python -X utf8 ./togura.py setup
+    uv run togura init .
+    ```
+1. 画面上部のメニューから「表示」→「拡張機能」を選びます。画面左側のウインドウに拡張機能の一覧が表示されるので、以下の2つに対してそれぞれ「インストール」ボタンを押します。  
+画面右下に 「このリポジトリ 用のおすすめ拡張機能 をインストールしますか?」というメッセージが表示された場合、「インストール」を選んでください。ただし、この場合でも別途画面左側のウインドウでそれぞれの拡張機能に対して「インストール」ボタンを押す必要があります。
+    - [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
+    - [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
+1. ターミナルで以下のコマンドを実行して、Toguraの設定ファイルを作成します。このコマンドでは、設定ファイル`config.yaml`と、テンプレートのファイル`templates/head_custom.html`が作成されます。
+    ```
+    uv run togura setup
     ```
     以下の項目を質問されますので、入力してください。
     - 組織の名称: 大学名など、機関リポジトリを運用する組織の名称です。
     - 機関リポジトリの名称: 機関リポジトリの名称です。
     - 機関リポジトリのトップページのURL: 公開先のWebサーバのトップページのURLです。末尾のスラッシュの入力は不要です。
-        - Webサーバによる公開を行わず、自分のパソコンだけで動作を試す場合には、入力不要です。
+        - Webサーバによる公開を行わず、自分のパソコンだけで動作を試す場合には、入力は不要です。
+    - JaLCのサイトID: JaLCのサイトIDです。[JaLCの正会員](https://japanlinkcenter.org/top/admission/member_type.html)がDOIの登録を行う際に必要です。JaLCの正会員でない場合、入力は不要です。
 
     名称などを変更したい場合は、再度同じコマンドを実行してください。
+1. VSCodeのメニューで「ファイル」→「名前をつけてワークスペースを保存」を選び、そのまま「保存」を選びます。
 
 ### 動作テスト
 
-1. Windowsのエクスプローラーなどで、Toguraのフォルダを開きます。`samples`、`work`、`public`フォルダが存在することを確認します。
+1. Windowsのエクスプローラーなどで、Toguraのフォルダを開きます。次の6つのフォルダが存在することを確認します。
+    - `archive`: 作業済み・取り下げ済みのファイルを保存するフォルダ
+    - `public`: **公開用のファイルが出力されるフォルダ**
+        - データを公開するには、このフォルダの中身をWebサーバにアップロードする
+        - **このフォルダに保存されたファイルは編集しないこと**
+    - `samples`: メタデータのサンプルのフォルダ
+    - `schema`: メタデータスキーマの定義ファイルを保存するフォルダ
+    - `templates`: HTMLテンプレートファイルを保存するフォルダ
+    - `work`: **作業用フォルダ**
+        - **このフォルダに保存されたファイルを編集すること**
 1. `samples`フォルダを開き、サンプルの資料のフォルダが保存されていることを確認します。サンプルの資料は、[JPCOARスキーマ2.0のサンプルファイル](https://github.com/JPCOAR/schema/tree/master/2.0/samples)をもとに作成しています。
-1. `work`フォルダと`public`フォルダを開き、それぞれ中身が空であることを確認します。
-    - お使いのパソコンで隠しファイルを表示する設定になっている場合、`.keep`ファイルや`.well-known`フォルダが表示されますが、削除せずそのままにしておいてください。
+1. `public`フォルダと`work`フォルダを開き、それぞれ中身が空であることを確認します。
+    - お使いのパソコンで隠しファイルを表示する設定になっている場合、`public`フォルダの中に`.well-known`フォルダが表示されます。このフォルダはResourceSyncのXMLファイルの出力で使用するため、削除せずそのままにしておいてください。
 1. `samples`フォルダの中にある`00_sample`などのフォルダをすべて選択して、`work`フォルダにコピーします。
 1. VSCodeに戻ってターミナルを開き、以下のコマンドを実行します。
     ```sh
-    uv run python -X utf8 ./togura.py generate
+    uv run togura generate
     ```
 1. `public`フォルダの中に作成されている`index.html`ファイルを開き、サンプルの資料の情報が表示されていることを確認します。
 
 ### 資料の登録
 
-1. WindowsのエクスプローラーなどでToguraのフォルダを開き、`work`フォルダの中に新しいフォルダを作成します。フォルダ名は以下の規則で作成する必要があります。
+1. WindowsのエクスプローラーなどでToguraのフォルダを開き、`work`フォルダの中に新しいフォルダを作成します。フォルダ名は以下の規則に従う必要があります。
     - 1文字以上の半角数字で始まること
-        - この数字がリポジトリの登録番号となり、公開する際のURLとして使用されます
-        - 登録番号は重複していない番号を使用する必要がありますが、連番である必要はありません
-    - 数字の後ろに`_`（半角のアンダースコア）を含めること
+        - この数字がリポジトリでの資料の**登録番号**となり、**公開する際のURLの一部**として使用されます。たとえば`1001_my_article`というフォルダを作成した場合、そのフォルダの資料は`https://リポジトリのホスト名/1001/ro-crate-preview.html`というURLで公開されます。
+        - 登録番号はリポジトリ内で重複していない番号を使用する必要がありますが、連番である必要はなく、リポジトリの運用担当者で規則を決めてかまいません（もちろん連番でもかまいません）。なお、Excelなどの表計算ソフトウェアで資料の一覧を管理する際のトラブルを防ぐため、登録番号の先頭の数字は`0`で始めないことを強くおすすめします。
+    - 登録番号の後ろに`_`（半角のアンダースコア）を含めること
     - `_`の後ろの文字は任意の文字列を入力可能
-        - 資料名など、わかりやすいものであればなんでもかまいません
+        - 資料名など、わかりやすいものであればなんでもかまいません。
 
     ここでは`work`フォルダの中に`1001_my_article`フォルダを作ったこととして、以降そのフォルダを`work/1001_my_article`フォルダと記述します。
 1. `samples`フォルダの中にあるサンプルのメタデータファイルから、登録する資料の種類に適したものを選んで、`work/1001_my_article`フォルダにコピーします。ファイル名は`jpcoar20.yaml`のままとしてください。
@@ -121,17 +126,19 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
     - `jpcoar20.yaml`の編集はVSCode以外のテキストエディタでも行うことができますが（[後述](#vscode以外での動作)）、VSCodeで編集する場合、以下の機能が利用できます。
         - 一部のメタデータ項目名の最初の数文字を入力すると、自動的に入力候補が表示されます。
         - JPCOARスキーマに適合しないメタデータを記述している場合、赤色の波線が表示されます。
-    - ファイルの1行目にある以下の記述は削除しないでください。もし削除した場合、1行目に同じ記述を追加し直してください。
-      ```yaml
-      # yaml-language-server: $schema=../../schema/jpcoar.json
-      ```
+        - VSCodeでのメタデータのチェック機能を動作させるには、`jpcoar20.yaml`の1行目に以下の記述が必要です。もし削除してしまった場合、1行目に同じ記述を追加し直してください。
+            ```yaml
+            # yaml-language-server: $schema=../../schema/jpcoar.json
+            ```
 
 ### リポジトリ公開用ファイルの出力
 
-VSCodeのターミナルで`togura.py generate`コマンドを実行し、YAMLで作成したメタデータファイルをHTMLファイルとJPCOARスキーマのXMLファイルに変換します。
+VSCodeのターミナルで以下のコマンドを実行し、YAMLで作成したメタデータファイルをHTMLファイルとJPCOARスキーマのXMLファイルに変換します。
+
 ```sh
-uv run python -X utf8 ./togura.py generate
+uv run togura generate
 ```
+
 スクリプトの実行が正常に完了すると、ターミナルに以下のメッセージが表示されます。もしこのメッセージが表示されず、エラーになっている場合は、後述の「[エラーへの対応](#エラーへの対応)」をごらんください。
 
 ```
@@ -147,54 +154,32 @@ Toguraによるリポジトリの構築処理が完了しました。
     - `ro-crate-metadata.json`: RO-CrateのメタデータJSONファイル
     - `jpcoar20.xml`: JPCOARスキーマのXMLファイル
 
-メタデータの編集は`work`フォルダの中のファイルのみを用いて行います。`public`フォルダの中に作成されたファイルは編集しないでください。編集しても、再度`togura.py generate`コマンドを実行することで上書きされます。
+メタデータの編集は`work`フォルダの中のファイルのみを用いて行います。`public`フォルダの中に作成されたファイルは編集しないでください。編集しても、再度`uv run togura generate`コマンドを実行することで上書きされます。
 
 ### リポジトリ公開用ファイルのアップロード
 
 `public`フォルダに保存されたフォルダとファイルの一式を、Webサーバにアップロードします。アップロードの方法は、FTPクライアントやWeb管理画面など、お使いのWebサーバによって異なりますので、サーバの管理者（大学のIT担当部署・レンタルサーバの業者など）におたずねください。
 
-### 他の機関リポジトリからの移行
+### ロゴの変更
 
-JPCOARスキーマ1.0でのOAI-PMHの出力に対応している機関リポジトリから、登録されている資料をToguraに移行することができます。移行には`togura.py migrate`コマンドを使用します。
-
-指定できる項目は以下のとおりです。
-
-- `--base-url`（必須）: OAI-PMHのベースURLです。JAIRO Cloudの場合、各リポジトリのトップページのURLに`/oai`を追加したものになります。たとえばリポジトリのトップページのURLが`https://jpcoar.repo.nii.ac.jp`の場合、OAI-PMHのベースURLは`https://jpcoar.repo.nii.ac.jp/oai`になります。
-- `--export-dir`（必須）: 取得した資料のメタデータと本文ファイルを保存するフォルダ（ディレクトリ）です。任意の名前のフォルダを指定できます。
-- `--date-from`: 移行対象の開始日で、この日よりも後に登録・更新された資料を移行します。`yyyy-MM-dd`（年4桁・月2桁・日2桁の半角数字、半角ハイフン区切り）形式で指定します。指定しない場合、コマンド実行時の30日前の日付が指定されたものとして動作します。
-- `--date-until`: 移行対象の終了日で、この日よりも前に登録・更新された資料を移行します。`yyyy-MM-dd`（年4桁・月2桁・日2桁の半角数字、半角ハイフン区切り）形式で指定します。指定しない場合、コマンド実行時の日付が指定されたものとして動作します。
-- `--metadata-prefix`: 取得するメタデータの種類です。`jpcoar_1.0`か`jpcoar_2.0`を指定します。指定しない場合、`jpcoar_1.0`が指定されたものとして動作します。
-- `--metadata-only`: JPCOARスキーマのメタデータのみをダウンロードします。
-
-以下がコマンドの実行例です。実際に実行するときには、`--base-url`などを適宜変更してください。また、この実行例では本文ファイルのダウンロードを行うため、実行に長い時間がかかる場合があることにご注意ください。
-
-```sh
-uv run python -X utf8 ./togura.py migrate --base-url https://another.repo.example.ac.jp/oai --export-dir another --date-from 2025-08-01 --date-until 2025-08-31 --metadata-prefix jpcoar_1.0
-```
-
-コマンドの実行が完了すると、`--export-dir`で指定したフォルダ（上記の例では`another`）の中に各資料のフォルダが作成され、その中に本文ファイルとメタデータ`jpcoar20.yaml`が保存されています。この各資料のフォルダを`work`フォルダに移動し、`togura.py generate`コマンドを実行すると、移行した資料がToguraに登録されます。
-
-なお、指定した期間に登録された資料がない場合、以下のエラーが出力されます。対象の期間を広げて、再度実行してください。
-
-```
-sickle.oaiexceptions.NoRecordsMatch
-```
+ロゴのファイルは`templates/images/logo.png`に保存されています。ロゴを変更するには、このファイルを新しいファイルで上書きしてください。  
+ロゴのファイルはpng形式でなければなりません。また、ファイル名は`logo.png`である必要があります。
 
 ### エンバーゴ期間が終了している資料のチェック
 
-`togura.py check_expired_embargo`コマンドを用いて、エンバーゴ期間が終了している資料の一括チェックを行うことができます。具体的には、以下の条件にあてはまる資料の一覧を出力することができます。
+Toguraでは、資料に対してエンバーゴ期間が終了しているかどうかの一括チェックを行うことができます。具体的には、以下の条件にあてはまる資料の一覧を出力することができます。
 
 - メタデータの`access_rights`が`embargoed access`になっている
 - メタデータの`date`の`date_type`が`Available`、かつ`date`が実行日よりも前の日付になっている
 
-指定できる項目は以下のとおりです。
+エンバーゴ期間のチェックは`uv run togura check-expired-embargo`コマンドを用いて行います。指定できる項目は以下のとおりです。
 
 - `--dir`: チェック対象のフォルダを指定します。個別の資料のフォルダではなく、`work`フォルダのような、資料の一式が保存されているフォルダを指定してください。指定しない場合、`work`が指定されたものとして動作します。
 
 以下がコマンドの実行例です。
 
 ```sh
-uv run python -X utf8 ./togura.py check_expired_embargo --dir work
+uv run togura check-expired-embargo --dir work
 ```
 
 出力結果は以下のようになります。メタデータに記述した利用可能日（`date_type`に`Available`を指定している`date`）と、資料のメタデータの保存場所が出力されますので、メタデータの`access_rights`の値を`open access`などに変更してください。
@@ -207,20 +192,76 @@ uv run python -X utf8 ./togura.py check_expired_embargo --dir work
 出力結果はテキストファイルに書き出すこともできます。以下の実行例は、`archive`フォルダに保存されている資料のエンバーゴ期間をチェックし、結果を`expired_embargo.txt`というファイルに書き出す例です。この例では、`expired_embargo.txt`ファイルはToguraのフォルダに保存されます。
 - Windowsの場合:
     ```powershell
-    uv run python -X utf8 ./togura.py check_expired_embargo --dir archive | Tee-Object -FilePath expired_embargo.txt
+    uv run togura check-expired-embargo --dir archive | Tee-Object -FilePath expired_embargo.txt
     ```
 - macOSやLinuxの場合:
     ```sh
-    uv run python -X utf8 ./togura.py check_expired_embargo --dir archive | tee expired_embargo.txt
+    uv run togura check-expired-embargo --dir archive | tee expired_embargo.txt
     ```
 
 ### 公開した資料の取り下げ
 
 1. すでにWebサーバで取り下げ対象の資料を公開している場合、サーバからその資料のフォルダを削除します。
-1. `public`フォルダを開き、取り下げ対象の資料のフォルダを別のフォルダに移動、もしくは削除します。
-1. 同様に`work`フォルダを開き、取り下げ対象の資料のフォルダを別のフォルダに移動、もしくは削除します。Toguraのフォルダに存在する`archive`フォルダに移動することをおすすめします。
-1. 「[リポジトリ公開用ファイルの出力](#リポジトリ公開用ファイルの出力)」の手順に沿って、`togura.py generate`コマンドを実行し、ファイルを再作成します。
+1. `public`フォルダを開き、取り下げ対象の資料のフォルダを削除します。
+1. 同様に`work`フォルダを開き、取り下げ対象の資料のフォルダを`archive`フォルダに移動します。
+1. 「[リポジトリ公開用ファイルの出力](#リポジトリ公開用ファイルの出力)」の手順に沿って、`uv run togura generate`コマンドを実行し、ファイルを再作成します。
 1. 「[リポジトリ公開用ファイルのアップロード](#リポジトリ公開用ファイルのアップロード)」の手順に沿って、再作成したファイルをWebサーバにアップロードします。
+
+### JPCOARスキーマ・JaLC XMLファイルの出力チェック
+
+Toguraでは、JPCOARスキーマやJaLCのXMLファイルが正しい書式で`public`フォルダに出力されているかどうかを確認することができます。
+
+#### JPCOARスキーマ
+
+JPCOARスキーマのXMLファイルの出力チェックは、以下のコマンドで行います。[GitHub上のXSDファイル](https://github.com/JPCOAR/schema/tree/master/2.0)を用いてチェックを行うので、インターネットに接続されている環境で実行する必要があります。
+
+```sh
+uv run togura validate jpcoar20-xml
+```
+
+出力にエラーがある場合、以下のようなメッセージが表示されます。
+
+```
+以下のJPCOARスキーマXMLファイルにエラーがあります。
+/home/nabeta/togura/public/00/jpcoar20.xml
+invalid XML syntax: mismatched tag: line 3, column 35
+```
+
+#### JaLC
+
+JaLCのXMLファイルの出力チェックを行うには、事前に以下の準備を行う必要があります。
+
+1. [JaLCのWebサイト](https://japanlinkcenter.org/top/material/service_technical.html)から、XSDスキーマのzipファイルをダウンロードします。
+1. zipファイルを展開すると`XSDスキーマ`という名前のフォルダが作成されますので、そのまま`schema`フォルダの中にコピーします。
+
+出力チェックは以下のコマンドで行います。
+
+```sh
+uv run togura validate jalc-xml
+```
+
+出力にエラーがある場合、以下のようなメッセージが表示されます。
+
+```
+以下のJaLC XMLファイルにエラーがあります。
+/home/nabeta/togura/public/00/jalc.xml
+failed validating '' with XsdPatternFacets(['[0-9]+']):
+
+Reason: value doesn't match any pattern of ['[0-9]+']
+
+Schema component:
+
+  <xs:pattern xmlns:xs="http://www.w3.org/2001/XMLSchema" value="[0-9]+" />
+
+Instance type: <class 'xml.etree.ElementTree.Element'>
+
+Instance:
+
+  <year />
+
+Path: /root/body/content/publication_date/year
+
+```
 
 ### エラーへの対応
 
@@ -228,33 +269,13 @@ uv run python -X utf8 ./togura.py check_expired_embargo --dir work
 
 VSCodeでuvコマンドのインストールを実行したのにエラーになる場合、uvコマンドがVSCodeの環境で認識されていない可能性があります。VSCodeを再起動してください。
 
-#### togura.py generateコマンドの実行時に、"KeyError:"というエラーになる
+#### togura generateコマンドの実行時に、「以下のメタデータの（項目名）にエラーがあります」というエラーになる
 
-メタデータのYAMLファイルに記述の誤りがある可能性があります。エラーの上部の`DEBUG:`と表示されている行に、エラーが発生している資料の登録番号が表示されています。
-`work`フォルダの中にある当該登録番号のフォルダから`jpcoar20.yaml`ファイルをVSCodeで開き、メタデータでエラーになっている箇所（赤の波線が表示されています）を確認してください。メタデータを修正したら、再度`togura.py generate`コマンドを実行してください。
+メタデータのYAMLファイルに記述の誤りがある可能性があります。エラーメッセージに、エラーの発生しているメタデータの項目名とファイル名が表示されていますので、該当するメタデータのファイルを開き、エラーになっている箇所（VSCodeを使用している場合、赤の波線が表示されています）を確認してください。メタデータを修正したら、再度`uv run togura generate`コマンドを実行してください。
 
-以下のエラーの例は、登録番号`00`の資料のメタデータで`title`の記述が抜けている場合のものです。この場合、`work`フォルダの中の`00_`から始まるフォルダを開き、`jpcoar20.yaml`ファイルを修正することになります。
+VSCodeでエラーが表示されている箇所がないのに`uv run togura generate`コマンドでエラーになる場合、Toguraの不具合が考えられますので、後述の「[使い方の質問](#使い方の質問)」に記載されている連絡先までお問い合わせください。
 
-```
-DEBUG:jpcoar:00 created
-Traceback (most recent call last):
-  File "/home/nabeta/Documents/togura/./togura.py", line 178, in <module>
-    main()
-    ~~~~^^
-  File "/home/nabeta/Documents/togura/./togura.py", line 85, in main
-    generate()
-    ~~~~~~~~^^
-  File "/home/nabeta/Documents/togura/./togura.py", line 153, in generate
-    root = jpcoar.generate(entry, base_url)
-  File "/home/nabeta/Documents/togura/jpcoar.py", line 227, in generate
-    for d in entry["title"]:
-             ~~~~~^^^^^^^^^
-KeyError: 'title'
-```
-
-メタデータでエラーが表示されている箇所がないのに`togura.py generate`コマンドでエラーになる場合、Toguraの不具合が考えられますので、後述の「[使い方の質問](#使い方の質問)」に記載されている連絡先までお問い合わせください。
-
-#### togura.py generateコマンドの実行時に、"IsADirectoryError:"というエラーになる
+#### togura generateコマンドの実行時に、"IsADirectoryError:"というエラーになる
 
 資料のフォルダの中に、別のフォルダが作成されている可能性がありますので、削除するか別の場所に移動してください。Toguraでは、資料のフォルダの中にフォルダを作成することはできません。
 
@@ -262,25 +283,21 @@ KeyError: 'title'
 
 Toguraの不具合の可能性が高いので、「[使い方の質問](#使い方の質問)」に記載されている連絡先までお知らせください。
 
-### バックアップ
+#### 上記以外のエラーになる
+
+実行しようとしていた内容とエラーメッセージの全文を、「[使い方の質問](#使い方の質問)」に記載されている連絡先までお知らせください。
+
+
+### バックアップとリストア
 
 バックアップはToguraのフォルダをコピーするだけで行えます。外付けディスクなどにコピーしておいてください。
 
-### Toguraの更新
-
-1. [Toguraのダウンロードリンク](https://github.com/nabeta/togura/archive/refs/heads/main.zip)からzipファイルをダウンロードし、適当なディレクトリに展開します。
-1. 展開したディレクトリに含まれるすべてのフォルダとファイルを、これまで使っていたToguraのフォルダに上書きコピーします。
-1. VSCodeを起動し、ターミナルで以下のコマンドを実行して、必要なPythonのモジュールを更新します。
-    ```sh
-    uv pip install -r requirements.txt
-    ```
-
-ToguraのダウンロードをGitで実行された方は、`git pull`でToguraを更新することができます。
+新しいパソコンでバックアップからのリストア（復元）を行うには、新しいパソコンにToguraを再インストールした後、外付けディスクなどに保存したToguraのフォルダを新しいパソコンにコピーしてください。
 
 ### VSCode以外での動作
 
 メタデータの編集は、VSCodeのほかにも、メモ帳などUTF-8の扱えるテキストエディタで行うことができます。ただし、メタデータの項目のチェック機能が使えなくなりますのでご注意ください。また、メタデータの保存の際には、文字コードがUTF-8になっていることを確認してください。  
-メモ帳などVSCode以外のテキストエディタで作成したメタデータでも、VSCodeでToguraを実行することで、メタデータの項目のチェック機能が使えるようになります。チェック機能を有効にするには、上述の「メタデータの書き方」に沿った場所にメタデータのファイルを保存し、かつメタデータの1行目に以下の行を追加する必要があります。
+メモ帳などVSCode以外のテキストエディタで作成したメタデータでも、VSCodeでToguraを実行することで、メタデータの項目のチェック機能が使えるようになります。チェック機能を有効にするには、上述の「メタデータの書き方」に沿った場所にメタデータのファイル`jpcoar20.yaml`を保存し、かつ`jpcoar20.yaml`の1行目に以下の行を追加する必要があります。
 
 ```yaml
 # yaml-language-server: $schema=../../schema/jpcoar.json
@@ -297,27 +314,44 @@ cd "Documents\togura"
 
 ```sh
 # macOS・Linuxの場合
-cd
+cd ~
 cd Documents/togura
 ```
 
-### Toguraのフォルダの構成
+### Toguraの更新
 
-通常の作業では、`work`フォルダと`public`フォルダのみを使用します。
+VSCodeなどでターミナルを起動し、以下のコマンドを実行します。
 
-- `archive`: 作業済み・取り下げ済みのファイルを保存するフォルダ
-- `public`: 公開用のファイルが出力されるフォルダ
-    - データを公開するには、このフォルダの中身をWebサーバにアップロードすること
-    - このフォルダに保存されたファイルは編集しないこと
-- `samples`: メタデータのサンプルのフォルダ
-- `schema`: メタデータスキーマの定義ファイルを保存するフォルダ（開発者用）
-- `templates`: HTMLテンプレートファイルを保存するフォルダ
-    - `index.j2`: トップページのテンプレート
-    - `index_page.j2`: 2ページ目以降の資料一覧画面のテンプレート
-    - `show.j2`: 資料詳細画面のテンプレート
-- `test`: テスト用スクリプトを保存するフォルダ（開発者用）
-- `work`: 作業用フォルダ
-    - このフォルダに保存されたファイルを編集すること
+```sh
+uv pip install togura --upgrade
+```
+
+### 他の機関リポジトリからの移行
+
+Toguraでは、JPCOARスキーマ1.0でのOAI-PMHの出力に対応している機関リポジトリから、登録されている資料とメタデータを移行することができます。移行には`uv run togura migrate`コマンドを使用します。
+
+指定できる項目は以下のとおりです。
+
+- `--base-url`（必須）: OAI-PMHのベースURLです。JAIRO Cloudの場合、各リポジトリのトップページのURLに`/oai`を追加したものになります。たとえばリポジトリのトップページのURLが`https://jpcoar.repo.nii.ac.jp`の場合、OAI-PMHのベースURLは`https://jpcoar.repo.nii.ac.jp/oai`になります。
+- `--export-dir`（必須）: 取得した資料の本文ファイルとメタデータを保存するフォルダ（ディレクトリ）です。任意の名前のフォルダを指定できます。
+- `--date-from`: 移行対象の開始日で、この日よりも後に登録・更新された資料を移行します。`yyyy-MM-dd`（年4桁・月2桁・日2桁の半角数字、半角ハイフン区切り）形式で指定します。指定しない場合、コマンド実行時の30日前の日付が指定されたものとして動作します。
+- `--date-until`: 移行対象の終了日で、この日よりも前に登録・更新された資料を移行します。`yyyy-MM-dd`（年4桁・月2桁・日2桁の半角数字、半角ハイフン区切り）形式で指定します。指定しない場合、コマンド実行時の日付が指定されたものとして動作します。
+- `--metadata-prefix`: 取得するメタデータの種類です。`jpcoar_1.0`か`jpcoar_2.0`を指定します。指定しない場合、`jpcoar_1.0`が指定されたものとして動作します。
+- `--metadata-only`: 本文ファイルをダウンロードせず、JPCOARスキーマのメタデータファイルのみをダウンロードします。
+
+以下がコマンドの実行例です。実際に実行するときには、`--base-url`などを適宜変更してください。また、この実行例では本文ファイルのダウンロードを行うため、実行に長い時間がかかる場合があることにご注意ください。
+
+```sh
+uv run togura migrate --base-url https://another.repo.example.ac.jp/oai --export-dir another --date-from 2025-08-01 --date-until 2025-08-31 --metadata-prefix jpcoar_1.0
+```
+
+コマンドの実行が完了すると、`--export-dir`で指定したフォルダ（上記の例では`another`）の中に各資料のフォルダが作成され、その中に本文ファイルとメタデータ`jpcoar20.yaml`が保存されています。この各資料のフォルダを`work`フォルダに移動し、`uv run togura generate`コマンドを実行すると、移行した資料がToguraに登録されます。
+
+なお、指定した期間に登録された資料がない場合、以下のエラーが出力されます。対象の期間を広げて、再度実行してください。
+
+```
+sickle.oaiexceptions.NoRecordsMatch
+```
 
 ### メタデータスキーマの定義ファイルの更新
 
@@ -327,10 +361,10 @@ cd Documents/togura
     ```sh
     sudo apt-get install yq
     ```
-1. `schema/jpcoar.yaml`ファイルを編集します。
-1. yqコマンドで`schema/jpcoar.yaml`ファイルをJSON Schemaのファイルに変換します。
+1. [src/togura/schema/jpcoar.yaml](https://github.com/nabeta/togura/blob/package/src/togura/schema/jpcoar.yaml)ファイルを編集します。
+1. yqコマンドで`src/togura/schema/jpcoar.yaml`ファイルをJSON Schemaのファイルに変換します。
     ```sh
-    yq . schema/jpcoar.yaml > schema/jpcoar.json
+    yq . src/togura/schema/jpcoar.yaml > src/togura/schema/jpcoar.json
     ```
 
 ## TODO
@@ -344,8 +378,7 @@ cd Documents/togura
 
 ## 使い方の質問
 
-使い方やエラーの対応でわからないことがある場合は、[Code4Lib JAPANのDiscord](https://wiki.code4lib.jp/#Code4Lib_JAPAN_Discord)、もしくは[GitHubのIssues](https://github.com/nabeta/togura/issues)でお知らせください。  
-[作者](#作者)にメールを送っていただいてもかまいませんが、返信が遅れることがあるため、できるだけDiscordかGitHubでの連絡をお願いします。
+使い方やエラーの対応でわからないことがある場合は、[Code4Lib JAPANのDiscord](https://wiki.code4lib.jp/#Code4Lib_JAPAN_Discord)、もしくは[GitHubのIssues](https://github.com/nabeta/togura/issues)でお知らせください。[作者](#作者)にメールを送っていただいてもかまいませんが、返信が遅れる可能性が高いため、できるだけDiscordかGitHubでの連絡をお願いします。
 
 ## 参考資料
 

@@ -1,4 +1,4 @@
-from sickle import Sickle
+from oaipmh_scythe import Scythe
 from logging import getLogger, DEBUG
 from urllib.parse import urlparse
 import os
@@ -11,10 +11,10 @@ logger = getLogger(__name__)
 logger.setLevel(DEBUG)
 
 def migrate(base_url, metadata_prefix, date_from, date_until, export_dir, metadata_only):
-  sickle = Sickle(base_url)
-  records = sickle.ListRecords(
-    **{"metadataPrefix": metadata_prefix,
-    "from": date_from,
+  scythe = Scythe(base_url)
+  records = scythe.list_records(
+    **{"metadata_prefix": metadata_prefix,
+    "from_": date_from,
     "until": date_until,
     "ignore_deleted": True
   })
@@ -70,8 +70,11 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir, metada
         creator_name_identifiers = []
         if creator.find("./jpcoar:nameIdentifier", ns) is not None:
           for name_identifier in creator.findall("./jpcoar:nameIdentifier", ns):
+            scheme = name_identifier.get("nameIdentifierScheme")
+            if scheme == "e-Rad":
+              scheme = "e-Rad_Researcher"
             d = {
-              "identifier_scheme": name_identifier.get("nameIdentifierScheme")
+              "identifier_scheme": scheme
             }
             if name_identifier.get("nameIdentifierURI") is not None:
               d["identifier"] = name_identifier.get("nameIdentifierURI")
@@ -175,8 +178,11 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir, metada
         contributor_name_identifiers = []
         if contributor.find("./jpcoar:nameIdentifier", ns) is not None:
           for name_identifier in contributor.findall("./jpcoar:nameIdentifier", ns):
+            scheme = name_identifier.get("nameIdentifierScheme")
+            if scheme == "e-Rad":
+              scheme = "e-Rad_Researcher"
             d = {
-              "identifier_scheme": name_identifier.get("nameIdentifierScheme")
+              "identifier_scheme": scheme
             }
             if name_identifier.get("nameIdentifierURI") is not None:
               d["identifier"] = name_identifier.get("nameIdentifierURI")
@@ -302,8 +308,11 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir, metada
         if rights_holder.find("./jpcoar:nameIdentifier", ns) is not None:
           name_identifiers = []
           for name_identifier in rights_holder.findall("./jpcoar:nameIdentifier", ns):
+            scheme = name_identifier.get("nameIdentifierScheme")
+            if scheme == "e-Rad":
+              scheme = "e-Rad_Researcher"
             d = {
-              "identifier_scheme": name_identifier.get("nameIdentifierScheme")
+              "identifier_scheme": scheme
             }
             if name_identifier.get("nameIdentifierURI") is not None:
               d["identifier"] = name_identifier.get("nameIdentifierURI")
@@ -576,7 +585,9 @@ def migrate(base_url, metadata_prefix, date_from, date_until, export_dir, metada
         # 助成機関識別子
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/23-.1
         funder_identifier = funding_reference.find("./jpcoar:funderIdentifier", ns)
-        if funder_identifier:
+        if funder_identifier is None:
+            funder_identifier = funding_reference.find("./datacite:funderIdentifier", ns)
+        if funder_identifier is not None:
           d["funder_identifier"] = {
             "funder_identifier": funder_identifier.text,
             "funder_identifier_type": funder_identifier.get("funderIdentifierType")

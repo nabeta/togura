@@ -34,6 +34,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install .
           echo -e "site_name: 鳥座大学機関リポジトリ\nbase_url: https://nabeta.github.io/togura\norganization: 鳥座大学\nlogo_filename: logo.png\njalc_site_id: dummy\n" > config.yml
           cp templates/bootstrap.html templates/head_custom.html
           rsync -a samples/ work/

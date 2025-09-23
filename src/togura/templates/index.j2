@@ -4,19 +4,25 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ site_name }}</title>
-    <style>{% include "templates/style.css" %}</style>
-    {% include "templates/head_custom.html" ignore missing %}
+    <style>{% include "style.css" %}</style>
+    {% include "head_custom.html" ignore missing %}
   </head>
   <body>
     <div class="container">
-      <p>
-        <a href="./index.html"><img src="./images/logo.png" height="48"></a>
-        <a href="./index.html">{{ site_name }}</a>
-      </p>
+      <h1>
+        <a href="index.html"><img src="images/logo.png" height="72"></a>
+        {{ site_name }}
+      </h1>
 
       <h2>収録資料の一覧</h2>
 
-      <p>{{ (page - 1) * per_page + 1 }}件目から{{ page * per_page }}件目までの登録を表示しています。</p>
+      <div class="pb-3">
+        {% for page in range(0, total_pages) %}
+          <a href="index{{ page + 1 }}.html">index{{ page + 1 }}.html</a>
+        {% endfor %}
+      </div>
+
+      <h2 >最近の登録</h2>
 
       <ul>
         {% for entry in entries %}
@@ -45,23 +51,11 @@
       </ul>
 
       <div>
-        <a href="index.html">トップページ</a>
-
-        {% if previous_page %}
-          <a href="index{{ previous_page }}.html">前のページ</a>
-        {% endif %}
-
-        {% if next_page %}
-          <a href="index{{ next_page }}.html">次のページ</a>
-        {% endif %}
-      </div>
-
-      <div>
         最終更新日: {{ now }}
         <a href="resourcelist.xml">ResourceSync XML</a>
       </div>
 
-      {% include "templates/footer.j2" %}
+      {% include "footer.j2" %}
     </div>
   </body>
 </html>

@@ -1,16 +1,38 @@
 [project]
 name = "togura"
-version = "0.1.0"
+version = "0.1.0a1"
+authors = [
+    { name = "Kosuke Tanabe", email = "nabeta@fastmail.fm" }
+]
 description = "極めてシンプルな機関リポジトリ"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "more-itertools>=10.8.0",
+    "oaipmh-scythe>=0.13.0",
     "pytest>=8.4.2",
     "pyyaml>=6.0",
     "resync>=2.0.1",
     "rocrate>=0.14.0",
     "setuptools>=80.9.0",
-    "sickle>=0.7.0",
+    "typer>=0.17.4",
     "xmlschema>=4.1.0",
 ]
+license = "CC0-1.0"
+
+[project.scripts]
+togura = "togura.cli:app"
+
+[project.urls]
+Homepage = "https://github.com/nabeta/togura"
+Issues = "https://github.com/nabeta/togura/issues"
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+togura = ["samples/**", "templates/**", ".vscode/*.json"]

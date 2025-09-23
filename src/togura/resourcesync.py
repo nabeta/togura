@@ -1,5 +1,6 @@
 import os
 import datetime
+from pathlib import Path
 from resync import Resource, ResourceList, CapabilityList, SourceDescription
 from urllib.parse import urljoin
 
@@ -24,12 +25,14 @@ def generate(output_dir, base_url):
 
   caps.add_capability(rl, urljoin(base_url, "resourcelist.xml"))
 
-  with open("public/capabilitylist.xml", "w", encoding="utf-8") as file:
+  with open(f"{Path.cwd()}/public/capabilitylist.xml", "w", encoding="utf-8") as file:
     file.write(caps.as_xml())
 
-  with open("public/resourcelist.xml", "w", encoding="utf-8") as file:
+  with open(f"{Path.cwd()}/public/resourcelist.xml", "w", encoding="utf-8") as file:
     file.write(rl.as_xml())
 
   rsd.add_capability_list(urljoin(base_url, "capabilitylist.xml"))
-  with open("public/.well-known/resourcesync", "w", encoding="utf-8") as file:
+
+  os.makedirs(f"{Path.cwd()}/public/.well-known", exist_ok = True)
+  with open(f"{Path.cwd()}/public/.well-known/resourcesync", "w", encoding="utf-8") as file:
     file.write(rsd.as_xml())

@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ entry.title[0].title }} | {{ site_name }}</title>
-    <style>{% include "templates/style.css" %}</style>
-    {% include "templates/head_custom.html" ignore missing %}
+    <style>{% include "style.css" %}</style>
+    {% include "head_custom.html" ignore missing %}
   </head>
   <body>
     <div class="container">
@@ -432,7 +432,7 @@
         {% endif %}
       </div>
 
-      {% include "templates/footer.j2" %}
+      {% include "footer.j2" %}
     </div>
   </body>
 </html>

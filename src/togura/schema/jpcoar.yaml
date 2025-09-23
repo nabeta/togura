@@ -1215,19 +1215,6 @@ properties:
         type: array
         items:
           type: object
-          additionalProperties: false
-          properties:
-            contributor_name:
-              type: array
-              items:
-                type: object
-                additionalProperties: false
-                properties:
-                  name:
-                    type: string
-                  lang:
-                    type: string
-                    pattern: "^[a-z]{2}(-[A-Za-z]+)?$"
       identifier:
         type: array
         items:
