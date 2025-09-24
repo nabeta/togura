@@ -1399,10 +1399,7 @@ def migrate(
 
         # メタデータの作成
         with open(f"{dir_name}/jpcoar20.yaml", "w", encoding="utf-8") as file:
-            yaml.dump(
-                filtered_entry,
-                file
-            )
+            yaml.dump(filtered_entry, file)
 
         with open(f"{dir_name}/jpcoar20.yaml", "r+", encoding="utf-8") as file:
             content = file.read()

@@ -114,6 +114,7 @@ def generate():
     data_dir = f"{Path.cwd()}/work"
     output_dir = f"{Path.cwd()}/public"
     base_url = Config().base_url
+    yaml = YAML()
 
     paths = sorted(glob.glob(f"{data_dir}/*"))
     ids = sorted([os.path.basename(path).split("_")[0] for path in paths])
@@ -133,7 +134,6 @@ def generate():
                 f"エラー: 登録番号 {entry_id} の書式が正しくありません。半角の数字に変更してください。また、登録番号のあとに _ （アンダースコア）を入力していることを確認してください。"
             )
 
-        yaml = YAML()
         yaml_path = f"{path}/jpcoar20.yaml"
         with open(yaml_path, encoding="utf-8") as file:
             entry = yaml.load(file)
