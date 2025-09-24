@@ -7,6 +7,7 @@ import xml.etree.ElementTree as ET
 import xmlschema
 from collections import Counter
 from datetime import datetime, date, timedelta
+from logging import getLogger, DEBUG
 from pathlib import Path
 from ruamel.yaml import YAML
 from togura.config import Config
@@ -18,6 +19,8 @@ import togura.resourcesync as resourcesync
 import togura.ro_crate as ro_crate
 
 app = typer.Typer()
+logger = getLogger(__name__)
+logger.setLevel(DEBUG)
 
 
 @app.command()
@@ -194,19 +197,35 @@ def migrate(
 # エンバーゴ期間が終了している資料の一覧を出力する
 @app.command()
 def check_expired_embargo(
-    dir: str = typer.Option("work", "--dir", help="ファイルの保存先のディレクトリ"),
+    work_dir: str = typer.Option(
+        "work", "--dir", help="ファイルの保存先のディレクトリ"
+    ),
+    update: bool = typer.Option(
+        False,
+        "--update",
+        help="メタデータを更新する",
+    )
 ):
     """
     エンバーゴ期間が終了している資料を出力します。
     """
     yaml = YAML()
-    for file in glob.glob(f"{dir}/*/jpcoar20.yaml"):
-        with open(file, encoding="utf-8") as f:
+    yaml.preserve_quotes = True
+    for file in glob.glob(f"{work_dir}/*/jpcoar20.yaml"):
+        with open(file, "r+", encoding="utf-8") as f:
             entry = yaml.load(f)
             if entry.get("access_rights") == "embargoed access" and entry.get("date"):
                 for d in entry["date"]:
                     if d["date_type"] == "Available" and d["date"] <= date.today():
                         typer.echo(f"{d['date']}\t{file}")
+                        if update is True:
+                          entry["access_rights"] = "open access"
+                          f.truncate(0)
+                          f.seek(0)
+                          yaml.dump(entry, f)
+                          logger.debug(
+                              f"{file}のdcterms:accessRightsをopen accessに変更しました"
+                          )
 
     typer.Exit(code=0)
 

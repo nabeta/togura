@@ -175,11 +175,15 @@ Toguraでは、資料に対してエンバーゴ期間が終了しているか�
 エンバーゴ期間のチェックは`uv run togura check-expired-embargo`コマンドを用いて行います。指定できる項目は以下のとおりです。
 
 - `--dir`: チェック対象のフォルダを指定します。個別の資料のフォルダではなく、`work`フォルダのような、資料の一式が保存されているフォルダを指定してください。指定しない場合、`work`が指定されたものとして動作します。
+- `--update`: このオプションが指定された場合、エンバーゴ期間が終了している資料のメタデータファイル`jpcoar20.yaml`に対して、`access_rights`の値を`embargoed access`から`open access`に更新します。更新は確認なしで実行されますので、このオプションを指定する前に、後述の手順で、必ずエンバーゴ期間のチェック結果をテキストファイルに書き出しておいてください。
 
 以下がコマンドの実行例です。
 
 ```sh
-uv run togura check-expired-embargo --dir work
+uv run togura check-expired-embargo
+
+# archiveフォルダの資料をチェック対象とする場合
+uv run togura check-expired-embargo --dir archive
 ```
 
 出力結果は以下のようになります。メタデータに記述した利用可能日（`date_type`に`Available`を指定している`date`）と、資料のメタデータの保存場所が出力されますので、メタデータの`access_rights`の値を`open access`などに変更してください。
@@ -189,15 +193,23 @@ uv run togura check-expired-embargo --dir work
 2016-04-01	work/04_journal_article_accepted_embargoed/jpcoar20.yaml
 ```
 
-出力結果はテキストファイルに書き出すこともできます。以下の実行例は、`archive`フォルダに保存されている資料のエンバーゴ期間をチェックし、結果を`expired_embargo.txt`というファイルに書き出す例です。この例では、`expired_embargo.txt`ファイルはToguraのフォルダに保存されます。
+出力結果はテキストファイルに書き出すこともできます。以下の実行例は、チェック結果を`expired_embargo.txt`というファイルに書き出す例です。この例では、`expired_embargo.txt`ファイルはToguraのフォルダに保存されます。
 - Windowsの場合:
     ```powershell
-    uv run togura check-expired-embargo --dir archive | Tee-Object -FilePath expired_embargo.txt
+    uv run togura check-expired-embargo | Tee-Object -FilePath expired_embargo.txt
     ```
 - macOSやLinuxの場合:
     ```sh
-    uv run togura check-expired-embargo --dir archive | tee expired_embargo.txt
+    uv run togura check-expired-embargo | tee expired_embargo.txt
     ```
+
+メタデータの`access_rights`の更新は、以下のコマンドで一括で行うこともできます。必ず実行前に、エンバーゴ期間の一覧をテキストファイルに保存しておいてください。
+
+```sh
+uv run togura check-expired-embargo --update
+```
+
+メタデータの更新が完了したら、`uv run togura generate`コマンドで更新を公開用のファイルに反映させてください。
 
 ### 公開した資料の取り下げ
 
