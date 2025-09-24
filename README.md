@@ -350,7 +350,8 @@ uv run togura migrate --base-url https://another.repo.example.ac.jp/oai --export
 なお、指定した期間に登録された資料がない場合、以下のエラーが出力されます。対象の期間を広げて、再度実行してください。
 
 ```
-sickle.oaiexceptions.NoRecordsMatch
+NoRecordsMatch: The combination of the values of the from, until, set and
+metadataPrefix arguments results in an empty list.
 ```
 
 ### メタデータスキーマの定義ファイルの更新
