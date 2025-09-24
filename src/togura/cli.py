@@ -5,10 +5,10 @@ import shutil
 import typer
 import xml.etree.ElementTree as ET
 import xmlschema
-import yaml
 from collections import Counter
 from datetime import datetime, date, timedelta
 from pathlib import Path
+from ruamel.yaml import YAML
 from togura.config import Config
 import togura.html as html
 import togura.jalc as jalc
@@ -91,6 +91,7 @@ def setup():
         or default_jalc_site_id
     )
 
+    yaml = YAML()
     with open(f"{Path.cwd()}/config.yaml", "w", encoding="utf-8") as file:
         yaml.dump(
             {
@@ -132,9 +133,10 @@ def generate():
                 f"エラー: 登録番号 {entry_id} の書式が正しくありません。半角の数字に変更してください。また、登録番号のあとに _ （アンダースコア）を入力していることを確認してください。"
             )
 
+        yaml = YAML()
         yaml_path = f"{path}/jpcoar20.yaml"
         with open(yaml_path, encoding="utf-8") as file:
-            entry = yaml.safe_load(file)
+            entry = yaml.load(file)
             entry["id"] = entry_id
 
             try:
@@ -197,9 +199,10 @@ def check_expired_embargo(
     """
     エンバーゴ期間が終了している資料を出力します。
     """
+    yaml = YAML()
     for file in glob.glob(f"{dir}/*/jpcoar20.yaml"):
         with open(file, encoding="utf-8") as f:
-            entry = yaml.safe_load(f)
+            entry = yaml.load(f)
             if entry.get("access_rights") == "embargoed access" and entry.get("date"):
                 for d in entry["date"]:
                     if d["date_type"] == "Available" and d["date"] <= date.today():

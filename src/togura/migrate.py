@@ -1,10 +1,10 @@
 from oaipmh_scythe import Scythe
 from logging import getLogger, DEBUG
+from ruamel.yaml import YAML
 from urllib.parse import urlparse
 import os
 import re
 import requests
-import yaml
 
 logger = getLogger(__name__)
 logger.setLevel(DEBUG)
@@ -39,6 +39,8 @@ def migrate(
         "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
         "xsi": "http://www.w3.org/2001/XMLSchema-instance",
     }
+
+    yaml = YAML()
 
     for record in records:
         identifier = record.xml.find(".//root:identifier", ns).text.split(":")[-1]
@@ -1397,12 +1399,9 @@ def migrate(
 
         # メタデータの作成
         with open(f"{dir_name}/jpcoar20.yaml", "w", encoding="utf-8") as file:
-            yaml.safe_dump(
+            yaml.dump(
                 filtered_entry,
-                file,
-                encoding="utf-8",
-                allow_unicode=True,
-                sort_keys=False,
+                file
             )
 
         with open(f"{dir_name}/jpcoar20.yaml", "r+", encoding="utf-8") as file:
