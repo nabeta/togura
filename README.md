@@ -12,7 +12,7 @@ Toguraは[JPCOARスキーマ](https://schema.irdb.nii.ac.jp/ja/schema) 2.0のメ
 
 Toguraで構築する機関リポジトリでの論文や研究データの公開は、ローカル環境（手元のパソコン）でメタデータファイルやHTMLファイルを作成し、それらのファイルを論文や研究データのファイルといっしょにWebサーバにアップロードすることで行います。このため、以下のような特長を持っています。
 
-- Toguraでは直接JPCOARスキーマのメタデータを記述するため、[JAIRO Cloud](https://jpcoar.repo.nii.ac.jp/page/42)などでのメタデータマッピングの設定が不要になります。
+- Toguraでは直接JPCOARスキーマのメタデータを記述するため、[JAIRO Cloud](https://jpcoar.org/support/jairo-cloud/)などでのメタデータマッピングの設定が不要になります。
 - Toguraはメタデータの簡易チェック機能を提供しており、JPCOARスキーマに適合しないメタデータを記述した場合でも容易に誤りに気づくことができます。
 - 手元のパソコンだけで登録作業を行うため、インターネットに接続されていない環境でも作業を行うことができます（インターネット接続は公開作業のときのみ必要）。メンテナンスによって登録作業を行えなくなる期間も発生しません。
 - メタデータファイルをはじめ、登録に使用するファイルがすべて手元のパソコンに残るため、手元のパソコンのバックアップを取ることで、機関リポジトリ全体のバックアップが行えます。データの復旧も、バックアップからファイルをコピーするだけで行えます。
@@ -362,7 +362,7 @@ metadataPrefix arguments results in an empty list.
     ```sh
     sudo apt-get install yq
     ```
-1. [src/togura/schema/jpcoar.yaml](https://github.com/nabeta/togura/blob/package/src/togura/schema/jpcoar.yaml)ファイルを編集します。
+1. [src/togura/schema/jpcoar.yaml](https://github.com/nabeta/togura/blob/main/src/togura/schema/jpcoar.yaml)ファイルを編集します。
 1. yqコマンドで`src/togura/schema/jpcoar.yaml`ファイルをJSON Schemaのファイルに変換します。
     ```sh
     yq . src/togura/schema/jpcoar.yaml > src/togura/schema/jpcoar.json
