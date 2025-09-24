@@ -2,11 +2,11 @@ import glob
 import os
 import re
 import shutil
-import sys
 import typer
 import xml.etree.ElementTree as ET
 import xmlschema
 import yaml
+from collections import Counter
 from datetime import datetime, date, timedelta
 from pathlib import Path
 from togura.config import Config

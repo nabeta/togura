@@ -1,20 +1,16 @@
-import typer
-import argparse
 import glob
 import logging
 import os
 import re
 import shutil
-import sys
 import yaml
-from datetime import datetime, date, timedelta
+from datetime import date
 from collections import Counter
 import togura.config as config
 import togura.html as html
 import togura.jalc as jalc
-import togura.jalc as jpcoar
-import togura.jalc as migrate
-import togura.jalc as resourcesync
+import togura.jpcoar as jpcoar
+import togura.resourcesync as resourcesync
 import togura.ro_crate as ro_crate
 
 # ログ出力の設定

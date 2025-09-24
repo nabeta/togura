@@ -4,7 +4,6 @@ from urllib.parse import urlparse
 import os
 import re
 import requests
-import xml.etree.ElementTree as ET
 import yaml
 
 logger = getLogger(__name__)

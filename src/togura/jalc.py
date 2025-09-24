@@ -2,8 +2,7 @@ import os
 import yaml
 import xml.etree.ElementTree as ET
 from togura.config import Config
-from datetime import datetime
-from urllib.parse import urlparse, urljoin
+from urllib.parse import urljoin
 from logging import getLogger, DEBUG
 
 logger = getLogger(__name__)

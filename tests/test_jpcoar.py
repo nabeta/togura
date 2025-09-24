@@ -1,5 +1,4 @@
 import togura.jpcoar as jpcoar
-import pytest
 
 def test_resource_type_uri():
   assert jpcoar.resource_type_uri("test") is None

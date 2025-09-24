@@ -58,7 +58,7 @@ def generate(data_dir, output_dir, base_url, per_page = 100):
           show_html = template_show.render(entry = entry, files = files, base_url = conf.base_url, site_name = conf.site_name)
           file.write(show_html)
           logger.debug(f"{entry['id']}.html")
-      except FileNotFoundError as e:
+      except FileNotFoundError:
         logger.error(f"metadata not found in {data_dir}")
         continue
 
