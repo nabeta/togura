@@ -79,10 +79,13 @@ def generate():
   output_dir = f"{Path.cwd()}/public"
   base_url = Config().base_url
 
-  paths  = sorted(glob.glob(f"{data_dir}/*"))
-  if len(paths) != len(set(paths)):
-    duplicate_ids = ", ".join(Counter(paths).items())
-    raise Exception(f"エラー: 登録番号 {duplicate_ids} が重複しています。別の番号を使用してください。")
+  paths = sorted(glob.glob(f"{data_dir}/*"))
+  ids = sorted([os.path.basename(path).split("_")[0] for path in paths])
+  if len(paths) != len(set(ids)):
+    #duplicate_ids = ", ".join(Counter(ids).items())
+    for duplicate_id in Counter(ids).items():
+      if duplicate_id[1] > 1:
+        raise Exception(f"エラー: 登録番号 {duplicate_id[0]} が重複しています。別の番号を使用してください。")
 
   for path in paths:
     entry_id = os.path.basename(path).split("_")[0]
