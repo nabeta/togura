@@ -2,7 +2,7 @@
 
 Togura（とぐら、[鳥座](https://ja.wiktionary.org/wiki/%E9%B3%A5%E5%BA%A7)）は、極めてシンプルな機関リポジトリを構築するためのアプリケーションです。
 
-![Togura](https://github.com/nabeta/togura/blob/main/templates/images/logo.svg?raw=true)
+![Togura](https://github.com/nabeta/togura/blob/main/src/togura/templates/images/logo.svg?raw=true)
 
 動作例は https://nabeta.github.io/togura/ にあります。
 
