@@ -204,7 +204,7 @@ def check_expired_embargo(
         False,
         "--update",
         help="メタデータを更新する",
-    )
+    ),
 ):
     """
     エンバーゴ期間が終了している資料を出力します。
@@ -219,13 +219,13 @@ def check_expired_embargo(
                     if d["date_type"] == "Available" and d["date"] <= date.today():
                         typer.echo(f"{d['date']}\t{file}")
                         if update is True:
-                          entry["access_rights"] = "open access"
-                          f.truncate(0)
-                          f.seek(0)
-                          yaml.dump(entry, f)
-                          logger.debug(
-                              f"{file}のdcterms:accessRightsをopen accessに変更しました"
-                          )
+                            entry["access_rights"] = "open access"
+                            f.truncate(0)
+                            f.seek(0)
+                            yaml.dump(entry, f)
+                            logger.debug(
+                                f"{file}のdcterms:accessRightsをopen accessに変更しました"
+                            )
 
     typer.Exit(code=0)
 
