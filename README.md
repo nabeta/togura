@@ -8,7 +8,7 @@ Togura（とぐら、[鳥座](https://ja.wiktionary.org/wiki/%E9%B3%A5%E5%BA%A7)
 
 ## 特長
 
-Toguraは[JPCOARスキーマ](https://schema.irdb.nii.ac.jp/ja/schema) 2.0のメタデータの記述、ならびに[ResourceSync](https://www.openarchives.org/rs/toc)によるメタデータのハーベストに対応しており、[IRDB](https://irdb.nii.ac.jp/)を通して、[CiNii Research](https://cir.nii.ac.jp/)でのメタデータの検索や[JaLC](https://japanlinkcenter.org/top/)によるDOIの付与が行えるようになっています。
+Toguraは[JPCOARスキーマ](https://schema.irdb.nii.ac.jp/ja/schema) 2.0のメタデータの記述、ならびに[ResourceSync](https://www.openarchives.org/rs/toc)によるメタデータのハーベストに対応しており、[IRDB](https://irdb.nii.ac.jp/)を通して、[CiNii Research](https://cir.nii.ac.jp/)でのメタデータの検索や[JaLC](https://japanlinkcenter.org/top/)によるDOIの付与が行えるようになっています。また、IRDBを通さずにJaLC DOIを付与するためのXMLファイルの出力も行えます。
 
 Toguraで構築する機関リポジトリでの論文や研究データの公開は、ローカル環境（手元のパソコン）でメタデータファイルやHTMLファイルを作成し、それらのファイルを論文や研究データのファイルといっしょにWebサーバにアップロードすることで行います。このため、以下のような特長を持っています。
 
@@ -163,7 +163,7 @@ Toguraによるリポジトリの構築処理が完了しました。
 ### ロゴの変更
 
 ロゴのファイルは`templates/images/logo.png`に保存されています。ロゴを変更するには、このファイルを新しいファイルで上書きしてください。  
-ロゴのファイルはpng形式でなければなりません。また、ファイル名は`logo.png`である必要があります。
+ロゴのファイル名は`logo.png`、ファイル形式はpngでなければなりません。
 
 ### エンバーゴ期間が終了している資料のチェック
 
