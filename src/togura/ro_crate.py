@@ -3,7 +3,7 @@ import glob
 import mimetypes
 import tempfile
 import xml.etree.ElementTree as ET
-import yaml
+from ruamel.yaml import YAML
 from rocrate.rocrate import ROCrate
 from rocrate.model.person import Person
 from logging import getLogger, DEBUG
@@ -15,9 +15,10 @@ logger.setLevel(DEBUG)
 def generate(data_dir, output_dir, root):
     """RO-Crateのディレクトリを出力する"""
     entry_id = os.path.basename(data_dir).split("_")[0]
+    yaml = YAML()
 
     with open(f"{data_dir}/jpcoar20.yaml", encoding="utf-8") as file:
-        entry = yaml.safe_load(file)
+        entry = yaml.load(file)
 
     crate = ROCrate(gen_preview=False)
     crate.name = entry["title"][0]["title"]

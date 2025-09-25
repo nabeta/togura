@@ -3,9 +3,9 @@ import logging
 import os
 import re
 import shutil
-import yaml
-from datetime import date
 from collections import Counter
+from datetime import date
+from ruamel.yaml import YAML
 import togura.config as config
 import togura.html as html
 import togura.jalc as jalc
@@ -42,6 +42,7 @@ def setup():
         or default_base_url
     )
 
+    yaml = YAML()
     with open("./config.yaml", "w", encoding="utf-8") as file:
         yaml.dump(
             {
@@ -60,6 +61,7 @@ def generate():
     data_dir = "./work"
     output_dir = "./public"
     base_url = config.base_url()
+    yaml = YAML()
 
     paths = sorted(glob.glob(f"{data_dir}/*"))
     if len(paths) != len(set(paths)):
@@ -77,7 +79,7 @@ def generate():
             )
 
         with open(f"{path}/jpcoar20.yaml", encoding="utf-8") as file:
-            entry = yaml.safe_load(file)
+            entry = yaml.load(file)
             entry["id"] = entry_id
 
             # try:
@@ -95,9 +97,10 @@ def generate():
 
 # エンバーゴ期間が終了している資料の一覧を出力する
 def check_expired_embargo(base_dir):
+    yaml = YAML()
     for file in glob.glob(f"{base_dir}/*/jpcoar20.yaml"):
         with open(file, encoding="utf-8") as f:
-            entry = yaml.safe_load(f)
+            entry = yaml.load(f)
             if entry.get("access_rights") == "embargoed access" and entry.get("date"):
                 for d in entry["date"]:
                     if d["date_type"] == "Available" and d["date"] <= date.today():

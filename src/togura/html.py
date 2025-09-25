@@ -2,7 +2,7 @@ import datetime
 import glob
 import os
 import shutil
-import yaml
+from ruamel.yaml import YAML
 from togura.config import Config
 from jinja2 import Environment, FileSystemLoader
 from logging import getLogger, DEBUG
@@ -36,6 +36,7 @@ template_show.globals["now"] = datetime.datetime.now(datetime.UTC)
 def generate(data_dir, output_dir, base_url, per_page=100):
     """HTMLを作成する"""
     conf = Config()
+    yaml = YAML()
 
     entries = []
     for path in sorted(glob.glob(f"{data_dir}/*"), key=os.path.basename, reverse=True):
@@ -48,7 +49,7 @@ def generate(data_dir, output_dir, base_url, per_page=100):
                 files.append(filename)
 
         with open(f"{path}/jpcoar20.yaml", encoding="utf-8") as file:
-            entry = yaml.safe_load(file)
+            entry = yaml.load(file)
 
             # タイトルが空ならスキップ
             if entry["title"] == []:

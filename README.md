@@ -8,7 +8,7 @@ Togura（とぐら、[鳥座](https://ja.wiktionary.org/wiki/%E9%B3%A5%E5%BA%A7)
 
 ## 特長
 
-Toguraは[JPCOARスキーマ](https://schema.irdb.nii.ac.jp/ja/schema) 2.0のメタデータの記述、ならびに[ResourceSync](https://www.openarchives.org/rs/toc)によるメタデータのハーベストに対応しており、[IRDB](https://irdb.nii.ac.jp/)を通して、[CiNii Research](https://cir.nii.ac.jp/)でのメタデータの検索や[JaLC](https://japanlinkcenter.org/top/)によるDOIの付与が行えるようになっています。
+Toguraは[JPCOARスキーマ](https://schema.irdb.nii.ac.jp/ja/schema) 2.0のメタデータの記述、ならびに[ResourceSync](https://www.openarchives.org/rs/toc)によるメタデータのハーベストに対応しており、[IRDB](https://irdb.nii.ac.jp/)を通して、[CiNii Research](https://cir.nii.ac.jp/)でのメタデータの検索や[JaLC](https://japanlinkcenter.org/top/)によるDOIの付与が行えるようになっています。また、IRDBを通さずにJaLC DOIを付与するためのXMLファイルの出力も行えます。
 
 Toguraで構築する機関リポジトリでの論文や研究データの公開は、ローカル環境（手元のパソコン）でメタデータファイルやHTMLファイルを作成し、それらのファイルを論文や研究データのファイルといっしょにWebサーバにアップロードすることで行います。このため、以下のような特長を持っています。
 
@@ -163,7 +163,7 @@ Toguraによるリポジトリの構築処理が完了しました。
 ### ロゴの変更
 
 ロゴのファイルは`templates/images/logo.png`に保存されています。ロゴを変更するには、このファイルを新しいファイルで上書きしてください。  
-ロゴのファイルはpng形式でなければなりません。また、ファイル名は`logo.png`である必要があります。
+ロゴのファイル名は`logo.png`、ファイル形式はpngでなければなりません。
 
 ### エンバーゴ期間が終了している資料のチェック
 
@@ -175,11 +175,15 @@ Toguraでは、資料に対してエンバーゴ期間が終了しているか�
 エンバーゴ期間のチェックは`uv run togura check-expired-embargo`コマンドを用いて行います。指定できる項目は以下のとおりです。
 
 - `--dir`: チェック対象のフォルダを指定します。個別の資料のフォルダではなく、`work`フォルダのような、資料の一式が保存されているフォルダを指定してください。指定しない場合、`work`が指定されたものとして動作します。
+- `--update`: このオプションが指定された場合、エンバーゴ期間が終了している資料のメタデータファイル`jpcoar20.yaml`に対して、`access_rights`の値を`embargoed access`から`open access`に更新します。更新は確認なしで実行されますので、このオプションを指定する前に、後述の手順で、必ずエンバーゴ期間のチェック結果をテキストファイルに書き出しておいてください。
 
 以下がコマンドの実行例です。
 
 ```sh
-uv run togura check-expired-embargo --dir work
+uv run togura check-expired-embargo
+
+# archiveフォルダの資料をチェック対象とする場合
+uv run togura check-expired-embargo --dir archive
 ```
 
 出力結果は以下のようになります。メタデータに記述した利用可能日（`date_type`に`Available`を指定している`date`）と、資料のメタデータの保存場所が出力されますので、メタデータの`access_rights`の値を`open access`などに変更してください。
@@ -189,15 +193,23 @@ uv run togura check-expired-embargo --dir work
 2016-04-01	work/04_journal_article_accepted_embargoed/jpcoar20.yaml
 ```
 
-出力結果はテキストファイルに書き出すこともできます。以下の実行例は、`archive`フォルダに保存されている資料のエンバーゴ期間をチェックし、結果を`expired_embargo.txt`というファイルに書き出す例です。この例では、`expired_embargo.txt`ファイルはToguraのフォルダに保存されます。
+出力結果はテキストファイルに書き出すこともできます。以下の実行例は、チェック結果を`expired_embargo.txt`というファイルに書き出す例です。この例では、`expired_embargo.txt`ファイルはToguraのフォルダに保存されます。
 - Windowsの場合:
     ```powershell
-    uv run togura check-expired-embargo --dir archive | Tee-Object -FilePath expired_embargo.txt
+    uv run togura check-expired-embargo | Tee-Object -FilePath expired_embargo.txt
     ```
 - macOSやLinuxの場合:
     ```sh
-    uv run togura check-expired-embargo --dir archive | tee expired_embargo.txt
+    uv run togura check-expired-embargo | tee expired_embargo.txt
     ```
+
+メタデータの`access_rights`の更新は、以下のコマンドで一括で行うこともできます。必ず実行前に、エンバーゴ期間の一覧をテキストファイルに保存しておいてください。
+
+```sh
+uv run togura check-expired-embargo --update
+```
+
+メタデータの更新が完了したら、`uv run togura generate`コマンドで更新を公開用のファイルに反映させてください。
 
 ### 公開した資料の取り下げ
 
