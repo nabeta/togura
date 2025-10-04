@@ -1,7 +1,5 @@
 import glob
 import os
-import pandas as pd
-import pyalex
 import re
 import shutil
 import typer
@@ -11,14 +9,13 @@ from collections import Counter
 from datetime import datetime, date, timedelta
 from logging import getLogger, DEBUG
 from pathlib import Path
-from pyalex import Works
 from ruamel.yaml import YAML
 from togura.config import Config
-from urllib.parse import urlparse
 import togura.html as html
 import togura.jalc as jalc
 import togura.jpcoar as jpcoar
 import togura.migrate as migrate_repository
+import togura.importer as importer
 import togura.resourcesync as resourcesync
 import togura.ro_crate as ro_crate
 
@@ -310,74 +307,7 @@ def import_from_work_id(
     Excelファイルに記述された識別子一覧からメタデータを作成します。
     """
 
-    yaml = YAML()
-
-    # Excelファイルを読み込み
-    df = pd.read_excel(file, index_col=0)
-
-    # OpenAlexのAPIで使用するメールアドレスを設定
-    if Config().email != "":
-        pyalex.config.email = Config().email
-
-    for row in df.iterrows():
-        # DOI以外のURLをスキップ
-        hostname = urlparse(row[1]["url"]).hostname
-        if hostname != "doi.org":
-            continue
-
-        # OpenAlexからメタデータを取得
-        try:
-            work = Works()[row[1]["url"]]
-        except:
-            typer.echo(f"{row[1]['url']}は見つかりませんでした")
-            continue
-
-        title = re.sub(
-            r'[<>:"/\\|?*]', "_", " ".join(work["title"].splitlines())[:50]
-        ).strip()
-
-        dir_name = f"{Path.cwd()}/work/{row[0]}_{title}"
-        os.makedirs(dir_name, exist_ok=True)
-
-        entry = {
-            "id": row[0],
-            "title": [
-                {
-                    "title": work["title"],
-                },
-            ],
-            "type": work["type"],
-            "date": [{"date": work["publication_date"], "date_type": "Issued"}],
-            "identifier": [work["doi"]],
-        }
-
-        if work["open_access"].get("is_oa"):
-            entry["access_rights"] = "open access"
-
-        entry["creator"] = []
-        for author in work["authorships"]:
-            creator = {"creator_name": [{"name": author["author"]["display_name"]}]}
-            if author["author"].get("orcid"):
-                creator["name_identifier"] = [
-                    {
-                        "identifier_scheme": "ORCID",
-                        "identifier": author["author"]["orcid"],
-                    }
-                ]
-            entry["creator"].append(creator)
-
-        # メタデータの作成
-        with open(f"{dir_name}/jpcoar20.yaml", "w", encoding="utf-8") as file:
-            yaml.dump(entry, file)
-
-        with open(f"{dir_name}/jpcoar20.yaml", "r+", encoding="utf-8") as file:
-            content = file.read()
-            file.seek(0, 0)
-            file.write(
-                "# yaml-language-server: $schema=../../schema/jpcoar.json\n\n" + content
-            )
-
-        logger.debug(f"created {dir_name}/jpcoar20.yaml")
+    importer.import_from_work_id(file)
 
 
 if __name__ == "__main__":
