@@ -76,7 +76,7 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
     - 機関リポジトリの名称: 機関リポジトリの名称です。
     - 機関リポジトリのトップページのURL: 公開先のWebサーバのトップページのURLです。末尾のスラッシュの入力は不要です。
         - Webサーバによる公開を行わず、自分のパソコンだけで動作を試す場合には、入力は不要です。
-    - メールアドレス: OpenAlexのWebAPIを用いてメタデータを検索する際に使用するメールアドレスです。空欄でもかまいませんが、メールアドレスを入力すると検索が速くなります。
+    - メールアドレス: [OpenAlex](https://openalex.org/)のWebAPIを用いてメタデータを検索する際に使用するメールアドレスです。空欄でもかまいませんが、メールアドレスを入力すると検索が速くなります。
     - JaLCのサイトID: JaLCのサイトIDです。[JaLCの正会員](https://japanlinkcenter.org/top/admission/member_type.html)がDOIの登録を行う際に必要です。JaLCの正会員でない場合、入力は不要です。
 
     名称などを変更したい場合は、再度同じコマンドを実行してください。
@@ -128,11 +128,11 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
             # yaml-language-server: $schema=../../schema/jpcoar.json
             ```
 
-### ExcelファイルとDOIによる一括登録
+### ExcelファイルとDOIによるメタデータの一括作成
 
 注意: この機能は現在開発中です。
 
-DOIを記入したExcelファイルとOpenAlexのWebAPIを用いて、メタデータを一括で作成することができます。実行する前に`uv run togura setup`コマンドを用いて、OpenAlexのWebAPIで使用するメールアドレスを設定しておくことをおすすめします。
+DOIを記入したExcelファイルと[OpenAlexのWebAPI](https://docs.openalex.org/how-to-use-the-api/api-overview)を用いて、Toguraのメタデータを一括で作成することができます。実行する前に`uv run togura setup`コマンドを用いて、OpenAlexのWebAPIで使用するメールアドレスを設定しておくことをおすすめします。
 
 一括登録を行うには、以下の書式でExcelファイルを作成します。`id`列と`url`列を作成し、`id`列に登録番号、`url`列に登録対象のDOIのURLを記入します。ここではこのファイルを`works.xlsx`という名前で作成し、Toguraのフォルダに保存したものとします。
 
