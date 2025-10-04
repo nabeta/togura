@@ -12,16 +12,20 @@ class Config(object):
                 self.entry = yaml.load(f)
 
     @property
-    def base_url(self):
-        return self.entry["base_url"]
+    def organization(self):
+        return self.entry["organization"]
 
     @property
     def site_name(self):
         return self.entry["site_name"]
 
     @property
-    def organization(self):
-        return self.entry["organization"]
+    def base_url(self):
+        return self.entry["base_url"]
+
+    @property
+    def email(self):
+        return self.entry["email"]
 
     @property
     def jalc_site_id(self):
