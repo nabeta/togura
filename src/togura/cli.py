@@ -40,6 +40,7 @@ def init(dir_name: Path = typer.Argument()):
     os.makedirs(f"{dest_dir}/public/.well-known", exist_ok=True)
     os.makedirs(f"{dest_dir}/schema", exist_ok=True)
     os.makedirs(f"{dest_dir}/templates", exist_ok=True)
+    os.makedirs(f"{dest_dir}/trash", exist_ok=True)
     os.makedirs(f"{dest_dir}/work", exist_ok=True)
     shutil.copytree(
         f"{Path(__file__).parent}/samples", f"{dest_dir}/samples", dirs_exist_ok=True
@@ -116,6 +117,7 @@ def generate():
     """
     data_dir = f"{Path.cwd()}/work"
     output_dir = f"{Path.cwd()}/public"
+    trash_dir = f"{Path.cwd()}/trash"
     base_url = Config().base_url
     yaml = YAML()
 
@@ -153,7 +155,7 @@ def generate():
                 raise typer.Exit(code=1)
 
     html.generate(data_dir, output_dir, base_url)
-    resourcesync.generate(output_dir, base_url)
+    resourcesync.generate(output_dir, trash_dir, base_url)
 
     typer.echo("Toguraによるリポジトリの構築処理が完了しました。")
     typer.Exit(code=0)
