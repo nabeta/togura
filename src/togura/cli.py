@@ -301,13 +301,25 @@ def validate(format: str = typer.Argument(..., help="メタデータのフォー
 
 @app.command()
 def import_from_work_id(
-    file: str = typer.Argument(..., help="メタデータのフォーマット"),
+    file: str = typer.Argument(..., help="資料識別子一覧のExcelファイル"),
 ):
     """
-    Excelファイルに記述された識別子一覧からメタデータを作成します。
+    Excelファイルに記述された資料識別子の一覧からメタデータを作成します。
     """
 
     importer.import_from_work_id(file)
+
+
+@app.command()
+def generate_work_id_from_author_id(
+    author_id_file: str = typer.Argument(..., help="著者識別子一覧のExcelファイル"),
+    work_id_file: str = typer.Argument(..., help="資料識別子一覧のExcelファイル"),
+):
+    """
+    Excelファイルに記述された著者識別子の一覧からメタデータを作成します。
+    """
+
+    importer.generate_work_id_from_author_id(author_id_file, work_id_file)
 
 
 if __name__ == "__main__":
