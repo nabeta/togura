@@ -23,6 +23,9 @@ app = typer.Typer()
 logger = getLogger(__name__)
 logger.setLevel(DEBUG)
 
+work_file_app = typer.Typer(help="資料の情報のファイルを作成します")
+app.add_typer(work_file_app, name="work-file")
+
 
 @app.command()
 def init(dir_name: Path = typer.Argument()):
@@ -299,24 +302,24 @@ def validate(format: str = typer.Argument(..., help="メタデータのフォー
     typer.Exit(code=0)
 
 
-@app.command()
+@work_file_app.command("import")
 def import_from_work_id(
     file: str = typer.Argument(..., help="資料識別子一覧のExcelファイル"),
 ):
     """
-    Excelファイルに記述された資料識別子の一覧からメタデータを作成します。
+    資料識別子の一覧からメタデータを作成します。
     """
 
     importer.import_from_work_id(file)
 
 
-@app.command()
+@work_file_app.command("create-by-author-id")
 def generate_work_id_from_author_id(
     author_id_file: str = typer.Argument(..., help="著者識別子一覧のExcelファイル"),
     work_id_file: str = typer.Argument(..., help="資料識別子一覧のExcelファイル"),
 ):
     """
-    Excelファイルに記述された著者識別子の一覧からメタデータを作成します。
+    著者識別子の一覧から資料識別子の一覧を作成します。
     """
 
     importer.generate_work_id_from_author_id(author_id_file, work_id_file)
