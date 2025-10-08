@@ -166,7 +166,7 @@ uv run togura work-file import works.xlsx
 uv run togura work-file create authors.xlsx works.xlsx
 ```
 
-このファイルを、以下のコマンドでインポートします。
+あとは先ほどの手順と同様に、`works.xlsx`を以下のコマンドでインポートします。
 
 ```sh
 uv run togura work-file import works.xlsx
