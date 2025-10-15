@@ -163,7 +163,7 @@ uv run togura work-file import works.xlsx
 以下のコマンドを実行すると、DOI・CiNii ResearchのURL一覧のExcelファイル`works.xlsx`が作成されます。
 
 ```sh
-uv run togura work-file create authors.xlsx works.xlsx
+uv run togura work-file create-by-author-id authors.xlsx works.xlsx
 ```
 
 あとは先ほどの手順と同様に、`works.xlsx`を以下のコマンドでインポートします。
