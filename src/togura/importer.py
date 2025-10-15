@@ -84,6 +84,12 @@ def generate_work_id_from_author_id(author_id_file, work_id_file):
             # OpenAlexから書誌情報を取得
             try:
                 work = Works()[work_id]
+                best_oa_location = work.get("best_oa_location")
+                license = version = None
+                if best_oa_location:
+                    license = best_oa_location["license"]
+                    version = best_oa_location["version"]
+
                 works.append(
                     [
                         None,
@@ -91,7 +97,10 @@ def generate_work_id_from_author_id(author_id_file, work_id_file):
                         work["publication_year"],
                         work["open_access"]["oa_status"],
                         work["open_access"]["oa_url"],
+                        license,
+                        version,
                         work["title"],
+                        work["id"],
                     ]
                 )
             except HTTPError:
@@ -110,7 +119,10 @@ def generate_work_id_from_author_id(author_id_file, work_id_file):
                         int(work["publication"]["prism:publicationDate"][0:4]),
                         None,
                         None,
+                        None,
+                        None,
                         work["dc:title"][0]["@value"],
+                        None,
                     ]
                 )
             except json.decoder.JSONDecodeError:
@@ -119,7 +131,18 @@ def generate_work_id_from_author_id(author_id_file, work_id_file):
                 continue
 
     df = pd.DataFrame(
-        works, columns=["id", "url", "publication_year", "oa_status", "oa_url", "title"]
+        works,
+        columns=[
+            "id",
+            "url",
+            "publication_year",
+            "oa_status",
+            "oa_url",
+            "license",
+            "version",
+            "title",
+            "openalex_url",
+        ],
     )
     df.sort_values("publication_year").to_excel(work_id_file, index=False)
 
