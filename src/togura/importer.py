@@ -6,6 +6,7 @@ from ruamel.yaml import YAML
 from urllib.parse import urlparse
 import json
 import math
+import numpy as np
 import os
 import pandas as pd
 import pyalex
@@ -68,14 +69,59 @@ def import_from_work_id(file):
 
 
 def generate_work_id_from_author_id(author_id_file, work_id_file):
+    # OpenAlexのAPIで使用するメールアドレスを設定
+    if Config().email != "":
+        pyalex.config.email = Config().email
+
     # Excelファイルを読み込み
     author_df = pd.read_excel(author_id_file)
-
     work_ids = works_from_author_id(author_df.iterrows())
 
-    df = pd.DataFrame(work_ids, columns=["id", "url"])
-    df.drop_duplicates()
-    df.to_excel(work_id_file, index=False)
+    works = []
+    for work_id in np.unique(work_ids):
+        hostname = urlparse(work_id).hostname
+        if hostname == "doi.org":
+            # OpenAlexから書誌情報を取得
+            try:
+                work = Works()[work_id]
+                works.append(
+                    [
+                        None,
+                        work["doi"],
+                        work["publication_year"],
+                        work["open_access"]["oa_status"],
+                        work["open_access"]["oa_url"],
+                        work["title"],
+                    ]
+                )
+            except HTTPError:
+                # OpenAlexに検索結果がなかった場合
+                logger.error(f"{work_id}は見つかりませんでした")
+                continue
+        elif hostname == "ci.nii.ac.jp":
+            # CiNii Researchから書誌情報を取得
+            response = requests.get(f"{work_id}.json")
+            try:
+                work = json.loads(response.content)
+                works.append(
+                    [
+                        None,
+                        work_id,
+                        int(work["publication"]["prism:publicationDate"][0:4]),
+                        None,
+                        None,
+                        work["dc:title"][0]["@value"],
+                    ]
+                )
+            except json.decoder.JSONDecodeError:
+                # NAIDがリゾルブできなかった場合
+                logger.error(f"{work_id}は見つかりませんでした")
+                continue
+
+    df = pd.DataFrame(
+        works, columns=["id", "url", "publication_year", "oa_status", "oa_url", "title"]
+    )
+    df.sort_values("publication_year").to_excel(work_id_file, index=False)
 
 
 def generate_entry(row, work, dir_name):
@@ -161,7 +207,7 @@ def orcid_works(row):
     for work in works:
         if work["doi"] is None:
             continue
-        work_ids.append([None, work["doi"]])
+        work_ids.append(work["doi"])
 
     return work_ids
 
@@ -174,15 +220,10 @@ def researchmap_works(row):
             continue
         for paper in graph["items"]:
             if paper["identifiers"].get("doi"):
-                work_ids.append(
-                    [None, f"https://doi.org/{paper['identifiers']['doi'][0]}"]
-                )
+                work_ids.append(f"https://doi.org/{paper['identifiers']['doi'][0]}")
             elif paper["identifiers"].get("cinii_na_id"):
                 work_ids.append(
-                    [
-                        None,
-                        f"https://ci.nii.ac.jp/naid/{paper['identifiers']['cinii_na_id'][0]}",
-                    ]
+                    f"https://ci.nii.ac.jp/naid/{paper['identifiers']['cinii_na_id'][0]}"
                 )
 
     return work_ids
