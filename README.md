@@ -160,7 +160,7 @@ uv run togura work-file import works.xlsx
 | https://orcid.org/0000-0002-9986-7223 |
 | https://researchmap.jp/tanabe |
 
-以下のコマンドを実行すると、DOI・CiNii ResearchのURL一覧のExcelファイル`works.xlsx`が作成されます。
+以下のコマンドを実行すると、DOI・CiNii ResearchのURL一覧と、OpenAlexから取得したオープンアクセスの情報を含むExcelファイル`works.xlsx`が作成されます。
 
 ```sh
 uv run togura work-file create-by-author-id authors.xlsx works.xlsx
