@@ -128,32 +128,15 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
             # yaml-language-server: $schema=../../schema/jpcoar.json
             ```
 
-### 資料識別子一覧ファイルによるメタデータの一括作成
+### 識別子一覧ファイルによるメタデータの一括作成
 
 注意: この機能は現在開発中です。
 
-資料の識別子（DOIやCiNii ResearchのURL）を記入したExcelファイルと[OpenAlexのWebAPI](https://docs.openalex.org/how-to-use-the-api/api-overview)を用いて、Toguraのメタデータを一括で作成することができます。実行する前に`uv run togura setup`コマンドを用いて、OpenAlexのWebAPIで使用するメールアドレスを設定しておくことをおすすめします。
+著者の識別子（ORCIDやresearchmapのURL）を記入したExcelファイルをもとに、その著者の論文のDOIやCiNii ResearchのURLの一覧のExcelファイルを自動的に作成することができます。また、そのExcelファイルをもとに、Toguraのメタデータファイルを一括で作成することができます。  
+DOIのある論文については、[OpenAlexのWebAPI](https://docs.openalex.org/how-to-use-the-api/api-overview)のWebAPIを用いて、その論文のライセンスやオープンアクセスの状況（ゴールドオープンアクセス・グリーンオープンアクセスなど）の情報を自動的に取得し、Excelファイルに保存します。
 
-一括登録を行うには、以下の書式で資料のExcelファイルを作成します。`id`列と`url`列を作成し、`id`列に登録番号、`url`列に登録対象のDOIやCiNii ResearchのURLを記入します。ここではこのファイルを`works.xlsx`という名前で作成し、Toguraのフォルダに保存したものとします。
-
-| id | url |
-|----|----|
-| 1 | https://doi.org/10.5555/12345678 |
-| 2 | https://doi.org/10.5555/12345679 |
-| 3 | https://cir.nii.ac.jp/crid/1570291227970272256 |
-
-以下のコマンドを実行し、Excelファイル`works.xlsx`を読み込みます。
-
-```sh
-uv run togura work-file import works.xlsx
-```
-
-実行に成功すると、`work`フォルダに、Excelファイルで指定した登録番号とDOIに対応する資料のタイトルでフォルダが作成され、その中にメタデータファイル`jpcoar20.yaml`が保存されます。あとは論文や研究データのファイルをこのフォルダに保存し、適宜メタデータファイルの追記や修正を行ってください。
-
-#### 著者識別子による資料識別子一覧ファイルの作成
-
-著者の識別子（ORCIDやresearchmapのURL）を書いたExcelファイルをもとに、インポート用の資料識別子一覧ファイルを作成することができます。  
-以下の書式でExcelファイルを作成します。`url`列にORCIDやresearchmapのURLを記述します。ここでは`authors.xlsx`という名前で作成したものとします。
+実行する前に`uv run togura setup`コマンドを用いて、OpenAlexのWebAPIで使用するメールアドレスを設定しておくことをおすすめします。  
+次に、以下の書式でExcelファイルを作成します。`url`列にORCIDやresearchmapのURLを記述します。ここでは`authors.xlsx`という名前で作成したものとします。
 
 | url |
 |----|
@@ -166,11 +149,21 @@ uv run togura work-file import works.xlsx
 uv run togura work-file create-by-author-id authors.xlsx works.xlsx
 ```
 
-あとは先ほどの手順と同様に、`works.xlsx`を以下のコマンドでインポートします。
+| id | url |
+|----|----|
+| 1 | https://doi.org/10.5555/12345678 |
+| 2 | https://doi.org/10.5555/12345679 |
+| 3 | https://cir.nii.ac.jp/crid/1570291227970272256 |
+
+一括登録を行うには、以下の書式で資料のExcelファイルを作成します。`id`列と`url`列を作成し、`id`列に登録番号、`url`列に登録対象のDOIやCiNii ResearchのURLを記入します。ここではこのファイルを`works.xlsx`という名前で作成し、Toguraのフォルダに保存したものとします。
+
+以下のコマンドを実行し、Excelファイル`works.xlsx`を読み込みます。
 
 ```sh
 uv run togura work-file import works.xlsx
 ```
+
+実行に成功すると、`work`フォルダに、Excelファイルで指定した登録番号とDOIに対応する資料のタイトルでフォルダが作成され、その中にメタデータファイル`jpcoar20.yaml`が保存されます。あとは論文や研究データのファイルをこのフォルダに保存し、適宜メタデータファイルの追記や修正を行ってください。
 
 ### リポジトリ公開用ファイルの出力
 
