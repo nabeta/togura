@@ -136,14 +136,14 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
 DOIのある論文については、[OpenAlexのWebAPI](https://docs.openalex.org/how-to-use-the-api/api-overview)のWebAPIを用いて、その論文のライセンスやオープンアクセスの状況（ゴールドオープンアクセス・グリーンオープンアクセスなど）の情報を自動的に取得し、Excelファイルに保存します。
 
 実行する前に`uv run togura setup`コマンドを用いて、OpenAlexのWebAPIで使用するメールアドレスを設定しておくことをおすすめします。  
-次に、以下の書式でExcelファイルを作成します。`url`列にORCIDやresearchmapのURLを記述します。ここでは`authors.xlsx`という名前で作成し、Toguraのフォルダに保存したものとします。
+次に、自機関に所属する研究者のORCIDやresearchmapのURLの一覧を、Excelで作成します。以下のように`url`列を作成し、その列にORCIDやresearchmapのURLを記述します。ここでは`authors.xlsx`という名前で一覧のExcelファイルを作成し、Toguraのフォルダに保存したものとします。
 
 | url |
 |----|
 | https://orcid.org/0000-0002-9986-7223 |
 | https://researchmap.jp/tanabe |
 
-以下のコマンドを実行すると、DOI・CiNii ResearchのURL一覧と、OpenAlexから取得したオープンアクセスの情報を含むExcelファイル`works.xlsx`が、Toguraのフォルダに作成されます。
+'uv run togura work-file create-by-author-id`コマンドを実行し、DOI・CiNii ResearchのURL一覧と、OpenAlexから取得したオープンアクセスの情報を含むExcelファイルを作成します。以下の例では、Toguraのフォルダにある`authors.xlsx`ファイルの著者情報をもとに、`works.xlsx`が作成されます。
 
 ```sh
 uv run togura work-file create-by-author-id authors.xlsx works.xlsx
