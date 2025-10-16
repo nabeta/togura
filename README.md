@@ -149,21 +149,29 @@ DOIのある論文については、[OpenAlexのWebAPI](https://docs.openalex.or
 uv run togura work-file create-by-author-id authors.xlsx works.xlsx
 ```
 
+`works.xlsx`の書式は以下のようになっています。
+
 | id | url |
 |----|----|
-| 1 | https://doi.org/10.5555/12345678 |
-| 2 | https://doi.org/10.5555/12345679 |
-| 3 | https://cir.nii.ac.jp/crid/1570291227970272256 |
+| | https://doi.org/10.5555/12345678 |
+| | https://doi.org/10.5555/12345679 |
+| | https://cir.nii.ac.jp/crid/1570291227970272256 |
 
-一括登録を行うには、以下の書式で資料のExcelファイルを作成します。`id`列と`url`列を作成し、`id`列に登録番号、`url`列に登録対象のDOIやCiNii ResearchのURLを記入します。ここではこのファイルを`works.xlsx`という名前で作成し、Toguraのフォルダに保存したものとします。
+このファイルの`id`列に、以下のような書式で登録番号を記入し、Toguraのフォルダに保存します。
 
-以下のコマンドを実行し、Excelファイル`works.xlsx`を読み込みます。
+| id | url |
+|----|----|
+| 1001 | https://doi.org/10.5555/12345678 |
+| 1002 | https://doi.org/10.5555/12345679 |
+| 1003 | https://cir.nii.ac.jp/crid/1570291227970272256 |
+
+登録番号を記入したら、以下のコマンドを実行します。
 
 ```sh
 uv run togura work-file import works.xlsx
 ```
 
-実行に成功すると、`work`フォルダに、Excelファイルで指定した登録番号とDOIに対応する資料のタイトルでフォルダが作成され、その中にメタデータファイル`jpcoar20.yaml`が保存されます。あとは論文や研究データのファイルをこのフォルダに保存し、適宜メタデータファイルの追記や修正を行ってください。
+実行に成功すると、`work`フォルダに、Excelファイルで指定した登録番号と資料のタイトルを用いてフォルダが作成され、その中にメタデータファイル`jpcoar20.yaml`が保存されます。あとは論文や研究データのファイルをこのフォルダに保存し、適宜メタデータファイルの追記や修正を行ってください。
 
 ### リポジトリ公開用ファイルの出力
 
