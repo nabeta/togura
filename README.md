@@ -136,14 +136,14 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
 DOIのある論文については、[OpenAlexのWebAPI](https://docs.openalex.org/how-to-use-the-api/api-overview)のWebAPIを用いて、その論文のライセンスやオープンアクセスの状況（ゴールドオープンアクセス・グリーンオープンアクセスなど）の情報を自動的に取得し、Excelファイルに保存します。
 
 実行する前に`uv run togura setup`コマンドを用いて、OpenAlexのWebAPIで使用するメールアドレスを設定しておくことをおすすめします。  
-次に、以下の書式でExcelファイルを作成します。`url`列にORCIDやresearchmapのURLを記述します。ここでは`authors.xlsx`という名前で作成したものとします。
+次に、以下の書式でExcelファイルを作成します。`url`列にORCIDやresearchmapのURLを記述します。ここでは`authors.xlsx`という名前で作成し、Toguraのフォルダに保存したものとします。
 
 | url |
 |----|
 | https://orcid.org/0000-0002-9986-7223 |
 | https://researchmap.jp/tanabe |
 
-以下のコマンドを実行すると、DOI・CiNii ResearchのURL一覧と、OpenAlexから取得したオープンアクセスの情報を含むExcelファイル`works.xlsx`が作成されます。
+以下のコマンドを実行すると、DOI・CiNii ResearchのURL一覧と、OpenAlexから取得したオープンアクセスの情報を含むExcelファイル`works.xlsx`が、Toguraのフォルダに作成されます。
 
 ```sh
 uv run togura work-file create-by-author-id authors.xlsx works.xlsx
@@ -151,19 +151,19 @@ uv run togura work-file create-by-author-id authors.xlsx works.xlsx
 
 `works.xlsx`の書式は以下のようになっています。
 
-| id | url |
-|----|----|
-| | https://doi.org/10.5555/12345678 |
-| | https://doi.org/10.5555/12345679 |
-| | https://cir.nii.ac.jp/crid/1570291227970272256 |
+| id | url | publication_year | oa_status |
+|----|----|----|----|
+| | https://cir.nii.ac.jp/crid/1570291227970272256 | 2013 | |
+| | https://doi.org/10.5555/12345678 | 2023 | gold |
+| | https://doi.org/10.5555/12345679 | 2024 | gold |
 
 このファイルの`id`列に、以下のような書式で登録番号を記入し、Toguraのフォルダに保存します。
 
-| id | url |
-|----|----|
-| 1001 | https://doi.org/10.5555/12345678 |
-| 1002 | https://doi.org/10.5555/12345679 |
-| 1003 | https://cir.nii.ac.jp/crid/1570291227970272256 |
+| id | url | publication_year | oa_status |
+|----|----|----|----|
+| 1001 | https://cir.nii.ac.jp/crid/1570291227970272256 | 2013 | |
+| 1002 | https://doi.org/10.5555/12345678 | 2023 | gold |
+| 1003 | https://doi.org/10.5555/12345679 | 2024 | gold |
 
 登録番号を記入したら、以下のコマンドを実行します。
 
