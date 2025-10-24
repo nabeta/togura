@@ -43,9 +43,11 @@ def init(dir_name: Path = typer.Argument()):
     os.makedirs(f"{dest_dir}/archive", exist_ok=True)
     os.makedirs(f"{dest_dir}/public/.well-known", exist_ok=True)
     os.makedirs(f"{dest_dir}/schema", exist_ok=True)
-    os.makedirs(f"{dest_dir}/templates", exist_ok=True)
     os.makedirs(f"{dest_dir}/trash", exist_ok=True)
     os.makedirs(f"{dest_dir}/work", exist_ok=True)
+    shutil.copy(
+        f"{Path(__file__).parent}/schema/jpcoar.json", f"{dest_dir}/schema/jpcoar.json"
+    )
     shutil.copytree(
         f"{Path(__file__).parent}/samples", f"{dest_dir}/samples", dirs_exist_ok=True
     )
