@@ -141,40 +141,7 @@ def generate(data_dir, output_dir, base_url):
 
     add_creator(entry, root, content)
     add_contributor(entry, root, content, content_classification)
-
-    if entry.get("date"):
-        pub_date = None
-        date_granted = entry.get("date_granted")
-
-        for date in entry["date"]:
-            if date["date_type"] == "Issued":
-                pub_date = date["date"]
-            elif date_granted:
-                pub_date = date_granted
-            elif date["date_type"] == "Created":
-                pub_date = date["date"]
-            elif date["date_type"] == "Updated":
-                pub_date = date["date"]
-
-        if pub_date:
-            publication_date = ET.SubElement(content, "publication_date")
-            year = ET.SubElement(publication_date, "year")
-            year.text = str(pub_date.year).zfill(4)
-            month = ET.SubElement(publication_date, "month")
-            month.text = str(pub_date.month).zfill(2)
-            day = ET.SubElement(publication_date, "day")
-            day.text = str(pub_date.day).zfill(2)
-
-            if classification == "article":
-                elem_date = ET.SubElement(content, "date")
-                elem_date.text = pub_date.strftime("%Y%m%d")
-
-    if entry.get("date") and content_classification.text == "03":
-        date_list = ET.SubElement(content, "date_list")
-        for date in entry["date"]:
-            elem_date = ET.SubElement(date_list, "date")
-            elem_date.set("type", date["date_type"])
-            elem_date.text = str(date["date"])
+    add_date(entry, root, content, content_classification, classification)
 
     if entry.get("relation"):
         relation_list = ET.SubElement(content, "relation_list")
@@ -347,6 +314,44 @@ def add_contributor(entry, root, content, content_classification):
                         {"type": identifier.get("identifier_scheme", "")},
                     )
                     id_code.text = identifier["identifier"]
+
+    return root
+
+
+def add_date(entry, root, content, content_classification, classification):
+    if entry.get("date"):
+        pub_date = None
+        date_granted = entry.get("date_granted")
+
+        for date in entry["date"]:
+            if date["date_type"] == "Issued":
+                pub_date = date["date"]
+            elif date_granted:
+                pub_date = date_granted
+            elif date["date_type"] == "Created":
+                pub_date = date["date"]
+            elif date["date_type"] == "Updated":
+                pub_date = date["date"]
+
+        if pub_date:
+            publication_date = ET.SubElement(content, "publication_date")
+            year = ET.SubElement(publication_date, "year")
+            year.text = str(pub_date.year).zfill(4)
+            month = ET.SubElement(publication_date, "month")
+            month.text = str(pub_date.month).zfill(2)
+            day = ET.SubElement(publication_date, "day")
+            day.text = str(pub_date.day).zfill(2)
+
+            if classification == "article":
+                elem_date = ET.SubElement(content, "date")
+                elem_date.text = pub_date.strftime("%Y%m%d")
+
+    if entry.get("date") and content_classification.text == "03":
+        date_list = ET.SubElement(content, "date_list")
+        for date in entry["date"]:
+            elem_date = ET.SubElement(date_list, "date")
+            elem_date.set("type", date["date_type"])
+            elem_date.text = str(date["date"])
 
     return root
 
