@@ -16,6 +16,7 @@ dependencies = [
     "pyalex>=0.18",
     "pytest>=8.4.2",
     "pytest-cov>=7.0.0",
+    "python-iso639>=2025.2.18",
     "resync>=2.0.1",
     "rocrate>=0.14.0",
     "ruamel-yaml>=0.18.15",

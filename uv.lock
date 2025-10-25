@@ -783,6 +783,15 @@ wheels = [
 ]
 
 [[package]]
+name = "python-iso639"
+version = "2025.2.18"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/d5/19/45aa1917c7b1f4eb71104795b9b0cbf97169b99ec46cd303445883536549/python_iso639-2025.2.18.tar.gz", hash = "sha256:34e31e8e76eb3fc839629e257b12bcfd957c6edcbd486bbf66ba5185d1f566e8", size = 173552, upload-time = "2025-02-18T13:48:08.607Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/54/a3/3ceaf89a17a1e1d5e7bbdfe5514aa3055d91285b37a5c8fed662969e3d56/python_iso639-2025.2.18-py3-none-any.whl", hash = "sha256:b2d471c37483a26f19248458b20e7bd96492e15368b01053b540126bcc23152f", size = 167631, upload-time = "2025-02-18T13:48:06.602Z" },
+]
+
+[[package]]
 name = "pytz"
 version = "2025.2"
 source = { registry = "https://pypi.org/simple" }
@@ -995,7 +1004,7 @@ wheels = [
 
 [[package]]
 name = "togura"
-version = "0.1.0a6"
+version = "0.1.0a7"
 source = { editable = "." }
 dependencies = [
     { name = "habanero" },
@@ -1006,6 +1015,7 @@ dependencies = [
     { name = "pyalex" },
     { name = "pytest" },
     { name = "pytest-cov" },
+    { name = "python-iso639" },
     { name = "resync" },
     { name = "rocrate" },
     { name = "ruamel-yaml" },
@@ -1024,6 +1034,7 @@ requires-dist = [
     { name = "pyalex", specifier = ">=0.18" },
     { name = "pytest", specifier = ">=8.4.2" },
     { name = "pytest-cov", specifier = ">=7.0.0" },
+    { name = "python-iso639", specifier = ">=2025.2.18" },
     { name = "resync", specifier = ">=2.0.1" },
     { name = "rocrate", specifier = ">=0.14.0" },
     { name = "ruamel-yaml", specifier = ">=0.18.15" },
