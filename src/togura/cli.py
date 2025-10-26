@@ -10,6 +10,9 @@ from datetime import datetime, date, timedelta
 from logging import getLogger, DEBUG
 from pathlib import Path
 from ruamel.yaml import YAML
+from importlib import metadata
+from typing import Optional
+from typing_extensions import Annotated
 from togura.config import Config
 import togura.html as html
 import togura.jalc as jalc
@@ -19,12 +22,29 @@ import togura.importer as importer
 import togura.resourcesync as resourcesync
 import togura.ro_crate as ro_crate
 
+__version__ = metadata.version("togura")
 app = typer.Typer()
 logger = getLogger(__name__)
 logger.setLevel(DEBUG)
 
 work_file_app = typer.Typer(help="資料の情報のファイルを作成します")
 app.add_typer(work_file_app, name="work-file")
+
+
+def version_callback(value: bool):
+    if value:
+        print(__version__)
+        raise typer.Exit()
+
+
+@app.callback()
+def main(
+    version: Annotated[
+        Optional[bool],
+        typer.Option("--version", callback=version_callback, is_eager=True),
+    ] = None,
+):
+    pass
 
 
 @app.command()
