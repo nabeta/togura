@@ -4,6 +4,7 @@ from pyalex import Works
 from requests import HTTPError
 from ruamel.yaml import YAML
 from urllib.parse import urlparse
+import iso639
 import json
 import math
 import numpy as np
@@ -155,12 +156,8 @@ def generate_entry(row, work, dir_name):
             },
         ],
         "type": work["type"],
-        "date": [{"date": work["publication_date"], "date_type": "Issued"}],
         "identifier": [work["doi"]],
     }
-
-    if work["open_access"].get("is_oa"):
-        entry["access_rights"] = "open access"
 
     # 著者
     entry["creator"] = []
@@ -175,13 +172,34 @@ def generate_entry(row, work, dir_name):
             ]
         entry["creator"].append(creator)
 
+    # アクセス権
+    if work["open_access"].get("is_oa"):
+        entry["access_rights"] = "open access"
+    else:
+        entry["access_rights"] = "restricted access"
+
+    # 権利情報
+    if work["primary_location"].get("license_id"):
+        entry["rights"] = [{"rights": work["primary_location"]["license"]}]
+
+    # 出版者
     if work["primary_location"].get("source"):
-        # 出版者
         entry["publisher"] = [
             {"publisher": work["primary_location"]["source"]["host_organization_name"]}
         ]
 
-        # 収録物
+    # 日付
+    if work["publication_date"]:
+        entry["date"] = [{"date": work["publication_date"], "date_type": "Issued"}]
+    elif work["publication_year"]:
+        entry["date"] = [{"date": work["publication_year"], "date_type": "Issued"}]
+
+    # 言語
+    if work["language"]:
+        entry["language"] = iso639.Language.from_part1(work["language"]).part3
+
+    # 収録物
+    if work["primary_location"].get("source"):
         entry["source_title"] = [
             {"source_title": work["primary_location"]["source"]["display_name"]}
         ]
@@ -192,10 +210,7 @@ def generate_entry(row, work, dir_name):
                 source_identifier = {"identifier_type": "ISSN", "identifier": issn}
                 entry["source_identifier"].append(source_identifier)
 
-    # 権利情報
-    if work["primary_location"].get("license_id"):
-        entry["rights"] = [{"rights": work["primary_location"]["license"]}]
-
+    # 巻号
     if work["biblio"]:
         entry["volume"] = work["biblio"]["volume"]
         entry["issue"] = work["biblio"]["issue"]
