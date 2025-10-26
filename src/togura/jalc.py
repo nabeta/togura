@@ -179,34 +179,7 @@ def generate(data_dir, output_dir, base_url):
         last_page = ET.SubElement(content, "last_page")
         last_page.text = entry["page_end"]
 
-    if entry.get("funding_reference"):
-        fund_list = ET.SubElement(content, "fund_list")
-        for funding_reference in entry["funding_reference"]:
-            fund = ET.SubElement(fund_list, "fund")
-            funder_name = ET.SubElement(fund, "funder_name")
-            funder_name.text = funding_reference["funder_name"][0].get("funder_name")
-            if funding_reference.get("funder_identifier"):
-                funder_identifier = ET.SubElement(fund, "funder_identifier")
-                if funding_reference["funder_identifier"].get("funder_identifier_type"):
-                    match funding_reference["funder_identifier"][
-                        "funder_identifier_type"
-                    ]:
-                        case "e-Rad_funder":
-                            funder_identifier.set("type", "Other")
-                        case _:
-                            funder_identifier.set(
-                                "type",
-                                funding_reference["funder_identifier"][
-                                    "funder_identifier_type"
-                                ],
-                            )
-                    funder_identifier.text = funding_reference["funder_identifier"][
-                        "funder_identifier"
-                    ]
-            if funding_reference["award_number"]:
-                award_number_group = ET.SubElement(fund, "award_number_group")
-                award_number = ET.SubElement(award_number_group, "award_number")
-                award_number.text = funding_reference["award_number"]["award_number"]
+    add_funding_reference(entry, root, content)
 
     # JaLC XMLを出力する
     with open(f"{output_dir}/{str(entry_id)}/jalc.xml", "w", encoding="utf-8") as file:
@@ -358,6 +331,39 @@ def add_date(entry, root, content, content_classification, classification):
             elem_date = ET.SubElement(date_list, "date")
             elem_date.set("type", date["date_type"])
             elem_date.text = str(date["date"])
+
+    return root
+
+
+def add_funding_reference(entry, root, content):
+    if entry.get("funding_reference"):
+        fund_list = ET.SubElement(content, "fund_list")
+        for funding_reference in entry["funding_reference"]:
+            fund = ET.SubElement(fund_list, "fund")
+            funder_name = ET.SubElement(fund, "funder_name")
+            funder_name.text = funding_reference["funder_name"][0].get("funder_name")
+            if funding_reference.get("funder_identifier"):
+                funder_identifier = ET.SubElement(fund, "funder_identifier")
+                if funding_reference["funder_identifier"].get("funder_identifier_type"):
+                    match funding_reference["funder_identifier"][
+                        "funder_identifier_type"
+                    ]:
+                        case "e-Rad_funder":
+                            funder_identifier.set("type", "Other")
+                        case _:
+                            funder_identifier.set(
+                                "type",
+                                funding_reference["funder_identifier"][
+                                    "funder_identifier_type"
+                                ],
+                            )
+                    funder_identifier.text = funding_reference["funder_identifier"][
+                        "funder_identifier"
+                    ]
+            if funding_reference["award_number"]:
+                award_number_group = ET.SubElement(fund, "award_number_group")
+                award_number = ET.SubElement(award_number_group, "award_number")
+                award_number.text = funding_reference["award_number"]["award_number"]
 
     return root
 

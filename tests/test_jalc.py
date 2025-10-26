@@ -44,4 +44,18 @@ def test_add_date():
         content_classification = ET.SubElement(head, "content_classification")
         content_classification.text = "03"
         classification = "article"
-        assert jalc.add_date(entry, root, content, content_classification, classification) is not None
+        assert (
+            jalc.add_date(entry, root, content, content_classification, classification)
+            is not None
+        )
+
+
+def test_add_funding_reference():
+    yaml = YAML()
+    path = f"{Path(__file__).parent}/../src/togura/samples/01_departmental_bulletin_paper_oa/jpcoar20.yaml"
+    root = ET.Element("root")
+    with open(path, "r", encoding="utf-8") as file:
+        entry = yaml.load(file)
+        body = ET.SubElement(root, "body")
+        content = ET.SubElement(body, "content", {"sequence": "0"})
+        assert jalc.add_funding_reference(entry, root, content) is not None
