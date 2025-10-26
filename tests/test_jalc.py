@@ -11,7 +11,6 @@ def test_add_creator():
     with open(path, "r", encoding="utf-8") as file:
         entry = yaml.load(file)
         body = ET.SubElement(root, "body")
-        head = ET.SubElement(root, "head")
         content = ET.SubElement(body, "content", {"sequence": "0"})
         assert jalc.add_creator(entry, root, content) is not None
 
