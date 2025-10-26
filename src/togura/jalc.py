@@ -1,3 +1,4 @@
+import datetime
 import os
 import xml.etree.ElementTree as ET
 from ruamel.yaml import YAML
@@ -320,20 +321,25 @@ def add_contributor(entry, root, content, content_classification):
 
 def add_date(entry, root, content, content_classification, classification):
     if entry.get("date"):
-        pub_date = None
+        pub_date_str = None
         date_granted = entry.get("date_granted")
 
         for date in entry["date"]:
             if date["date_type"] == "Issued":
-                pub_date = date["date"]
+                pub_date_str = date["date"]
             elif date_granted:
-                pub_date = date_granted
+                pub_date_str = date_granted
             elif date["date_type"] == "Created":
-                pub_date = date["date"]
+                pub_date_str = date["date"]
             elif date["date_type"] == "Updated":
-                pub_date = date["date"]
+                pub_date_str = date["date"]
 
-        if pub_date:
+        if pub_date_str:
+            if type(pub_date_str) is str:
+                pub_date = datetime.datetime.strptime(pub_date_str, "%Y-%m-%d")
+            elif type(pub_date_str) is datetime.date:
+                pub_date = pub_date_str
+
             publication_date = ET.SubElement(content, "publication_date")
             year = ET.SubElement(publication_date, "year")
             year.text = str(pub_date.year).zfill(4)
