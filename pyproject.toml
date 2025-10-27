@@ -1,6 +1,6 @@
 [project]
 name = "togura"
-version = "0.1.0a7"
+version = "0.1.0a8"
 authors = [
     { name = "Kosuke Tanabe", email = "nabeta@fastmail.fm" }
 ]
@@ -41,4 +41,4 @@ build-backend = "setuptools.build_meta"
 include-package-data = true
 
 [tool.setuptools.package-data]
-togura = ["samples/**", "templates/**", ".vscode/*.json"]
+togura = ["samples/**", "schema/**", "templates/**", ".vscode/*.json"]
