@@ -36,6 +36,7 @@ jobs:
           pip install .
           echo -e "site_name: 鳥座大学機関リポジトリ\nbase_url: https://nabeta.github.io/togura\norganization: 鳥座大学\nlogo_filename: logo.png\njalc_site_id: dummy\n" > config.yaml
           togura init .
+          cp -a src/togura/samples/* work/
           cp templates/bootstrap.html templates/head_custom.html
           togura generate
       - name: Setup Pages
