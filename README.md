@@ -39,7 +39,7 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
 1. [Visual Studio Code](https://code.visualstudio.com/)(VSCode)をインストールします。Windowsをお使いの場合、こちらも[Microsoft Store](https://apps.microsoft.com/detail/xp9khm4bk9fz7q?hl=ja-JP&gl=JP)からインストールできます。
 1. VSCodeを起動し、画面上部のメニューから「View」→「Extensions」を選択します。画面左側に拡張機能のウインドウが表示されるので、`Japanese Language Pack`と入力すると、検索結果に"[Japanese Language Pack for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja)"が表示されるので、"Install"ボタンを押します。
 1. 画面右下に「Change Language and Restart」というボタンが表示されるので、ボタンを押してVSCodeを再起動します。
-1. VSCodeの画面上部のメニューから「ターミナル」→「新しいターミナル」を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドを実行して、[uvコマンドをインストール](https://docs.astral.sh/uv/getting-started/installation/)します。なお、venvなどの環境でも動作しますが、以降のコマンドの実行例は適宜読み替えてください。
+1. VSCodeの画面上部のメニューから「ターミナル」→「新しいターミナル」を選びます。ターミナルのウインドウが画面下部に開くので、以下のコマンドをターミナルで入力してEnterキーを押し、[uvコマンドをインストール](https://docs.astral.sh/uv/getting-started/installation/)します。なお、venvなどの環境でも動作しますが、以降のコマンドの実行例は適宜読み替えてください。
     - Windowsの場合:
         ```powershell
         powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
