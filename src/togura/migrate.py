@@ -766,7 +766,7 @@ def migrate(
 
                 # 開催国
                 # https://schema.irdb.nii.ac.jp/ja/schema/2.0/35-.7
-                country = conference.find("./jpcoar:conferenceName", ns)
+                country = conference.find("./jpcoar:conferenceCountry", ns)
 
                 conf = {"conference_name": conference_names}
 
