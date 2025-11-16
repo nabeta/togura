@@ -721,20 +721,21 @@ def add_creator(entry, root):
                 elem_affiliation = ET.SubElement(
                     elem_creator, ET.QName(ns["jpcoar"], "affiliation")
                 )
-                for affiliation_identifier in affiliation["name_identifier"]:
-                    elem_affiliation_identifier = ET.SubElement(
-                        elem_affiliation,
-                        ET.QName(ns["jpcoar"], "nameIdentifier"),
-                        {
-                            "nameIdentifierScheme": affiliation_identifier[
-                                "identifier_scheme"
-                            ],
-                            "nameIdentifierURI": affiliation_identifier["identifier"],
-                        },
-                    )
-                    elem_affiliation_identifier.text = affiliation_identifier[
-                        "identifier"
-                    ]
+                if affiliation.get("name_identifier"):
+                    for affiliation_identifier in affiliation["name_identifier"]:
+                        elem_affiliation_identifier = ET.SubElement(
+                            elem_affiliation,
+                            ET.QName(ns["jpcoar"], "nameIdentifier"),
+                            {
+                                "nameIdentifierScheme": affiliation_identifier[
+                                    "identifier_scheme"
+                                ],
+                                "nameIdentifierURI": affiliation_identifier["identifier"],
+                            },
+                        )
+                        elem_affiliation_identifier.text = affiliation_identifier[
+                            "identifier"
+                        ]
                 for affiliation_name in affiliation["affiliation_name"]:
                     elem_affiliation_name = ET.SubElement(
                         elem_affiliation, ET.QName(ns["jpcoar"], "affiliationName")
