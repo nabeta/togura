@@ -30,3 +30,7 @@ class Config(object):
     @property
     def jalc_site_id(self):
         return self.entry["jalc_site_id"]
+
+    @property
+    def openalex_api_key(self):
+        return self.entry["openalex_api_key"]

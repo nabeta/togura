@@ -1,5 +1,6 @@
 import glob
 import os
+import pwinput
 import re
 import shutil
 import typer
@@ -117,7 +118,11 @@ def setup():
     )
 
     email = input(
-        "メールアドレスを入力してください。OpenAlexのWebAPIによるメタデータの検索で使用します。空欄でもかまいませんが、メールアドレスを入力すると検索が速くなります:"
+        "メールアドレスを入力してください。空欄でもかまいません:"
+    ).strip()
+
+    openalex_api_key = pwinput.pwinput(
+        "OpenAlexのWebAPIキーを入力してください。OpenAlexからの書誌情報の取得を行わない場合は、空欄のままでかまいません:", mask="*"
     ).strip()
 
     jalc_site_id = (
@@ -135,6 +140,7 @@ def setup():
                 "site_name": site_name,
                 "base_url": base_url,
                 "email": email,
+                "openalex_api_key": openalex_api_key,
                 "jalc_site_id": jalc_site_id,
                 "logo_filename": "logo.png",
             },

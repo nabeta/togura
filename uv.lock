@@ -747,6 +747,12 @@ wheels = [
 ]
 
 [[package]]
+name = "pwinput"
+version = "1.0.3"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/4b/c9/f6d03c2214c282251baa38c6be08f5b9f81f1ea488716cd2335e7e190b58/pwinput-1.0.3.tar.gz", hash = "sha256:ca1a8bd06e28872d751dbd4132d8637127c25b408ea3a349377314a5491426f3", size = 4433, upload-time = "2023-02-16T17:04:14.592Z" }
+
+[[package]]
 name = "pyalex"
 version = "0.20"
 source = { registry = "https://pypi.org/simple" }
@@ -977,6 +983,7 @@ dependencies = [
     { name = "oaipmh-scythe" },
     { name = "openpyxl" },
     { name = "pandas" },
+    { name = "pwinput" },
     { name = "pyalex" },
     { name = "pytest" },
     { name = "pytest-cov" },
@@ -997,6 +1004,7 @@ requires-dist = [
     { name = "oaipmh-scythe", specifier = ">=0.13.0" },
     { name = "openpyxl", specifier = ">=3.1.5" },
     { name = "pandas", specifier = ">=2.3.3" },
+    { name = "pwinput", specifier = ">=1.0.3" },
     { name = "pyalex", specifier = ">=0.18" },
     { name = "pytest", specifier = ">=8.4.2" },
     { name = "pytest-cov", specifier = ">=7.0.0" },
