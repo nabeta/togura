@@ -77,7 +77,8 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
     - 機関リポジトリの名称: 機関リポジトリの名称です。
     - 機関リポジトリのトップページのURL: 公開先のWebサーバのトップページのURLです。末尾のスラッシュの入力は不要です。
         - Webサーバによる公開を行わず、自分のパソコンだけで動作を試す場合には、入力は不要です。
-    - メールアドレス: [OpenAlex](https://openalex.org/)のWebAPIを用いてメタデータを検索する際に使用するメールアドレスです。空欄でもかまいませんが、メールアドレスを入力すると検索が速くなります。
+    - メールアドレス: 機関リポジトリのメールアドレスです。空欄でもかまいません。
+    - OpenAlexのAPIキー: [OpenAlex](https://openalex.org/)のWebAPIを用いてメタデータを検索する際に使用するAPIキーです。OpenAlexからのメタデータの取得を行わない場合は、空欄でかまいません。
     - JaLCのサイトID: JaLCのサイトIDです。[JaLCの正会員](https://japanlinkcenter.org/top/admission/member_type.html)がDOIの登録を行う際に必要です。JaLCの正会員でない場合、入力は不要です。
 
     名称などを変更したい場合は、再度同じコマンドを実行してください。
@@ -136,7 +137,7 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
 著者の識別子（ORCIDやresearchmapのURL）を記入したExcelファイルをもとに、その著者の論文のDOIやCiNii ResearchのURLの一覧のExcelファイルを自動的に作成することができます。また、そのExcelファイルをもとに、Toguraのメタデータファイルを一括で作成することができます。  
 DOIのある論文については、[OpenAlexのWebAPI](https://docs.openalex.org/how-to-use-the-api/api-overview)のWebAPIを用いて、その論文のライセンスやオープンアクセスの状況（ゴールドオープンアクセス・グリーンオープンアクセスなど）の情報を自動的に取得し、Excelファイルに保存します。
 
-実行する前に`uv run togura setup`コマンドを用いて、OpenAlexのWebAPIで使用するメールアドレスを設定しておくことをおすすめします。  
+実行する前に`uv run togura setup`コマンドを用いて、OpenAlexのAPIキーを設定してください。OpenAlexのAPIキーは、OpenAlexのアカウントを作成後、[設定画面](https://openalex.org/settings/api)で確認できます。  
 次に、自機関に所属する研究者のORCIDやresearchmapのURLの一覧を、Excelで作成します。以下のように`url`列を作成し、その列にORCIDやresearchmapのURLを記述します。ここでは`authors.xlsx`という名前で一覧のExcelファイルを作成し、Toguraのフォルダに保存したものとします。
 
 | url |
