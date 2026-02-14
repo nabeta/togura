@@ -986,6 +986,7 @@ dependencies = [
     { name = "ruamel-yaml" },
     { name = "setuptools" },
     { name = "typer" },
+    { name = "typing-extensions" },
     { name = "xmlschema" },
 ]
 
@@ -1005,6 +1006,7 @@ requires-dist = [
     { name = "ruamel-yaml", specifier = ">=0.18.15" },
     { name = "setuptools", specifier = ">=80.9.0" },
     { name = "typer", specifier = ">=0.17.4" },
+    { name = "typing-extensions", specifier = ">=4.15.0" },
     { name = "xmlschema", specifier = ">=4.1.0" },
 ]
 
