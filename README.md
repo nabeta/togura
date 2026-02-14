@@ -69,7 +69,7 @@ Toguraで構築する機関リポジトリでの論文や研究データの公�
     uv run togura init .
     ```
 1. ターミナルで以下のコマンドを実行して、Toguraの設定ファイルを作成します。このコマンドでは、設定ファイル`config.yaml`と、テンプレートのファイル`templates/head_custom.html`が作成されます。
-    ```
+    ```sh
     uv run togura setup
     ```
     以下の項目を質問されますので、入力してください。
