@@ -33,4 +33,4 @@ class Config(object):
 
     @property
     def openalex_api_key(self):
-        return self.entry["openalex_api_key"]
+        return self.entry.get("openalex_api_key", "")
