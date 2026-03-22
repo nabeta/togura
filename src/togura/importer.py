@@ -25,9 +25,10 @@ def import_from_work_id(file):
     # Excelファイルを読み込み
     df = pd.read_excel(file, index_col=0)
 
-    # OpenAlexのAPIで使用するメールアドレスを設定
-    if Config().email != "":
-        pyalex.config.email = Config().email
+    # OpenAlexのAPIキーを設定
+    api_key = Config().openalex_api_key
+    if api_key != "":
+        pyalex.config.api_key = api_key
 
     for row in df.iterrows():
         if row[0] is None:
@@ -70,9 +71,10 @@ def import_from_work_id(file):
 
 
 def generate_work_id_from_author_id(author_id_file, work_id_file):
-    # OpenAlexのAPIで使用するメールアドレスを設定
-    if Config().email != "":
-        pyalex.config.email = Config().email
+    # OpenAlexのAPIキーを設定
+    api_key = Config().openalex_api_key
+    if api_key != "":
+        pyalex.config.api_key = api_key
 
     # Excelファイルを読み込み
     author_df = pd.read_excel(author_id_file)
@@ -237,9 +239,10 @@ def works_from_author_id(rows):
 
 def orcid_works(row):
     work_ids = []
-    # OpenAlexのAPIで使用するメールアドレスを設定
-    if Config().email != "":
-        pyalex.config.email = Config().email
+    # OpenAlexのAPIキーを設定
+    api_key = Config().openalex_api_key
+    if api_key != "":
+        pyalex.config.api_key = api_key
 
     works = Works().filter(authorships={"author": {"orcid": row[1]["url"]}}).get()
     for work in works:
