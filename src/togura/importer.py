@@ -198,7 +198,7 @@ def generate_entry(row, work, dir_name):
 
     # 言語
     if work["language"]:
-        entry["language"] = iso639.Language.from_part1(work["language"]).part3
+        entry["language"] = [iso639.Language.from_part1(work["language"]).part3]
 
     # 収録物
     if work["primary_location"].get("source"):
