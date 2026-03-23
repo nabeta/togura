@@ -145,7 +145,7 @@ DOIのある論文については、[OpenAlexのWebAPI](https://docs.openalex.or
 | https://orcid.org/0000-0002-9986-7223 |
 | https://researchmap.jp/tanabe |
 
-'uv run togura work-file create-by-author-id`コマンドを実行し、DOI・CiNii ResearchのURL一覧と、OpenAlexから取得したオープンアクセスの情報を含むExcelファイルを作成します。以下の例では、Toguraのフォルダにある`authors.xlsx`ファイルの著者情報をもとに、`works.xlsx`が作成されます。
+`uv run togura work-file create-by-author-id`コマンドを実行し、DOI・CiNii ResearchのURL一覧と、OpenAlexから取得したオープンアクセスの情報を含むExcelファイルを作成します。以下の例では、Toguraのフォルダにある`authors.xlsx`ファイルの著者情報をもとに、`works.xlsx`が作成されます。
 
 ```sh
 uv run togura work-file create-by-author-id authors.xlsx works.xlsx
