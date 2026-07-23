@@ -109,6 +109,19 @@ def generate_work_id_from_author_id(author_id_file, work_id_file):
             except HTTPError:
                 # OpenAlexに検索結果がなかった場合
                 logger.error(f"{work_id}は見つかりませんでした")
+                works.append(
+                  [
+                    None,
+                    work_id,
+                    None,
+                    None,
+                    None,
+                    None,
+                    None,
+                    None,
+                    None,
+                  ]
+                )
                 continue
         elif hostname == "ci.nii.ac.jp":
             # CiNii Researchから書誌情報を取得
@@ -131,6 +144,19 @@ def generate_work_id_from_author_id(author_id_file, work_id_file):
             except json.decoder.JSONDecodeError:
                 # NAIDがリゾルブできなかった場合
                 logger.error(f"{work_id}は見つかりませんでした")
+                works.append(
+                  [
+                    None,
+                    work_id,
+                    None,
+                    None,
+                    None,
+                    None,
+                    None,
+                    None,
+                    None,
+                  ]
+                )
                 continue
 
     df = pd.DataFrame(
