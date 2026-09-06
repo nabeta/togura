@@ -654,7 +654,9 @@ def add_creator(entry, root):
     """作成者をメタデータに追加する"""
     for creator in entry["creator"]:
         elem_creator = ET.SubElement(
-            root, ET.QName(ns["jpcoar"], "creator"), {"creatorType": "著"}
+            root,
+            ET.QName(ns["jpcoar"], "creator"),
+            {"creatorType": creator.get("creator_type", "著")},
         )
         # 作成者識別子
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/3-.1

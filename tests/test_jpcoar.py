@@ -39,6 +39,31 @@ def test_jpcoar_identifier_type():
         jpcoar.jpcoar_identifier_type("example.com/12345")
 
 
+def build_creators(creators):
+    """作成者のリストからjpcoar:creator要素を組み立て、再パースして返す"""
+    root = ET.Element("root")
+    jpcoar.add_creator({"creator": creators}, root)
+    reparsed = ET.fromstring(ET.tostring(root, encoding="unicode"))
+    return reparsed.findall(f"{{{jpcoar.ns['jpcoar']}}}creator")
+
+
+def test_creator_type_uses_yaml_value():
+    creators = build_creators([{"creator_type": "編"}])
+    assert creators[0].get("creatorType") == "編"
+
+
+def test_creator_type_defaults_to_author():
+    creators = build_creators([{}])
+    assert creators[0].get("creatorType") == "著"
+
+
+def test_creator_type_is_per_creator():
+    creators = build_creators(
+        [{"creator_type": "編"}, {"creator_type": "訳"}, {}]
+    )
+    assert [c.get("creatorType") for c in creators] == ["編", "訳", "著"]
+
+
 def test_generate():
     yaml = YAML()
     files = sorted(
