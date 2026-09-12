@@ -140,7 +140,7 @@ def resource_type_uri(string):
         case "policy report":
             return "http://purl.org/coar/resource_type/c_186u"
         case "working paper":
-            return "ihttp://purl.org/coar/resource_type/c_8042"
+            return "http://purl.org/coar/resource_type/c_8042"
         case "data management plan":
             return "http://purl.org/coar/resource_type/c_ab20"
         case "sound":
