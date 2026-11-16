@@ -23,10 +23,10 @@ def migrate(
         }
     )
 
-    if metadata_prefix == "jpcoar_2.0":
-        jpcoar_ns = "https://github.com/JPCOAR/schema/blob/master/2.0/"
-    else:
+    if metadata_prefix == "jpcoar_1.0":
         jpcoar_ns = "https://github.com/JPCOAR/schema/blob/master/1.0/"
+    else:
+        jpcoar_ns = "https://github.com/JPCOAR/schema/blob/master/2.0/"
 
     ns = {
         "root": "http://www.openarchives.org/OAI/2.0/",
