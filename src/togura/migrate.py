@@ -492,7 +492,7 @@ def migrate(
                 # プログラム情報
                 # https://schema.irdb.nii.ac.jp/ja/schema/2.0/23-.4
                 funding_streams = None
-                if funding_reference.find("./jpcoar:fundingStream", ns) is None:
+                if funding_reference.find("./jpcoar:fundingStream", ns) is not None:
                     funding_streams = []
                     for funding_stream in funding_reference.findall(
                         "./jpcoar:fundingStream", ns
@@ -847,8 +847,8 @@ def migrate(
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/41
         holding_agent = None
         if record.xml.find(".//jpcoar:jpcoar/jpcoar:holdingAgent", ns) is not None:
-            dataset_series = record.xml.find(
-                ".//jpcoar:jpcoar/jpcoar:datasetSeries", ns
+            holding_agent = record.xml.find(
+                ".//jpcoar:jpcoar/jpcoar:holdingAgent", ns
             ).text
 
         # 42 データセットシリーズ
@@ -902,8 +902,9 @@ def migrate(
                 if v is not None:
                     file_version = v.text
 
+                d = {}
                 if file_uri is not None:
-                    d = {"uri": file_uri}
+                    d["uri"] = file_uri
                 if file_mime_type is not None:
                     d["mime_type"] = file_mime_type
                 if file_extents is not None:
