@@ -902,8 +902,9 @@ def migrate(
                 if v is not None:
                     file_version = v.text
 
+                d = {}
                 if file_uri is not None:
-                    d = {"uri": file_uri}
+                    d["uri"] = file_uri
                 if file_mime_type is not None:
                     d["mime_type"] = file_mime_type
                 if file_extents is not None:
