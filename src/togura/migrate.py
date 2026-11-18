@@ -1052,7 +1052,7 @@ def migrate(
             "alternative": alternatives,
             "creator": creators,
             "contributor": contributors,
-            "acccess_rights": access_rights,
+            "access_rights": access_rights,
             "rights": rights,
             "rights_holder": rights_holders,
             "subject": subjects,
