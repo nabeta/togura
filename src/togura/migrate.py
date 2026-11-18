@@ -937,6 +937,7 @@ def migrate(
 
             # 識別子
             # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.2
+            catalog_identifiers = None
             if c.find("./jpcoar:identifier", ns) is not None:
                 catalog_identifiers = []
                 for catalog_identifier in c.findall("./jpcoar:identifier", ns):
@@ -944,6 +945,7 @@ def migrate(
 
             # タイトル
             # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.3
+            catalog_titles = None
             if c.find("./jpcoar:title", ns) is not None:
                 catalog_titles = []
                 for title in c.findall("./jpcoar:title", ns):
@@ -1004,6 +1006,7 @@ def migrate(
             # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.7
             catalog_rights = None
             if c.find("./dc:rights", ns) is not None:
+                catalog_rights = []
                 for catalog_right in c.findall("./dc:rights", ns):
                     d = {"rights": catalog_right.text}
                     rights_url = catalog_right.get("rdf:resource")
