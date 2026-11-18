@@ -492,7 +492,7 @@ def migrate(
                 # プログラム情報
                 # https://schema.irdb.nii.ac.jp/ja/schema/2.0/23-.4
                 funding_streams = None
-                if funding_reference.find("./jpcoar:fundingStream", ns) is None:
+                if funding_reference.find("./jpcoar:fundingStream", ns) is not None:
                     funding_streams = []
                     for funding_stream in funding_reference.findall(
                         "./jpcoar:fundingStream", ns
