@@ -382,31 +382,31 @@ def migrate(
                 d = {}
                 # 位置情報（点）
                 # https://schema.irdb.nii.ac.jp/ja/schema/2.0/22-.1
-                if geo_location.find("./datacite:geoLocationPoint"):
+                if geo_location.find("./datacite:geoLocationPoint", ns):
                     d["geo_location_point"] = {
                         "point_longitude": geo_location.find(
-                            "./datacite:geoLocationPoint/datacite:pointLongitude"
+                            "./datacite:geoLocationPoint/datacite:pointLongitude", ns
                         ),
                         "point_latitude": geo_location.find(
-                            "./datacite:geoLocationPoint/datacite:pointLatitude"
+                            "./datacite:geoLocationPoint/datacite:pointLatitude", ns
                         ),
                     }
 
                 # 位置情報（空間）
                 # https://schema.irdb.nii.ac.jp/ja/schema/2.0/22-.2
-                if geo_location.find("./datacite:geoLocationBox"):
+                if geo_location.find("./datacite:geoLocationBox", ns):
                     d["geo_location_box"] = {
                         "west_bound_longitude": geo_location.find(
-                            "./datacite:geoLocationBox/datacite:westBoundLongitude"
+                            "./datacite:geoLocationBox/datacite:westBoundLongitude", ns
                         ),
                         "east_bound_longitude": geo_location.find(
-                            "./datacite:geoLocationBox/datacite:eastBoundLongitude"
+                            "./datacite:geoLocationBox/datacite:eastBoundLongitude", ns
                         ),
                         "south_bound_latitude": geo_location.find(
-                            "./datacite:geoLocationBox/datacite:southBoundLatitude"
+                            "./datacite:geoLocationBox/datacite:southBoundLatitude", ns
                         ),
                         "north_bound_latitude": geo_location.find(
-                            "./datacite:geoLocationBox/datacite:northBoundLatitude"
+                            "./datacite:geoLocationBox/datacite:northBoundLatitude", ns
                         ),
                     }
 
@@ -414,7 +414,7 @@ def migrate(
                 # https://schema.irdb.nii.ac.jp/ja/schema/2.0/22-.2
                 geo_location_places = []
                 for geo_location_place in geo_location.findall(
-                    "./datacite:geoLocationPlace"
+                    "./datacite:geoLocationPlace", ns
                 ):
                     geo_location_places.append(geo_location_place.text)
                 if len(geo_location_places) > 0:
