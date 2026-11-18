@@ -847,8 +847,8 @@ def migrate(
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/41
         holding_agent = None
         if record.xml.find(".//jpcoar:jpcoar/jpcoar:holdingAgent", ns) is not None:
-            dataset_series = record.xml.find(
-                ".//jpcoar:jpcoar/jpcoar:datasetSeries", ns
+            holding_agent = record.xml.find(
+                ".//jpcoar:jpcoar/jpcoar:holdingAgent", ns
             ).text
 
         # 42 データセットシリーズ
