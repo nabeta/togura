@@ -448,7 +448,7 @@ def migrate(
                         ),
                     }
                     if funder_identifier.get("funderIdentifierTypeURI"):
-                        d["funder_identifier"]["funder_identifier_type_url"] = (
+                        d["funder_identifier"]["funder_identifier_type_uri"] = (
                             funder_identifier.get("funderIdentifierTypeURI")
                         )
 
@@ -497,13 +497,13 @@ def migrate(
                     for funding_stream in funding_reference.findall(
                         "./jpcoar:fundingStream", ns
                     ):
-                        d = {"funding_stream": funding_stream.text}
+                        d_stream = {"funding_stream": funding_stream.text}
                         lang = funding_stream.get(
                             "{http://www.w3.org/XML/1998/namespace}lang"
                         )
                         if lang is not None:
-                            d["lang"] = lang
-                        funding_streams.append(d)
+                            d_stream["lang"] = lang
+                        funding_streams.append(d_stream)
                     d["funding_stream"] = funding_streams
 
                 # 研究課題番号
@@ -515,9 +515,7 @@ def migrate(
                 if award_number is not None:
                     d["award_number"] = {"award_number": award_number.text}
                     if award_number.get("awardURI"):
-                        d["award_number"]["award_number_url"] = award_number.get(
-                            "awardURI"
-                        )
+                        d["award_number"]["award_uri"] = award_number.get("awardURI")
                     if award_number.get("awardNumberType"):
                         d["award_number"]["award_number_type"] = award_number.get(
                             "awardNumberType"
