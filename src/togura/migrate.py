@@ -1209,9 +1209,11 @@ def add_creator(record, ns):
             # 作成者別名
             # https://schema.irdb.nii.ac.jp/ja/schema/2.0/3-.5
             creator_alternatives = None
-            if creator.find("./jpcoar:Alternative", ns) is not None:
+            if creator.find("./jpcoar:creatorAlternative", ns) is not None:
                 creator_alternatives = []
-                for creator_alternative in creator.findall("./jpcoar:Alternative", ns):
+                for creator_alternative in creator.findall(
+                    "./jpcoar:creatorAlternative", ns
+                ):
                     d = {"name": creator_alternative.text}
                     lang = creator_alternative.get(
                         "{http://www.w3.org/XML/1998/namespace}lang"
@@ -1235,12 +1237,9 @@ def add_creator(record, ns):
                             "identifier_scheme": name_identifier.get(
                                 "nameIdentifierScheme"
                             ),
-                            "identifier": name_identifier.text,
+                            "identifier": name_identifier.get("nameIdentifierURI")
+                            or name_identifier.text,
                         }
-                        if name_identifier.get("nameIdentifierURI"):
-                            d["name_identifier_uri"] = name_identifier.get(
-                                "nameIdentifierURI"
-                            )
                         name_identifiers.append(d)
 
                     # 所属機関名
@@ -1264,13 +1263,19 @@ def add_creator(record, ns):
                         }
                     )
 
-            creators.append(
-                {
-                    "name_identifier": creator_name_identifiers,
-                    "creator_name": creator_names,
-                    "affiliation": creator_affiliations,
-                }
-            )
+            d = {}
+            if creator.get("creatorType") is not None:
+                d["creator_type"] = creator.get("creatorType")
+            d["name_identifier"] = creator_name_identifiers
+            d["creator_name"] = creator_names
+            if creator_family_names is not None:
+                d["family_name"] = creator_family_names
+            if creator_given_names is not None:
+                d["given_name"] = creator_given_names
+            if creator_alternatives is not None:
+                d["creator_alternative"] = creator_alternatives
+            d["affiliation"] = creator_affiliations
+            creators.append(d)
 
     return creators
 
