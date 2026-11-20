@@ -153,6 +153,12 @@ def migrate(
                 lang = subject.get("{http://www.w3.org/XML/1998/namespace}lang")
                 if lang is not None:
                     d["lang"] = lang
+                subject_scheme = subject.get("subjectScheme")
+                if subject_scheme is not None:
+                    d["subject_scheme"] = subject_scheme
+                subject_uri = subject.get("subjectURI")
+                if subject_uri is not None:
+                    d["subject_uri"] = subject_uri
                 subjects.append(d)
 
         # 9 内容記述
