@@ -872,8 +872,13 @@ def migrate(
                 # 本文URI
                 # https://schema.irdb.nii.ac.jp/ja/schema/2.0/43-.1
                 file_uri = None
-                if file.find("./jpcoar:URI", ns) is not None:
-                    file_uri = file.find("./jpcoar:URI", ns).text
+                file_object_type = None
+                file_label = None
+                uri = file.find("./jpcoar:URI", ns)
+                if uri is not None:
+                    file_uri = uri.text
+                    file_object_type = uri.get("objectType")
+                    file_label = uri.get("label")
 
                 # ファイルフォーマット
                 # https://schema.irdb.nii.ac.jp/ja/schema/2.0/43-.2
@@ -907,6 +912,10 @@ def migrate(
                     file_version = v.text
 
                 d = {}
+                if file_object_type is not None:
+                    d["object_type"] = file_object_type
+                if file_label is not None:
+                    d["label"] = file_label
                 if file_uri is not None:
                     d["uri"] = file_uri
                 if file_mime_type is not None:
