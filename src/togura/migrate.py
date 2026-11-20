@@ -585,7 +585,15 @@ def migrate(
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/28
         num_pages = None
         if record.xml.find(".//jpcoar:jpcoar/jpcoar:numPages", ns) is not None:
-            num_pages = record.xml.find(".//jpcoar:jpcoar/jpcoar:numPages", ns).text
+            num_pages_text = record.xml.find(
+                ".//jpcoar:jpcoar/jpcoar:numPages", ns
+            ).text
+
+            # スキーマではページ数は整数のため変換する
+            try:
+                num_pages = int(num_pages_text)
+            except (TypeError, ValueError):
+                logger.warning(f"numPagesが整数ではありません: {num_pages_text}")
 
         # 29 開始ページ
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/29
