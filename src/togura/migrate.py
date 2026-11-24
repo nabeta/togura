@@ -87,8 +87,12 @@ def migrate(
         if record.xml.find(".//jpcoar:jpcoar/dc:rights", ns) is not None:
             rights = []
             for right in record.xml.findall(".//jpcoar:jpcoar/dc:rights", ns):
-                d = {"rights": right.text}
-                rights_url = right.get("rdf:resource")
+                d = {}
+                if right.text is not None:
+                    d["rights"] = right.text
+                rights_url = right.get(
+                    "{http://www.w3.org/1999/02/22-rdf-syntax-ns#}resource"
+                )
                 if rights_url is not None:
                     d["rights_uri"] = rights_url
                 lang = right.get("{http://www.w3.org/XML/1998/namespace}lang")
@@ -1014,7 +1018,9 @@ def migrate(
                     license_type = catalog_license.get("licenseType")
                     if license_type is not None:
                         d["license_type"] = license_type
-                    license_url = catalog_license.get("rdf:resource")
+                    license_url = catalog_license.get(
+                        "{http://www.w3.org/1999/02/22-rdf-syntax-ns#}resource"
+                    )
                     if license_url is not None:
                         d["license_uri"] = license_url
                     lang = catalog_license.get(
@@ -1031,7 +1037,9 @@ def migrate(
                 catalog_rights = []
                 for catalog_right in c.findall("./dc:rights", ns):
                     d = {"rights": catalog_right.text}
-                    rights_url = catalog_right.get("rdf:resource")
+                    rights_url = catalog_right.get(
+                        "{http://www.w3.org/1999/02/22-rdf-syntax-ns#}resource"
+                    )
                     if rights_url is not None:
                         d["rights_uri"] = rights_url
                     lang = catalog_right.get(
