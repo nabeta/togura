@@ -57,6 +57,7 @@ def generate(data_dir, output_dir, base_url, per_page=100):
 
             entry["id"] = os.path.basename(path).split("_")[0]
             entries.append(entry)
+            os.makedirs(f"{output_dir}/{entry['id']}", exist_ok=True)
             try:
                 with open(
                     f"{output_dir}/{entry['id']}/ro-crate-preview.html",
@@ -108,4 +109,6 @@ def generate(data_dir, output_dir, base_url, per_page=100):
             logger.debug(f"{output_dir}/index.html")
 
     # 画像ファイルをコピー
-    shutil.copytree("templates/images", f"{output_dir}/images", dirs_exist_ok=True)
+    shutil.copytree(
+        f"{template_dir}/images", f"{output_dir}/images", dirs_exist_ok=True
+    )
