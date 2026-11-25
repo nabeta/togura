@@ -1413,12 +1413,9 @@ def add_contributor(record, ns):
                             "identifier_scheme": name_identifier.get(
                                 "nameIdentifierScheme"
                             ),
-                            "identifier": name_identifier.text,
+                            "identifier": name_identifier.get("nameIdentifierURI")
+                            or name_identifier.text,
                         }
-                        if name_identifier.get("nameIdentifierURI"):
-                            d["name_identifier_uri"] = name_identifier.get(
-                                "nameIdentifierURI"
-                            )
                         name_identifiers.append(d)
 
                     # 所属機関名
