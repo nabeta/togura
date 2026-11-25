@@ -763,7 +763,7 @@ properties:
               lang:
                 type: string
                 pattern: "^[a-z]{2}(-[A-Za-z]+)?$"
-        fundeing_stream_identifier:
+        funding_stream_identifier:
           type: object
           additionalProperties: false
           properties:
