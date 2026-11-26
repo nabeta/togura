@@ -243,24 +243,24 @@ def migrate(
 
                 # 出版地（国名コード）
                 # https://schema.irdb.nii.ac.jp/ja/schema/2.0/11-.4
-                publisher_places = []
-                for publisher_place in jpcoar_publisher.findall(
+                publication_places = []
+                for publication_place in jpcoar_publisher.findall(
                     "./dcndl:publicationPlace", ns
                 ):
-                    d = {"publication_place": publisher_place.text}
-                    lang = publisher_place.get(
+                    d = {"publication_place": publication_place.text}
+                    lang = publication_place.get(
                         "{http://www.w3.org/XML/1998/namespace}lang"
                     )
                     if lang is not None:
                         d["lang"] = lang
-                    publisher_places.append(d)
+                    publication_places.append(d)
 
                 jpcoar_publishers.append(
                     {
                         "publisher_name": publisher_names,
                         "publisher_description": publisher_descriptions,
                         "location": publisher_locations,
-                        "publisher_place": publisher_places,
+                        "publication_place": publication_places,
                     }
                 )
 
