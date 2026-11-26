@@ -44,10 +44,15 @@ def migrate(
     for record in records:
         identifier = record.xml.find(".//root:identifier", ns).text.split(":")[-1]
 
+        # 要素の値の前後の空白・改行を削除
+        for element in record.xml.iter():
+            if isinstance(element.tag, str) and element.text is not None:
+                element.text = element.text.strip()
+
         # 1 タイトル
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/1
         titles = []
-        for title in record.xml.findall(".//dc:title", ns):
+        for title in record.xml.findall(".//jpcoar:jpcoar/dc:title", ns):
             d = {"title": title.text}
             lang = title.get("{http://www.w3.org/XML/1998/namespace}lang")
             if lang is not None:
@@ -57,7 +62,9 @@ def migrate(
         # 2 その他のタイトル
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/2
         alternatives = []
-        for alternative in record.xml.findall(".//dcterms:alternative", ns):
+        for alternative in record.xml.findall(
+            ".//jpcoar:jpcoar/dcterms:alternative", ns
+        ):
             d = {"title": alternative.text}
             lang = alternative.get("{http://www.w3.org/XML/1998/namespace}lang")
             if lang is not None:
@@ -167,9 +174,11 @@ def migrate(
         # 9 内容記述
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/9
         descriptions = None
-        if record.xml.find(".//datacite:description", ns) is not None:
+        if record.xml.find(".//jpcoar:jpcoar/datacite:description", ns) is not None:
             descriptions = []
-            for description in record.xml.findall(".//datacite:description", ns):
+            for description in record.xml.findall(
+                ".//jpcoar:jpcoar/datacite:description", ns
+            ):
                 d = {"description": description.text}
                 lang = description.get("{http://www.w3.org/XML/1998/namespace}lang")
                 if lang is not None:
@@ -243,24 +252,24 @@ def migrate(
 
                 # 出版地（国名コード）
                 # https://schema.irdb.nii.ac.jp/ja/schema/2.0/11-.4
-                publisher_places = []
-                for publisher_place in jpcoar_publisher.findall(
+                publication_places = []
+                for publication_place in jpcoar_publisher.findall(
                     "./dcndl:publicationPlace", ns
                 ):
-                    d = {"publication_place": publisher_place.text}
-                    lang = publisher_place.get(
+                    d = {"publication_place": publication_place.text}
+                    lang = publication_place.get(
                         "{http://www.w3.org/XML/1998/namespace}lang"
                     )
                     if lang is not None:
                         d["lang"] = lang
-                    publisher_places.append(d)
+                    publication_places.append(d)
 
                 jpcoar_publishers.append(
                     {
                         "publisher_name": publisher_names,
                         "publisher_description": publisher_descriptions,
                         "location": publisher_locations,
-                        "publisher_place": publisher_places,
+                        "publication_place": publication_places,
                     }
                 )
 
@@ -889,18 +898,38 @@ def migrate(
         # 41 所蔵機関
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/41
         holding_agent = None
-        if record.xml.find(".//jpcoar:jpcoar/jpcoar:holdingAgent", ns) is not None:
-            holding_agent = record.xml.find(
-                ".//jpcoar:jpcoar/jpcoar:holdingAgent", ns
-            ).text
+        h = record.xml.find(".//jpcoar:jpcoar/jpcoar:holdingAgent", ns)
+        if h is not None:
+            holding_agent = {}
+            # 所蔵機関識別子
+            # https://schema.irdb.nii.ac.jp/ja/schema/2.0/41-.1
+            h_identifier = h.find("./jpcoar:holdingAgentNameIdentifier", ns)
+            if h_identifier is not None:
+                holding_agent["holding_agent_name_identifier"] = {
+                    "identifier": h_identifier.get("nameIdentifierURI")
+                    or h_identifier.text,
+                    "name_identifier_scheme": h_identifier.get("nameIdentifierScheme"),
+                }
+
+            # 所蔵機関名
+            # https://schema.irdb.nii.ac.jp/ja/schema/2.0/41-.2
+            holding_agent_names = []
+            for h_name in h.findall("./jpcoar:holdingAgentName", ns):
+                d = {"holding_agent_name": h_name.text}
+                lang = h_name.get("{http://www.w3.org/XML/1998/namespace}lang")
+                if lang is not None:
+                    d["lang"] = lang
+                holding_agent_names.append(d)
+            holding_agent["holding_agent_name"] = holding_agent_names
 
         # 42 データセットシリーズ
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/42
         dataset_series = None
         if record.xml.find(".//jpcoar:jpcoar/jpcoar:datasetSeries", ns) is not None:
-            dataset_series = record.xml.find(
-                ".//jpcoar:jpcoar/jpcoar:datasetSeries", ns
-            ).text
+            dataset_series = (
+                record.xml.find(".//jpcoar:jpcoar/jpcoar:datasetSeries", ns).text
+                == "True"
+            )
 
         # 43 ファイル情報
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/43
@@ -977,16 +1006,9 @@ def migrate(
         if c is not None:
             # 提供機関
             # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.1
-            if c.find("./jpcoar:contributor", ns) is not None:
-                catalog_contributors = []
-                for catalog_contributor in c.findall("./jpcoar:contributor", ns):
-                    d = {"contributor_name": catalog_contributor.text}
-                    lang = catalog_contributor.get(
-                        "{http://www.w3.org/XML/1998/namespace}lang"
-                    )
-                    if lang is not None:
-                        d["lang"] = lang
-                    catalog_contributors.append(d)
+            catalog_contributors = add_contributor(
+                record, ns, ".//jpcoar:jpcoar/jpcoar:catalog/jpcoar:contributor"
+            )
 
             # 識別子
             # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.2
@@ -999,9 +1021,9 @@ def migrate(
             # タイトル
             # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.3
             catalog_titles = None
-            if c.find("./jpcoar:title", ns) is not None:
+            if c.find("./dc:title", ns) is not None:
                 catalog_titles = []
-                for title in c.findall("./jpcoar:title", ns):
+                for title in c.findall("./dc:title", ns):
                     d = {"title": title.text}
                     lang = title.get("{http://www.w3.org/XML/1998/namespace}lang")
                     if lang is not None:
@@ -1033,6 +1055,12 @@ def migrate(
                     lang = subject.get("{http://www.w3.org/XML/1998/namespace}lang")
                     if lang is not None:
                         d["lang"] = lang
+                    subject_scheme = subject.get("subjectScheme")
+                    if subject_scheme is not None:
+                        d["subject_scheme"] = subject_scheme
+                    subject_uri = subject.get("subjectURI")
+                    if subject_uri is not None:
+                        d["subject_uri"] = subject_uri
                     catalog_subjects.append(d)
 
             # ライセンス
@@ -1050,11 +1078,6 @@ def migrate(
                     )
                     if license_url is not None:
                         d["license_uri"] = license_url
-                    lang = catalog_license.get(
-                        "{http://www.w3.org/XML/1998/namespace}lang"
-                    )
-                    if lang is not None:
-                        d["lang"] = lang
                     catalog_licenses.append(d)
 
             # 権利情報
@@ -1082,7 +1105,7 @@ def migrate(
 
             # 代表画像
             # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.9
-            c_file = c.find("./jpcoar:file", ns)
+            c_file = c.find("./jpcoar:file/jpcoar:URI", ns)
             catalog_file = None
             if c_file is not None:
                 catalog_file = {"uri": c_file.text}
@@ -1090,6 +1113,8 @@ def migrate(
                     catalog_file["object_type"] = c_file.get("objectType")
 
             catalog = {}
+            if catalog_contributors is not None:
+                catalog["contributor"] = catalog_contributors
             if catalog_identifiers is not None:
                 catalog["identifier"] = catalog_identifiers
             if catalog_titles is not None:
@@ -1201,6 +1226,12 @@ def migrate(
                 "# yaml-language-server: $schema=../../schema/jpcoar.json\n\n" + content
             )
         logger.debug(f"created {dir_name}/jpcoar20.yaml")
+
+
+def to_float(value):
+    if value is None or value == "":
+        return None
+    return float(value)
 
 
 def add_creator(record, ns):
@@ -1338,13 +1369,11 @@ def add_creator(record, ns):
     return creators
 
 
-def add_contributor(record, ns):
+def add_contributor(record, ns, path=".//jpcoar:jpcoar/jpcoar:contributor"):
     contributors = None
-    if record.xml.find(".//jpcoar:jpcoar/jpcoar:contributor", ns) is not None:
+    if record.xml.find(path, ns) is not None:
         contributors = []
-        for contributor in record.xml.findall(
-            ".//jpcoar:jpcoar/jpcoar:contributor", ns
-        ):
+        for contributor in record.xml.findall(path, ns):
             # 寄与者識別子
             # https://schema.irdb.nii.ac.jp/ja/schema/2.0/4-.1
             contributor_name_identifiers = []
