@@ -44,10 +44,15 @@ def migrate(
     for record in records:
         identifier = record.xml.find(".//root:identifier", ns).text.split(":")[-1]
 
+        # 要素の値の前後の空白・改行を削除
+        for element in record.xml.iter():
+            if isinstance(element.tag, str) and element.text is not None:
+                element.text = element.text.strip()
+
         # 1 タイトル
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/1
         titles = []
-        for title in record.xml.findall(".//dc:title", ns):
+        for title in record.xml.findall(".//jpcoar:jpcoar/dc:title", ns):
             d = {"title": title.text}
             lang = title.get("{http://www.w3.org/XML/1998/namespace}lang")
             if lang is not None:
@@ -57,7 +62,9 @@ def migrate(
         # 2 その他のタイトル
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/2
         alternatives = []
-        for alternative in record.xml.findall(".//dcterms:alternative", ns):
+        for alternative in record.xml.findall(
+            ".//jpcoar:jpcoar/dcterms:alternative", ns
+        ):
             d = {"title": alternative.text}
             lang = alternative.get("{http://www.w3.org/XML/1998/namespace}lang")
             if lang is not None:
@@ -167,9 +174,11 @@ def migrate(
         # 9 内容記述
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/9
         descriptions = None
-        if record.xml.find(".//datacite:description", ns) is not None:
+        if record.xml.find(".//jpcoar:jpcoar/datacite:description", ns) is not None:
             descriptions = []
-            for description in record.xml.findall(".//datacite:description", ns):
+            for description in record.xml.findall(
+                ".//jpcoar:jpcoar/datacite:description", ns
+            ):
                 d = {"description": description.text}
                 lang = description.get("{http://www.w3.org/XML/1998/namespace}lang")
                 if lang is not None:
