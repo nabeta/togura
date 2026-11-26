@@ -1,61 +1,25 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ site_name }}</title>
-    <style>{% include "style.css" %}</style>
-    {% include "head_custom.html" ignore missing %}
-  </head>
-  <body>
-    <div class="container">
-      <h1>
-        <a href="index.html"><img src="images/logo.png" height="72"></a>
-        {{ site_name }}
-      </h1>
+{% extends "base.j2" %}
+{% import "macros.j2" as m %}
 
-      <h2>収録資料の一覧</h2>
+{% block content %}
+  <h1>
+    <a href="index.html"><img src="images/logo.png" height="72"></a>
+    {{ site_name }}
+  </h1>
 
-      <div class="pb-3">
-        {% for page in range(0, total_pages) %}
-          <a href="index{{ page + 1 }}.html">index{{ page + 1 }}.html</a>
-        {% endfor %}
-      </div>
+  <h2>収録資料の一覧</h2>
 
-      <h2>最近の登録</h2>
+  <div class="pb-3">
+    {% for page in range(1, total_pages + 1) %}
+      <a href="index{{ page }}.html">index{{ page }}.html</a>
+    {% endfor %}
+  </div>
 
-      <ul>
-        {% for entry in entries %}
-          <li>
-            <a href="{{ entry.id }}/ro-crate-preview.html">
-              {{ entry.id }}
-              [{{ entry.type }}]
-              {% for creator in entry.creator %}
-                {% if creator["creator_name"]|length > 0 %}
-                  {{ creator.creator_name[0].name }}
-                {% endif %}
-              {% endfor %}.
-              {{ entry.title[0].title }}
-            </a>
+  <h2>最近の登録</h2>
 
-            {% if not entry.file is not defined %}
-              {% for file in entry.file %}
-                {% for date in file.date %}
-                  {{ date["date_type"] }}:
-                  {{ date["date"] }}
-                {% endfor %}
-              {% endfor %}
-            {% endif %}
-          </li>
-        {% endfor %}
-      </ul>
+  {{ m.entry_list(entries) }}
 
-      <div>
-        最終更新日: {{ now }}
-        <a href="resourcelist.xml">ResourceSync XML</a>
-      </div>
-
-      {% include "footer.j2" %}
-    </div>
-  </body>
-</html>
+  {% call m.last_updated(now) %}
+    <a href="resourcelist.xml">ResourceSync XML</a>
+  {% endcall %}
+{% endblock %}
