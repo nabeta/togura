@@ -391,31 +391,49 @@ def migrate(
                 d = {}
                 # 位置情報（点）
                 # https://schema.irdb.nii.ac.jp/ja/schema/2.0/22-.1
-                if geo_location.find("./datacite:geoLocationPoint", ns):
+                if geo_location.find("./datacite:geoLocationPoint", ns) is not None:
                     d["geo_location_point"] = {
-                        "point_longitude": geo_location.find(
-                            "./datacite:geoLocationPoint/datacite:pointLongitude", ns
+                        "point_longitude": to_float(
+                            geo_location.findtext(
+                                "./datacite:geoLocationPoint/datacite:pointLongitude",
+                                namespaces=ns,
+                            )
                         ),
-                        "point_latitude": geo_location.find(
-                            "./datacite:geoLocationPoint/datacite:pointLatitude", ns
+                        "point_latitude": to_float(
+                            geo_location.findtext(
+                                "./datacite:geoLocationPoint/datacite:pointLatitude",
+                                namespaces=ns,
+                            )
                         ),
                     }
 
                 # 位置情報（空間）
                 # https://schema.irdb.nii.ac.jp/ja/schema/2.0/22-.2
-                if geo_location.find("./datacite:geoLocationBox", ns):
+                if geo_location.find("./datacite:geoLocationBox", ns) is not None:
                     d["geo_location_box"] = {
-                        "west_bound_longitude": geo_location.find(
-                            "./datacite:geoLocationBox/datacite:westBoundLongitude", ns
+                        "west_bound_longitude": to_float(
+                            geo_location.findtext(
+                                "./datacite:geoLocationBox/datacite:westBoundLongitude",
+                                namespaces=ns,
+                            )
                         ),
-                        "east_bound_longitude": geo_location.find(
-                            "./datacite:geoLocationBox/datacite:eastBoundLongitude", ns
+                        "east_bound_longitude": to_float(
+                            geo_location.findtext(
+                                "./datacite:geoLocationBox/datacite:eastBoundLongitude",
+                                namespaces=ns,
+                            )
                         ),
-                        "south_bound_latitude": geo_location.find(
-                            "./datacite:geoLocationBox/datacite:southBoundLatitude", ns
+                        "south_bound_latitude": to_float(
+                            geo_location.findtext(
+                                "./datacite:geoLocationBox/datacite:southBoundLatitude",
+                                namespaces=ns,
+                            )
                         ),
-                        "north_bound_latitude": geo_location.find(
-                            "./datacite:geoLocationBox/datacite:northBoundLatitude", ns
+                        "north_bound_latitude": to_float(
+                            geo_location.findtext(
+                                "./datacite:geoLocationBox/datacite:northBoundLatitude",
+                                namespaces=ns,
+                            )
                         ),
                     }
 
