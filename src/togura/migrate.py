@@ -735,18 +735,23 @@ def migrate(
                 conf_date = conference.find("./jpcoar:conferenceDate", ns)
                 if conf_date is not None:
                     conference_date = {}
-                    if conf_date.get("startDay"):
-                        conference_date["start_day"] = conf_date["startDay"]
-                    if conf_date.get("startMonth"):
-                        conference_date["start_month"] = conf_date["startMonth"]
-                    if conf_date.get("startYear"):
-                        conference_date["start_year"] = conf_date["startYear"]
-                    if conf_date.get("endDay"):
-                        conference_date["end_day"] = conf_date["endDay"]
-                    if conf_date.get("endMonth"):
-                        conference_date["end_month"] = conf_date["endMonth"]
-                    if conf_date.get("endYear"):
-                        conference_date["end_year"] = conf_date["endYear"]
+                    if conf_date.text:
+                        conference_date["conference_date"] = conf_date.text
+                        lang = conf_date.get(
+                            "{http://www.w3.org/XML/1998/namespace}lang"
+                        )
+                        if lang is not None:
+                            conference_date["lang"] = lang
+                    for attr, key in [
+                        ("startDay", "start_day"),
+                        ("startMonth", "start_month"),
+                        ("startYear", "start_year"),
+                        ("endDay", "end_day"),
+                        ("endMonth", "end_month"),
+                        ("endYear", "end_year"),
+                    ]:
+                        if conf_date.get(attr):
+                            conference_date[key] = int(conf_date.get(attr))
 
                 # 開催会場
                 # https://schema.irdb.nii.ac.jp/ja/schema/2.0/35-.5
@@ -787,7 +792,9 @@ def migrate(
                 conf = {"conference_name": conference_names}
 
                 if sequence is not None:
-                    conf["conference_sequence"] = sequence.text
+                    conf["conference_sequence"] = int(sequence.text)
+                if conference_date:
+                    conf["conference_date"] = conference_date
                 if conference_sponsors is not None:
                     conf["conference_sponsor"] = conference_sponsors
                 if conference_venues is not None:
@@ -795,7 +802,10 @@ def migrate(
                 if conference_places is not None:
                     conf["conference_place"] = conference_places
                 if country is not None:
-                    conf["conference_country"] = country.text
+                    conf["conference_country"] = {"conference_country": country.text}
+                    lang = country.get("{http://www.w3.org/XML/1998/namespace}lang")
+                    if lang is not None:
+                        conf["conference_country"]["lang"] = lang
 
                 conferences.append(conf)
 
