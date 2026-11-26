@@ -1203,6 +1203,12 @@ def migrate(
         logger.debug(f"created {dir_name}/jpcoar20.yaml")
 
 
+def to_float(value):
+    if value is None or value == "":
+        return None
+    return float(value)
+
+
 def add_creator(record, ns):
     creators = None
     if record.xml.find(".//jpcoar:jpcoar/jpcoar:creator", ns) is not None:
