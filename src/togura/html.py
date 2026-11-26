@@ -27,12 +27,10 @@ else:
 
 env = Environment(loader=FileSystemLoader(template_dir, encoding="utf8"))
 env.filters["filename"] = filename
+env.globals["now"] = datetime.datetime.now(datetime.UTC)
 template_index = env.get_template("index.j2")
 template_index_page = env.get_template("index_page.j2")
 template_show = env.get_template("show.j2")
-template_index.globals["now"] = datetime.datetime.now(datetime.UTC)
-template_index_page.globals["now"] = datetime.datetime.now(datetime.UTC)
-template_show.globals["now"] = datetime.datetime.now(datetime.UTC)
 
 
 def generate(data_dir, output_dir, base_url, per_page=100):
