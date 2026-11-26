@@ -889,18 +889,38 @@ def migrate(
         # 41 所蔵機関
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/41
         holding_agent = None
-        if record.xml.find(".//jpcoar:jpcoar/jpcoar:holdingAgent", ns) is not None:
-            holding_agent = record.xml.find(
-                ".//jpcoar:jpcoar/jpcoar:holdingAgent", ns
-            ).text
+        h = record.xml.find(".//jpcoar:jpcoar/jpcoar:holdingAgent", ns)
+        if h is not None:
+            holding_agent = {}
+            # 所蔵機関識別子
+            # https://schema.irdb.nii.ac.jp/ja/schema/2.0/41-.1
+            h_identifier = h.find("./jpcoar:holdingAgentNameIdentifier", ns)
+            if h_identifier is not None:
+                holding_agent["holding_agent_name_identifier"] = {
+                    "identifier": h_identifier.get("nameIdentifierURI")
+                    or h_identifier.text,
+                    "name_identifier_scheme": h_identifier.get("nameIdentifierScheme"),
+                }
+
+            # 所蔵機関名
+            # https://schema.irdb.nii.ac.jp/ja/schema/2.0/41-.2
+            holding_agent_names = []
+            for h_name in h.findall("./jpcoar:holdingAgentName", ns):
+                d = {"holding_agent_name": h_name.text}
+                lang = h_name.get("{http://www.w3.org/XML/1998/namespace}lang")
+                if lang is not None:
+                    d["lang"] = lang
+                holding_agent_names.append(d)
+            holding_agent["holding_agent_name"] = holding_agent_names
 
         # 42 データセットシリーズ
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/42
         dataset_series = None
         if record.xml.find(".//jpcoar:jpcoar/jpcoar:datasetSeries", ns) is not None:
-            dataset_series = record.xml.find(
-                ".//jpcoar:jpcoar/jpcoar:datasetSeries", ns
-            ).text
+            dataset_series = (
+                record.xml.find(".//jpcoar:jpcoar/jpcoar:datasetSeries", ns).text
+                == "True"
+            )
 
         # 43 ファイル情報
         # https://schema.irdb.nii.ac.jp/ja/schema/2.0/43
