@@ -1,8 +1,9 @@
-import os
 import datetime
+import os
 from pathlib import Path
-from resync import Resource, ResourceList, CapabilityList, SourceDescription, ChangeList
 from urllib.parse import urljoin
+
+from resync import CapabilityList, ChangeList, Resource, ResourceList, SourceDescription
 
 
 def generate(output_dir, trash_dir, base_url):
@@ -27,7 +28,7 @@ def generate(output_dir, trash_dir, base_url):
             Resource(
                 urljoin(base_url, file),
                 lastmod=datetime.datetime.fromtimestamp(
-                    os.path.getmtime(f"public/{file}"), datetime.timezone.utc
+                    os.path.getmtime(f"public/{file}"), datetime.UTC
                 ).isoformat(),
             )
         )
@@ -39,7 +40,7 @@ def generate(output_dir, trash_dir, base_url):
             Resource(
                 urljoin(base_url, url_path),
                 lastmod=datetime.datetime.fromtimestamp(
-                    os.path.getmtime(f"trash/{file}"), datetime.timezone.utc
+                    os.path.getmtime(f"trash/{file}"), datetime.UTC
                 ).isoformat(),
                 change="deleted",
             )

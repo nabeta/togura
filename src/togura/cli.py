@@ -1,27 +1,23 @@
 import glob
 import os
-import pwinput
 import re
 import shutil
-import typer
 import xml.etree.ElementTree as ET
-import xmlschema
 from collections import Counter
-from datetime import datetime, date, timedelta
-from logging import getLogger, DEBUG
-from pathlib import Path
-from ruamel.yaml import YAML
+from datetime import date, datetime, timedelta
 from importlib import metadata
-from typing import Optional
-from typing_extensions import Annotated
-from togura.config import Config
-import togura.html as html
-import togura.jalc as jalc
-import togura.jpcoar as jpcoar
+from logging import DEBUG, getLogger
+from pathlib import Path
+from typing import Annotated
+
+import pwinput
+import typer
+import xmlschema
+from ruamel.yaml import YAML
+
 import togura.migrate as migrate_repository
-import togura.importer as importer
-import togura.resourcesync as resourcesync
-import togura.ro_crate as ro_crate
+from togura import html, importer, jalc, jpcoar, resourcesync, ro_crate
+from togura.config import Config
 
 __version__ = metadata.version("togura")
 app = typer.Typer()
@@ -41,7 +37,7 @@ def version_callback(value: bool):
 @app.callback()
 def main(
     version: Annotated[
-        Optional[bool],
+        bool | None,
         typer.Option("--version", callback=version_callback, is_eager=True),
     ] = None,
 ):
@@ -117,12 +113,11 @@ def setup():
         or default_base_url
     )
 
-    email = input(
-        "メールアドレスを入力してください。空欄でもかまいません:"
-    ).strip()
+    email = input("メールアドレスを入力してください。空欄でもかまいません:").strip()
 
     openalex_api_key = pwinput.pwinput(
-        "OpenAlexのWebAPIキーを入力してください。OpenAlexからの書誌情報の取得を行わない場合は、空欄のままでかまいません:", mask="*"
+        "OpenAlexのWebAPIキーを入力してください。OpenAlexからの書誌情報の取得を行わない場合は、空欄のままでかまいません:",
+        mask="*",
     ).strip()
 
     jalc_site_id = (

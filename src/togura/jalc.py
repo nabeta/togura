@@ -1,10 +1,12 @@
 import datetime
 import os
 import xml.etree.ElementTree as ET
-from ruamel.yaml import YAML
-from togura.config import Config
+from logging import DEBUG, getLogger
 from urllib.parse import urljoin
-from logging import getLogger, DEBUG
+
+from ruamel.yaml import YAML
+
+from togura.config import Config
 
 logger = getLogger(__name__)
 logger.setLevel(DEBUG)
@@ -116,11 +118,10 @@ def generate(data_dir, output_dir, base_url):
         journal_id_list = ET.SubElement(content, "journal_id_list")
         if entry.get("source_identifier"):
             for source_identifier in entry["source_identifier"]:
-                if source_identifier["identifier_type"] == "PISSN":
-                    journal_id = ET.SubElement(
-                        journal_id_list, "journal_id", {"type": "ISSN"}
-                    )
-                elif source_identifier["identifier_type"] == "EISSN":
+                if (
+                    source_identifier["identifier_type"] == "PISSN"
+                    or source_identifier["identifier_type"] == "EISSN"
+                ):
                     journal_id = ET.SubElement(
                         journal_id_list, "journal_id", {"type": "ISSN"}
                     )
@@ -182,7 +183,7 @@ def generate(data_dir, output_dir, base_url):
     add_funding_reference(entry, root, content)
 
     # JaLC XMLを出力する
-    with open(f"{output_dir}/{str(entry_id)}/jalc.xml", "w", encoding="utf-8") as file:
+    with open(f"{output_dir}/{entry_id!s}/jalc.xml", "w", encoding="utf-8") as file:
         ET.indent(root, space="\t", level=0)
         file.write(ET.tostring(root, encoding="unicode", xml_declaration=True))
 
@@ -302,9 +303,7 @@ def add_date(entry, root, content, content_classification, classification):
                 pub_date_str = date["date"]
             elif date_granted:
                 pub_date_str = date_granted
-            elif date["date_type"] == "Created":
-                pub_date_str = date["date"]
-            elif date["date_type"] == "Updated":
+            elif date["date_type"] == "Created" or date["date_type"] == "Updated":
                 pub_date_str = date["date"]
 
         if pub_date_str:

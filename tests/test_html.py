@@ -1,4 +1,4 @@
-import togura.html as html
+from togura import html
 
 
 def test_filename():

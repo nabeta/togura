@@ -1,10 +1,11 @@
-from oaipmh_scythe import Scythe
-from logging import getLogger, DEBUG
-from ruamel.yaml import YAML
-from urllib.parse import urlparse
 import os
 import re
+from logging import DEBUG, getLogger
+from urllib.parse import urlparse
+
 import requests
+from oaipmh_scythe import Scythe
+from ruamel.yaml import YAML
 
 logger = getLogger(__name__)
 logger.setLevel(DEBUG)
@@ -15,12 +16,10 @@ def migrate(
 ):
     scythe = Scythe(base_url)
     records = scythe.list_records(
-        **{
-            "metadata_prefix": metadata_prefix,
-            "from_": date_from,
-            "until": date_until,
-            "ignore_deleted": True,
-        }
+        metadata_prefix=metadata_prefix,
+        from_=date_from,
+        until=date_until,
+        ignore_deleted=True,
     )
 
     if metadata_prefix == "jpcoar_1.0":

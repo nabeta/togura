@@ -1,9 +1,9 @@
-import os
 import glob
-import mimetypes
-import xml.etree.ElementTree as ET
-from urllib.parse import urlparse, urljoin
 import logging
+import mimetypes
+import os
+import xml.etree.ElementTree as ET
+from urllib.parse import urljoin, urlparse
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -19,7 +19,7 @@ ns = {
     "xsi": "http://www.w3.org/2001/XMLSchema-instance",
 }
 
-for key in ns.keys():
+for key in ns:
     ET.register_namespace(key, ns[key])
 
 
@@ -646,7 +646,7 @@ def generate(entry, base_url):
     if entry.get("catalog"):
         add_catalog(entry, root)
 
-    logger.debug(f"{str(entry['id'])} created")
+    logger.debug(f"{entry['id']!s} created")
     return root
 
 
@@ -730,7 +730,9 @@ def add_creator(entry, root):
                                 "nameIdentifierScheme": affiliation_identifier[
                                     "identifier_scheme"
                                 ],
-                                "nameIdentifierURI": affiliation_identifier["identifier"],
+                                "nameIdentifierURI": affiliation_identifier[
+                                    "identifier"
+                                ],
                             },
                         )
                         elem_affiliation_identifier.text = affiliation_identifier[

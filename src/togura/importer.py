@@ -1,18 +1,20 @@
-from logging import getLogger, DEBUG
+import json
+import math
+import os
+import re
+from logging import DEBUG, getLogger
 from pathlib import Path
+from urllib.parse import urlparse
+
+import iso639
+import numpy as np
+import pandas as pd
+import pyalex
+import requests
 from pyalex import Works
 from requests import HTTPError
 from ruamel.yaml import YAML
-from urllib.parse import urlparse
-import iso639
-import json
-import math
-import numpy as np
-import os
-import pandas as pd
-import pyalex
-import re
-import requests
+
 from togura.config import Config
 
 logger = getLogger(__name__)
@@ -110,17 +112,17 @@ def generate_work_id_from_author_id(author_id_file, work_id_file):
                 # OpenAlexに検索結果がなかった場合
                 logger.error(f"{work_id}は見つかりませんでした")
                 works.append(
-                  [
-                    None,
-                    work_id,
-                    None,
-                    None,
-                    None,
-                    None,
-                    None,
-                    None,
-                    None,
-                  ]
+                    [
+                        None,
+                        work_id,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                    ]
                 )
                 continue
         elif hostname == "ci.nii.ac.jp":
@@ -145,17 +147,17 @@ def generate_work_id_from_author_id(author_id_file, work_id_file):
                 # NAIDがリゾルブできなかった場合
                 logger.error(f"{work_id}は見つかりませんでした")
                 works.append(
-                  [
-                    None,
-                    work_id,
-                    None,
-                    None,
-                    None,
-                    None,
-                    None,
-                    None,
-                    None,
-                  ]
+                    [
+                        None,
+                        work_id,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                    ]
                 )
                 continue
 

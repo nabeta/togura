@@ -1,7 +1,9 @@
-from pathlib import Path
-from ruamel.yaml import YAML
 import xml.etree.ElementTree as ET
-import togura.jalc as jalc
+from pathlib import Path
+
+from ruamel.yaml import YAML
+
+from togura import jalc
 
 
 def test_add_creator():

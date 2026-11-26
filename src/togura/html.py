@@ -2,13 +2,15 @@ import datetime
 import glob
 import os
 import shutil
-from ruamel.yaml import YAML
-from togura.config import Config
-from jinja2 import Environment, FileSystemLoader
-from logging import getLogger, DEBUG
-from more_itertools import chunked
+from logging import DEBUG, getLogger
 from pathlib import Path
 from urllib.parse import urlparse
+
+from jinja2 import Environment, FileSystemLoader
+from more_itertools import chunked
+from ruamel.yaml import YAML
+
+from togura.config import Config
 
 
 def filename(url):
