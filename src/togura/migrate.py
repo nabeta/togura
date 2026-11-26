@@ -977,16 +977,9 @@ def migrate(
         if c is not None:
             # 提供機関
             # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.1
-            if c.find("./jpcoar:contributor", ns) is not None:
-                catalog_contributors = []
-                for catalog_contributor in c.findall("./jpcoar:contributor", ns):
-                    d = {"contributor_name": catalog_contributor.text}
-                    lang = catalog_contributor.get(
-                        "{http://www.w3.org/XML/1998/namespace}lang"
-                    )
-                    if lang is not None:
-                        d["lang"] = lang
-                    catalog_contributors.append(d)
+            catalog_contributors = add_contributor(
+                record, ns, ".//jpcoar:jpcoar/jpcoar:catalog/jpcoar:contributor"
+            )
 
             # 識別子
             # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.2
@@ -999,9 +992,9 @@ def migrate(
             # タイトル
             # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.3
             catalog_titles = None
-            if c.find("./jpcoar:title", ns) is not None:
+            if c.find("./dc:title", ns) is not None:
                 catalog_titles = []
-                for title in c.findall("./jpcoar:title", ns):
+                for title in c.findall("./dc:title", ns):
                     d = {"title": title.text}
                     lang = title.get("{http://www.w3.org/XML/1998/namespace}lang")
                     if lang is not None:
@@ -1033,6 +1026,12 @@ def migrate(
                     lang = subject.get("{http://www.w3.org/XML/1998/namespace}lang")
                     if lang is not None:
                         d["lang"] = lang
+                    subject_scheme = subject.get("subjectScheme")
+                    if subject_scheme is not None:
+                        d["subject_scheme"] = subject_scheme
+                    subject_uri = subject.get("subjectURI")
+                    if subject_uri is not None:
+                        d["subject_uri"] = subject_uri
                     catalog_subjects.append(d)
 
             # ライセンス
@@ -1050,11 +1049,6 @@ def migrate(
                     )
                     if license_url is not None:
                         d["license_uri"] = license_url
-                    lang = catalog_license.get(
-                        "{http://www.w3.org/XML/1998/namespace}lang"
-                    )
-                    if lang is not None:
-                        d["lang"] = lang
                     catalog_licenses.append(d)
 
             # 権利情報
@@ -1082,7 +1076,7 @@ def migrate(
 
             # 代表画像
             # https://schema.irdb.nii.ac.jp/ja/schema/2.0/44-.9
-            c_file = c.find("./jpcoar:file", ns)
+            c_file = c.find("./jpcoar:file/jpcoar:URI", ns)
             catalog_file = None
             if c_file is not None:
                 catalog_file = {"uri": c_file.text}
@@ -1090,6 +1084,8 @@ def migrate(
                     catalog_file["object_type"] = c_file.get("objectType")
 
             catalog = {}
+            if catalog_contributors is not None:
+                catalog["contributor"] = catalog_contributors
             if catalog_identifiers is not None:
                 catalog["identifier"] = catalog_identifiers
             if catalog_titles is not None:
