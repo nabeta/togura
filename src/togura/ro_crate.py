@@ -1,12 +1,13 @@
-import os
 import glob
 import mimetypes
+import os
 import tempfile
 import xml.etree.ElementTree as ET
-from ruamel.yaml import YAML
-from rocrate.rocrate import ROCrate
+from logging import DEBUG, getLogger
+
 from rocrate.model.person import Person
-from logging import getLogger, DEBUG
+from rocrate.rocrate import ROCrate
+from ruamel.yaml import YAML
 
 logger = getLogger(__name__)
 logger.setLevel(DEBUG)

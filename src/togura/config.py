@@ -1,9 +1,10 @@
 import os
 from pathlib import Path
+
 from ruamel.yaml import YAML
 
 
-class Config(object):
+class Config:
     def __init__(self):
         file = f"{Path.cwd()}/config.yaml"
         yaml = YAML()

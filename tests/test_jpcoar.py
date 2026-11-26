@@ -1,9 +1,11 @@
 import glob
 import os
-import pytest
-import togura.jpcoar as jpcoar
 import xml.etree.ElementTree as ET
+
+import pytest
 from ruamel.yaml import YAML
+
+from togura import jpcoar
 
 
 def test_access_rights_uri():

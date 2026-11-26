@@ -44,3 +44,8 @@ include-package-data = true
 
 [tool.setuptools.package-data]
 togura = ["samples/**", "schema/**", "templates/**", ".vscode/*.json"]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.17.6",
+]

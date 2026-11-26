@@ -5,13 +5,10 @@ import re
 import shutil
 from collections import Counter
 from datetime import date
+
 from ruamel.yaml import YAML
-import togura.config as config
-import togura.html as html
-import togura.jalc as jalc
-import togura.jpcoar as jpcoar
-import togura.resourcesync as resourcesync
-import togura.ro_crate as ro_crate
+
+from togura import config, html, jalc, jpcoar, resourcesync, ro_crate
 
 # ログ出力の設定
 logger = logging.getLogger(__name__)

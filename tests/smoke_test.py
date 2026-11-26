@@ -1,4 +1,4 @@
-import togura.jpcoar as jpcoar
+from togura import jpcoar
 
 resource_type_uri = jpcoar.resource_type_uri("article")
 if resource_type_uri == "http://purl.org/coar/resource_type/c_6501":
