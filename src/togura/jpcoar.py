@@ -1150,7 +1150,7 @@ def add_conference(entry, root):
                 conference_place = ET.SubElement(
                     conference, ET.QName(ns["jpcoar"], "conferencePlace")
                 )
-                conference_place.text = d_venue["conference_place"]
+                conference_place.text = d_place["conference_place"]
                 if d_place.get("lang") is not None:
                     conference_place.set("xml:lang", d_place["lang"])
 
