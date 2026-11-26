@@ -1360,13 +1360,11 @@ def add_creator(record, ns):
     return creators
 
 
-def add_contributor(record, ns):
+def add_contributor(record, ns, path=".//jpcoar:jpcoar/jpcoar:contributor"):
     contributors = None
-    if record.xml.find(".//jpcoar:jpcoar/jpcoar:contributor", ns) is not None:
+    if record.xml.find(path, ns) is not None:
         contributors = []
-        for contributor in record.xml.findall(
-            ".//jpcoar:jpcoar/jpcoar:contributor", ns
-        ):
+        for contributor in record.xml.findall(path, ns):
             # 寄与者識別子
             # https://schema.irdb.nii.ac.jp/ja/schema/2.0/4-.1
             contributor_name_identifiers = []
