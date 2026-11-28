@@ -1,5 +1,4 @@
 import glob
-import os
 import re
 import shutil
 import xml.etree.ElementTree as ET
@@ -130,55 +129,67 @@ def setup():
     )
 
 
+def entry_id_of(path: Path) -> str:
+    """資料のフォルダ名から登録番号を取り出す。フォルダ名は「登録番号_任意の文字列」"""
+    return path.name.split("_")[0]
+
+
+def check_entry_ids(paths: list[Path]) -> None:
+    """登録番号の書式と重複を確認し、問題があればエラーを表示して終了する"""
+    for path in paths:
+        entry_id = entry_id_of(path)
+        if not re.fullmatch(r"[0-9]+", entry_id):
+            typer.echo(
+                f"エラー: 登録番号 {entry_id} の書式が正しくありません。半角の数字に変更してください。また、登録番号のあとに _ （アンダースコア）を入力していることを確認してください。",
+                err=True,
+            )
+            raise typer.Exit(code=1)
+
+    counts = Counter(entry_id_of(path) for path in paths)
+    for entry_id, count in counts.items():
+        if count > 1:
+            typer.echo(
+                f"エラー: 登録番号 {entry_id} が重複しています。別の番号を使用してください。",
+                err=True,
+            )
+            raise typer.Exit(code=1)
+
+
 @app.command()
 def generate():
     """
     HTMLファイルとメタデータファイルを出力します。
     """
-    data_dir = f"{Path.cwd()}/work"
-    output_dir = f"{Path.cwd()}/public"
-    trash_dir = f"{Path.cwd()}/trash"
+    data_dir = Path.cwd() / "work"
+    output_dir = Path.cwd() / "public"
+    trash_dir = Path.cwd() / "trash"
     base_url = Config().base_url
     yaml = YAML()
 
-    paths = sorted(glob.glob(f"{data_dir}/*"))
-    ids = sorted([os.path.basename(path).split("_")[0] for path in paths])
-    if len(paths) != len(set(ids)):
-        # duplicate_ids = ", ".join(Counter(ids).items())
-        for duplicate_id in Counter(ids).items():
-            if duplicate_id[1] > 1:
-                raise Exception(
-                    f"エラー: 登録番号 {duplicate_id[0]} が重複しています。別の番号を使用してください。"
-                )
+    paths = sorted(data_dir.glob("*"))
+    # 出力を始める前に、すべての資料の登録番号を確認する
+    check_entry_ids(paths)
 
     for path in paths:
-        entry_id = os.path.basename(path).split("_")[0]
-
-        if not re.search(r"\d+", entry_id):
-            raise Exception(
-                f"エラー: 登録番号 {entry_id} の書式が正しくありません。半角の数字に変更してください。また、登録番号のあとに _ （アンダースコア）を入力していることを確認してください。"
-            )
-
-        yaml_path = f"{path}/jpcoar20.yaml"
+        yaml_path = path / "jpcoar20.yaml"
         with open(yaml_path, encoding="utf-8") as file:
             entry = yaml.load(file)
-            entry["id"] = entry_id
+        entry["id"] = entry_id_of(path)
 
-            try:
-                root = jpcoar.generate(entry, base_url)
-                jpcoar.add_directory_file(path, entry, root, base_url)
-                ro_crate.generate(path, output_dir, root)
-                jalc.generate(path, output_dir, base_url)
-            except KeyError as e:
-                typer.echo(f"以下のメタデータの{e}にエラーがあります。")
-                typer.echo(yaml_path)
-                raise typer.Exit(code=1)
+        try:
+            root = jpcoar.generate(entry, base_url)
+            jpcoar.add_directory_file(path, entry, root, base_url)
+            ro_crate.generate(path, output_dir, root)
+            jalc.generate(path, output_dir, base_url)
+        except KeyError as e:
+            typer.echo(f"以下のメタデータの{e}にエラーがあります。", err=True)
+            typer.echo(yaml_path, err=True)
+            raise typer.Exit(code=1) from e
 
     html.generate(data_dir, output_dir, base_url)
     resourcesync.generate(output_dir, trash_dir, base_url)
 
     typer.echo("Toguraによるリポジトリの構築処理が完了しました。")
-    typer.Exit(code=0)
 
 
 @app.command()

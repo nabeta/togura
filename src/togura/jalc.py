@@ -10,7 +10,6 @@ from togura.config import Config
 
 logger = getLogger(__name__)
 logger.setLevel(DEBUG)
-conf = Config()
 
 
 def generate(data_dir, output_dir, base_url):
@@ -24,6 +23,9 @@ def generate(data_dir, output_dir, base_url):
     # ID登録が記述されていなければ処理を終了する
     if entry.get("identifier_registration") is None:
         return
+
+    # 設定ファイルは実行時のフォルダから読み込む
+    conf = Config()
 
     root = ET.Element("root")
     head = ET.SubElement(root, "head")
