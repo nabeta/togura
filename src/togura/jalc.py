@@ -162,6 +162,7 @@ def generate(data_dir, output_dir, base_url):
 
     add_funding_reference(entry, root, content, content_classification)
     add_keyword_list(entry, content, content_classification)
+    add_subject_list(entry, content, content_classification)
 
     # JaLC XMLを出力する
     with open(f"{output_dir}/{entry_id!s}/jalc.xml", "w", encoding="utf-8") as file:
@@ -504,6 +505,30 @@ def add_keyword_list(entry, content, content_classification):
         if d.get("lang"):
             keyword.set("lang", iso_639_1(d["lang"]))
         keyword.text = str(d["subject"])
+
+
+def add_subject_list(entry, content, content_classification):
+    """主題を subject_list として追加する（研究データのみ）
+
+    研究データでは subject_scheme で主題のスキームを記述できるため、
+    keyword_list と異なり分類記号の主題も出力する
+    """
+    if content_classification.text != "03":
+        return
+
+    subjects = [d for d in entry.get("subject") or [] if d.get("subject")]
+    if not subjects:
+        return
+
+    subject_list = ET.SubElement(content, "subject_list")
+    for d in subjects:
+        subject = ET.SubElement(subject_list, "subject")
+        if d.get("lang"):
+            subject.set("lang", iso_639_1(d["lang"]))
+        # subject_uri は主題の値のURIで、スキームのURI（scheme_uri）ではないため出力しない
+        if d.get("subject_scheme"):
+            subject.set("subject_scheme", d["subject_scheme"])
+        subject.text = str(d["subject"])
 
 
 def iso_639_1(lang):
