@@ -41,6 +41,10 @@
 
   {% call m.field("資源タイプ", 15) %}{{ entry.type }}{% endcall %}
 
+  {% if entry.version %}
+    {% call m.field("バージョン情報", 16) %}{{ entry.version }}{% endcall %}
+  {% endif %}
+
   {% if entry.text_version %}
     {% call m.field("出版タイプ", 17) %}{{ entry.text_version }}{% endcall %}
   {% endif %}
@@ -76,6 +80,10 @@
     {% endcall %}
   {% endif %}
 
+  {% if entry.rights_holder %}
+    {{ m.agents("権利者情報", 7, entry.rights_holder, "rights_holder_name", "") }}
+  {% endif %}
+
   {% if entry.subject %}
     {{ m.pairs_field("主題", 8, entry.subject, "subject_scheme", "subject") }}
   {% endif %}
@@ -88,8 +96,37 @@
     {{ m.pairs_field("出版者", 10, entry.publisher, "lang", "publisher") }}
   {% endif %}
 
+  {% if entry.jpcoar_publisher %}
+    {% call m.field("出版者情報", 11) %}
+      {% for publisher in entry.jpcoar_publisher %}
+        <dl class="row border rounded">
+          {% for name in publisher.publisher_name or [] %}
+            <dt class="col-sm-2">{{ name.lang }}</dt>
+            <dd class="col-sm-10">{{ name.publisher_name }}</dd>
+          {% endfor %}
+          {% for description in publisher.publisher_description or [] %}
+            <dt class="col-sm-2">出版者注記</dt>
+            <dd class="col-sm-10">{{ description.publisher_description }}</dd>
+          {% endfor %}
+          {% for location in publisher.location or [] %}
+            <dt class="col-sm-2">出版地</dt>
+            <dd class="col-sm-10">{{ location.location }}</dd>
+          {% endfor %}
+          {% for place in publisher.publication_place or [] %}
+            <dt class="col-sm-2">出版地（国名コード）</dt>
+            <dd class="col-sm-10">{{ place.publication_place }}</dd>
+          {% endfor %}
+        </dl>
+      {% endfor %}
+    {% endcall %}
+  {% endif %}
+
   {% if entry.date %}
     {{ m.pairs_field("日付", 12, entry.date, "date_type", "date") }}
+  {% endif %}
+
+  {% if entry.dcterms_date %}
+    {{ m.pairs_field("日付（リテラル）", 13, entry.dcterms_date, "lang", "date") }}
   {% endif %}
 
   {% if entry.language %}
@@ -118,6 +155,36 @@
           <dd class="col-sm-10"><a href="{{ related_identifier }}" rel="nofollow">{{ related_identifier }}</a></dd>
         {% endfor %}
       </dl>
+    {% endcall %}
+  {% endif %}
+
+  {% if entry.temporal %}
+    {{ m.pairs_field("時間的範囲", 21, entry.temporal, "lang", "temporal") }}
+  {% endif %}
+
+  {% if entry.geo_location %}
+    {% call m.field("位置情報", 22) %}
+      {% for geo_location in entry.geo_location %}
+        {% set point = geo_location.geo_location_point %}
+        {% set box = geo_location.geo_location_box %}
+        <dl class="row border rounded">
+          {% if point %}
+            <dt class="col-sm-2">位置情報（点）</dt>
+            <dd class="col-sm-10">経度 {{ point.point_longitude }}、緯度 {{ point.point_latitude }}</dd>
+          {% endif %}
+          {% if box %}
+            <dt class="col-sm-2">位置情報（空間）</dt>
+            <dd class="col-sm-10">
+              西端経度 {{ box.west_bound_longitude }}、東端経度 {{ box.east_bound_longitude }}、
+              南端緯度 {{ box.south_bound_latitude }}、北端緯度 {{ box.north_bound_latitude }}
+            </dd>
+          {% endif %}
+          {% for place in geo_location.geo_location_place or [] %}
+            <dt class="col-sm-2">位置情報（自由記述）</dt>
+            <dd class="col-sm-10">{{ place }}</dd>
+          {% endfor %}
+        </dl>
+      {% endfor %}
     {% endcall %}
   {% endif %}
 
@@ -184,6 +251,10 @@
     {% endcall %}
   {% endif %}
 
+  {% if entry.num_pages %}
+    {% call m.field("ページ数", 28) %}{{ entry.num_pages }}{% endcall %}
+  {% endif %}
+
   {% if entry.dissertation_number %}
     <dl class="row border rounded p-3">
       {{ m.field_label("学位授与番号", 31) }}
@@ -199,6 +270,151 @@
         {% endfor %}
       </dd>
     </dl>
+  {% endif %}
+
+  {% if entry.conference %}
+    {% call m.field("会議記述", 35) %}
+      {% for conference in entry.conference %}
+        {% set conference_date = conference.conference_date %}
+        <dl class="row border rounded">
+          {% for name in conference.conference_name or [] %}
+            <dt class="col-sm-2">{{ name.lang }}</dt>
+            <dd class="col-sm-10">{{ name.conference_name }}</dd>
+          {% endfor %}
+          {% if conference.conference_sequence %}
+            <dt class="col-sm-2">回次</dt>
+            <dd class="col-sm-10">{{ conference.conference_sequence }}</dd>
+          {% endif %}
+          {% for sponsor in conference.conference_sponsor or [] %}
+            <dt class="col-sm-2">主催機関</dt>
+            <dd class="col-sm-10">{{ sponsor.conference_sponsor }}</dd>
+          {% endfor %}
+          {% if conference_date %}
+            {% set start = [conference_date.start_year, conference_date.start_month, conference_date.start_day]|select|join("-") %}
+            {% set end = [conference_date.end_year, conference_date.end_month, conference_date.end_day]|select|join("-") %}
+            <dt class="col-sm-2">開催期間</dt>
+            <dd class="col-sm-10">
+              {{ conference_date.conference_date }}
+              {% if start or end %}({{ start }} - {{ end }}){% endif %}
+            </dd>
+          {% endif %}
+          {% for venue in conference.conference_venue or [] %}
+            <dt class="col-sm-2">開催会場</dt>
+            <dd class="col-sm-10">{{ venue.conference_venue }}</dd>
+          {% endfor %}
+          {% for place in conference.conference_place or [] %}
+            <dt class="col-sm-2">開催地</dt>
+            <dd class="col-sm-10">{{ place.conference_place }}</dd>
+          {% endfor %}
+          {% if conference.conference_country %}
+            <dt class="col-sm-2">開催国</dt>
+            <dd class="col-sm-10">{{ conference.conference_country.conference_country }}</dd>
+          {% endif %}
+        </dl>
+      {% endfor %}
+    {% endcall %}
+  {% endif %}
+
+  {% if entry.edition %}
+    {{ m.pairs_field("版", 36, entry.edition, "lang", "edition") }}
+  {% endif %}
+
+  {% if entry.volume_title %}
+    {{ m.pairs_field("部編名", 37, entry.volume_title, "lang", "volume_title") }}
+  {% endif %}
+
+  {% if entry.original_language %}
+    {% call m.field("原文の言語", 38) %}{{ entry.original_language|join(" ") }}{% endcall %}
+  {% endif %}
+
+  {% if entry.extent %}
+    {{ m.pairs_field("大きさ", 39, entry.extent, "lang", "extent") }}
+  {% endif %}
+
+  {% if entry.format %}
+    {{ m.pairs_field("物理的形態", 40, entry.format, "lang", "format") }}
+  {% endif %}
+
+  {% if entry.holding_agent %}
+    {% set holding_agent_identifier = entry.holding_agent.holding_agent_name_identifier %}
+    {% call m.field("所蔵機関", 41) %}
+      <dl class="row border rounded">
+        {% if holding_agent_identifier and holding_agent_identifier.identifier %}
+          <dt class="col-sm-2">{{ holding_agent_identifier.name_identifier_scheme }}</dt>
+          <dd class="col-sm-10"><a href="{{ holding_agent_identifier.identifier }}" rel="nofollow">{{ holding_agent_identifier.identifier }}</a></dd>
+        {% endif %}
+        {% for name in entry.holding_agent.holding_agent_name or [] %}
+          <dt class="col-sm-2">{{ name.lang }}</dt>
+          <dd class="col-sm-10">{{ name.holding_agent_name }}</dd>
+        {% endfor %}
+      </dl>
+    {% endcall %}
+  {% endif %}
+
+  {% if entry.dataset_series is defined and entry.dataset_series is not none %}
+    {% call m.field("データセットシリーズ", 42) %}{{ entry.dataset_series }}{% endcall %}
+  {% endif %}
+
+  {% if entry.catalog %}
+    {% set catalog = entry.catalog %}
+    {% call m.field("カタログ", 44) %}
+      <dl class="row border rounded">
+        {% for contributor in catalog.contributor or [] %}
+          <dt class="col-sm-2">提供機関</dt>
+          <dd class="col-sm-10">{{ m.pairs(contributor.contributor_name or [], "lang", "name") }}</dd>
+        {% endfor %}
+        {% if catalog.identifier %}
+          <dt class="col-sm-2">識別子</dt>
+          <dd class="col-sm-10">
+            <ul>
+              {% for identifier in catalog.identifier %}
+                <li><a href="{{ identifier }}" rel="nofollow">{{ identifier }}</a></li>
+              {% endfor %}
+            </ul>
+          </dd>
+        {% endif %}
+        {% if catalog.title %}
+          <dt class="col-sm-2">タイトル</dt>
+          <dd class="col-sm-10">{{ m.pairs(catalog.title, "lang", "title") }}</dd>
+        {% endif %}
+        {% if catalog.description %}
+          <dt class="col-sm-2">内容記述</dt>
+          <dd class="col-sm-10">{{ m.pairs(catalog.description, "description_type", "description") }}</dd>
+        {% endif %}
+        {% if catalog.subject %}
+          <dt class="col-sm-2">主題</dt>
+          <dd class="col-sm-10">{{ m.pairs(catalog.subject, "subject_scheme", "subject") }}</dd>
+        {% endif %}
+        {% for license in catalog.license or [] %}
+          <dt class="col-sm-2">ライセンス</dt>
+          <dd class="col-sm-10">
+            {% if license.license_uri %}
+              <a href="{{ license.license_uri }}" rel="nofollow">{{ license.license }}</a>
+            {% else %}
+              {{ license.license }}
+            {% endif %}
+          </dd>
+        {% endfor %}
+        {% for right in catalog.rights or [] %}
+          <dt class="col-sm-2">権利情報</dt>
+          <dd class="col-sm-10">
+            {% if right.rights_uri %}
+              <a href="{{ right.rights_uri }}" rel="nofollow">{{ right.rights }}</a>
+            {% else %}
+              {{ right.rights }}
+            {% endif %}
+          </dd>
+        {% endfor %}
+        {% if catalog.access_rights %}
+          <dt class="col-sm-2">アクセス権</dt>
+          <dd class="col-sm-10">{{ catalog.access_rights }}</dd>
+        {% endif %}
+        {% if catalog.file and catalog.file.uri %}
+          <dt class="col-sm-2">代表画像</dt>
+          <dd class="col-sm-10"><a href="{{ catalog.file.uri }}" rel="nofollow">{{ catalog.file.uri }}</a></dd>
+        {% endif %}
+      </dl>
+    {% endcall %}
   {% endif %}
 
   <div>
