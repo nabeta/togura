@@ -442,3 +442,88 @@ def test_generate_fund_without_funder_name(project):
     xml_path = generate_jalc(project, entry)
     assert ET.parse(xml_path).find("body/content/fund_list") is None
     validate_with_schema_if_available(xml_path)
+
+
+# --- 収録物識別子・収録物名 ---
+
+
+def test_generate_journal_id_list(project):
+    """論文の収録物識別子が journal_id_list に出力される"""
+    entry = load_sample("01_departmental_bulletin_paper_oa")
+    entry["source_identifier"] = [
+        {"identifier_type": "PISSN", "identifier": "1880-697X"},
+        {"identifier_type": "EISSN", "identifier": "1880-6988"},
+        {"identifier_type": "ISSN", "identifier": "1880-7003"},
+        {"identifier_type": "NCID", "identifier": "AA12032633"},
+    ]
+    xml_path = generate_jalc(project, entry)
+    journal_ids = ET.parse(xml_path).findall("body/content/journal_id_list/journal_id")
+    # PISSN、EISSNは issn_type で冊子体と電子版を区別する
+    assert [(e.attrib, e.text) for e in journal_ids] == [
+        ({"type": "ISSN", "issn_type": "print"}, "1880-697X"),
+        ({"type": "ISSN", "issn_type": "online"}, "1880-6988"),
+        ({"type": "ISSN"}, "1880-7003"),
+        ({"type": "NCID"}, "AA12032633"),
+    ]
+    validate_with_schema_if_available(xml_path)
+
+
+def test_generate_journal_id_unknown_type(project):
+    """JaLCにない識別子タイプは出力しない"""
+    entry = load_sample("01_departmental_bulletin_paper_oa")
+    entry["source_identifier"].append(
+        {"identifier_type": "ISSN-L", "identifier": "1880-697X"}
+    )
+    xml_path = generate_jalc(project, entry)
+    journal_ids = ET.parse(xml_path).findall("body/content/journal_id_list/journal_id")
+    assert [e.text for e in journal_ids] == ["1880-697X", "AA12032633"]
+    validate_with_schema_if_available(xml_path)
+
+
+def test_generate_article_without_source_title(project):
+    """論文のXSDスキーマには収録物名の要素がないため、出力しない"""
+    xml_path = generate_jalc(project, load_sample("01_departmental_bulletin_paper_oa"))
+    root = ET.parse(xml_path).getroot()
+    assert root.find(".//series_title") is None
+    texts = {e.text for e in root.iter()}
+    assert "東京大学大学院情報学環紀要 情報学研究" not in texts
+    assert "Journal of information studies" not in texts
+    validate_with_schema_if_available(xml_path)
+
+
+def test_generate_thesis_series_title(project):
+    """学位論文では、同じ言語の収録物名をシリーズ名として出力する"""
+    entry = load_sample("05_doctoral_thesis_oa")
+    entry["source_title"] = [
+        {"source_title": "鳥座大学学位論文集", "lang": "ja"},
+        {"source_title": "Togura University Dissertations", "lang": "en"},
+    ]
+    entry["source_identifier"] = [
+        {"identifier_type": "PISSN", "identifier": "1880-697X"}
+    ]
+    xml_path = generate_jalc(project, entry)
+    content = ET.parse(xml_path).find("body/content")
+    titles = content.findall("title_list/titles")
+    assert [(e.get("lang"), e.findtext("series_title"), e[0].tag) for e in titles] == [
+        ("en", "Togura University Dissertations", "series_title"),
+        ("ja", "鳥座大学学位論文集", "series_title"),
+        # ja-Kana のタイトルには同じ言語の収録物名がない
+        ("ja", None, "title"),
+    ]
+    # 図書のXSDスキーマには journal_id_list がない
+    assert content.find("journal_id_list") is None
+    validate_with_schema_if_available(xml_path)
+
+
+def test_generate_dataset_without_source(project):
+    """研究データには収録物識別子・収録物名を出力しない"""
+    entry = load_sample("07_dataset")
+    entry["source_title"] = [{"source_title": "データ集", "lang": "ja"}]
+    entry["source_identifier"] = [
+        {"identifier_type": "PISSN", "identifier": "1880-697X"}
+    ]
+    xml_path = generate_jalc(project, entry)
+    root = ET.parse(xml_path).getroot()
+    assert root.find(".//journal_id_list") is None
+    assert root.find(".//series_title") is None
+    validate_with_schema_if_available(xml_path)
