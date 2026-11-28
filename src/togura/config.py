@@ -4,6 +4,12 @@ from pathlib import Path
 from ruamel.yaml import YAML
 
 
+def write_config(path: Path, values: dict) -> None:
+    """設定ファイルを書き出す"""
+    with open(path, "w", encoding="utf-8") as file:
+        YAML().dump(values, file)
+
+
 class Config:
     def __init__(self):
         file = f"{Path.cwd()}/config.yaml"
