@@ -136,10 +136,20 @@ def load_sample(name: str) -> dict:
 @pytest.mark.parametrize("name", JALC_SAMPLES)
 def test_generate_valid_against_schema(project, name):
     """出力したJaLC XMLがJaLCのXSDスキーマに適合する"""
-    xml_path = generate_jalc(project, load_sample(name))
+    validate_with_schema(generate_jalc(project, load_sample(name)))
+
+
+def validate_with_schema(xml_path: Path) -> None:
+    """content_classification に対応するJaLCのXSDスキーマで検証する"""
     classification = ET.parse(xml_path).findtext("head/content_classification")
     schema = xmlschema.XMLSchema(str(JALC_SCHEMA_DIR / JALC_SCHEMAS[classification]))
     schema.validate(str(xml_path))
+
+
+def validate_with_schema_if_available(xml_path: Path) -> None:
+    """tests/jalc にXSDスキーマがある場合のみ検証する"""
+    if JALC_SCHEMA_DIR.is_dir():
+        validate_with_schema(xml_path)
 
 
 def test_generate_departmental_bulletin_paper(project):
@@ -222,3 +232,107 @@ def test_generate_unsupported_type(project):
     assert entry["identifier_registration"]
     assert entry["type"] == "book"
     assert not generate_jalc(project, entry).exists()
+
+
+# --- 寄与者 ---
+
+
+def contributors_of(xml_path: Path) -> list:
+    return ET.parse(xml_path).findall("body/content/contributor_list/contributor")
+
+
+def test_generate_dataset_contributors(project):
+    """研究データの寄与者が contributor_list に出力される"""
+    xml_path = generate_jalc(project, load_sample("07_dataset"))
+    contributors = contributors_of(xml_path)
+
+    assert [(c.get("sequence"), c.get("contributor_type")) for c in contributors] == [
+        ("0", "ProjectLeader"),
+        ("1", "DataCollector"),
+        ("2", "ContactPerson"),
+    ]
+    first = contributors[0]
+    # XSDスキーマの順序（names、affiliations、researcher_id）で出力される
+    assert [e.tag for e in first] == [
+        "names",
+        "names",
+        "names",
+        "affiliations",
+        "researcher_id",
+    ]
+    assert [
+        (e.get("lang"), e.findtext("first_name")) for e in first.findall("names")
+    ] == [
+        ("ja", "夏目, 漱石"),
+        ("en", "Natsume, Soseki"),
+        ("ja", "ナツメ, ソウセキ"),
+    ]
+    affiliation = first.find("affiliations/affiliation")
+    assert affiliation.get("sequence") == "0"
+    assert [
+        (e.get("lang"), e.text) for e in affiliation.findall("affiliation_name")
+    ] == [("ja", "東京大学"), ("en", "The University of Tokyo")]
+    assert affiliation.find("affiliation_identifier").get("type") == "ISNI"
+    id_code = first.find("researcher_id/id_code")
+    assert (id_code.get("type"), id_code.text) == (
+        "ORCID",
+        "https://orcid.org/0000-0001-0002-0003",
+    )
+    validate_with_schema_if_available(xml_path)
+
+
+def test_generate_contributor_without_contributor_type(project):
+    """寄与者の種別がなければ必須の contributor_type に Other を出力する"""
+    entry = load_sample("07_dataset")
+    del entry["contributor"][0]["contributor_type"]
+    xml_path = generate_jalc(project, entry)
+    assert [c.get("contributor_type") for c in contributors_of(xml_path)] == [
+        "Other",
+        "DataCollector",
+        "ContactPerson",
+    ]
+    validate_with_schema_if_available(xml_path)
+
+
+@pytest.mark.parametrize(
+    ("scheme", "expected"),
+    [
+        ("ISNI", "ISNI"),
+        ("GRID", "GRID"),
+        ("ROR", "ROR"),
+        ("Ringgold", "RINGGOLD"),
+        ("kakenhi", "Other"),
+    ],
+)
+def test_generate_contributor_affiliation_identifier_type(project, scheme, expected):
+    """所属機関識別子のスキームをJaLCで使用できる type に変換する"""
+    entry = load_sample("07_dataset")
+    entry["contributor"][0]["affiliation"][0]["name_identifier"][0][
+        "identifier_scheme"
+    ] = scheme
+    xml_path = generate_jalc(project, entry)
+    identifier = contributors_of(xml_path)[0].find(
+        "affiliations/affiliation/affiliation_identifier"
+    )
+    assert identifier.get("type") == expected
+    validate_with_schema_if_available(xml_path)
+
+
+def test_generate_contributor_affiliation_without_identifier(project):
+    """所属機関識別子がない所属も出力できる"""
+    entry = load_sample("07_dataset")
+    del entry["contributor"][0]["affiliation"][0]["name_identifier"]
+    xml_path = generate_jalc(project, entry)
+    affiliation = contributors_of(xml_path)[0].find("affiliations/affiliation")
+    assert affiliation.findtext("affiliation_name") == "東京大学"
+    assert affiliation.find("affiliation_identifier") is None
+    validate_with_schema_if_available(xml_path)
+
+
+def test_generate_thesis_without_contributors(project):
+    """JaLCのXSDスキーマで寄与者を記述できない種別（学位論文）には出力しない"""
+    entry = load_sample("05_doctoral_thesis_oa")
+    assert entry["contributor"]
+    xml_path = generate_jalc(project, entry)
+    assert ET.parse(xml_path).find("body/content/contributor_list") is None
+    validate_with_schema_if_available(xml_path)
