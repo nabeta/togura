@@ -182,7 +182,7 @@ def generate(data_dir, output_dir, base_url):
         last_page = ET.SubElement(content, "last_page")
         last_page.text = entry["page_end"]
 
-    add_funding_reference(entry, root, content)
+    add_funding_reference(entry, root, content, content_classification)
 
     # JaLC XMLを出力する
     with open(f"{output_dir}/{entry_id!s}/jalc.xml", "w", encoding="utf-8") as file:
@@ -332,37 +332,109 @@ def add_date(entry, root, content, content_classification, classification):
     return root
 
 
-def add_funding_reference(entry, root, content):
-    if entry.get("funding_reference"):
+# JPCOARの助成機関識別子のタイプとJaLCの funder_identifier の type の対応
+JALC_FUNDER_IDENTIFIER_TYPES = {
+    "Crossref Funder": "FundRef",
+    "GRID": "GRID",
+    "ISNI": "ISNI",
+    "ROR": "ROR",
+}
+
+
+def funder_identifier_type(identifier_type):
+    """JPCOARの助成機関識別子のタイプをJaLCの type に変換する"""
+    # e-Rad_funder などJaLCにないタイプは Other とする
+    return JALC_FUNDER_IDENTIFIER_TYPES.get(identifier_type, "Other")
+
+
+def first_value(items, key):
+    """言語ごとに記述された値のうち、最初の値と言語を返す"""
+    for item in items or []:
+        if item.get(key):
+            return item[key], item.get("lang")
+    return None, None
+
+
+def add_funding_reference(entry, root, content, content_classification=None):
+    """助成情報を fund_list として追加する
+
+    研究データ（content_classification が 03）では、プログラム情報識別子、
+    プログラム情報、研究課題名も award_number_group に出力する
+    """
+    funds = []
+    for funding_reference in entry.get("funding_reference") or []:
+        # funder_name は必須で、1件のみ記述できる
+        funder_name_text, funder_name_lang = first_value(
+            funding_reference.get("funder_name"), "funder_name"
+        )
+        if funder_name_text is None:
+            continue
+
+        fund = ET.Element("fund")
+        funder_name = ET.SubElement(fund, "funder_name")
+        funder_name.text = funder_name_text
+        if funder_name_lang:
+            funder_name.set("lang", iso_639_1(funder_name_lang))
+
+        identifier = funding_reference.get("funder_identifier") or {}
+        if identifier.get("funder_identifier"):
+            funder_identifier = ET.SubElement(
+                fund,
+                "funder_identifier",
+                {
+                    "type": funder_identifier_type(
+                        identifier.get("funder_identifier_type")
+                    )
+                },
+            )
+            funder_identifier.text = str(identifier["funder_identifier"])
+
+        # award_number_group には award_number が必須
+        award = funding_reference.get("award_number") or {}
+        if award.get("award_number"):
+            award_number_group = ET.SubElement(fund, "award_number_group")
+            if content_classification is not None and (
+                content_classification.text == "03"
+            ):
+                add_research_data_program(award_number_group, funding_reference)
+            award_number = ET.SubElement(award_number_group, "award_number")
+            award_number.text = str(award["award_number"])
+            if award.get("award_number_type"):
+                award_number.set("type", award["award_number_type"])
+
+        funds.append(fund)
+
+    # fund_list には fund が1件以上必要
+    if funds:
         fund_list = ET.SubElement(content, "fund_list")
-        for funding_reference in entry["funding_reference"]:
-            fund = ET.SubElement(fund_list, "fund")
-            funder_name = ET.SubElement(fund, "funder_name")
-            funder_name.text = funding_reference["funder_name"][0].get("funder_name")
-            if funding_reference.get("funder_identifier"):
-                funder_identifier = ET.SubElement(fund, "funder_identifier")
-                if funding_reference["funder_identifier"].get("funder_identifier_type"):
-                    match funding_reference["funder_identifier"][
-                        "funder_identifier_type"
-                    ]:
-                        case "e-Rad_funder":
-                            funder_identifier.set("type", "Other")
-                        case _:
-                            funder_identifier.set(
-                                "type",
-                                funding_reference["funder_identifier"][
-                                    "funder_identifier_type"
-                                ],
-                            )
-                    funder_identifier.text = funding_reference["funder_identifier"][
-                        "funder_identifier"
-                    ]
-            if funding_reference["award_number"]:
-                award_number_group = ET.SubElement(fund, "award_number_group")
-                award_number = ET.SubElement(award_number_group, "award_number")
-                award_number.text = funding_reference["award_number"]["award_number"]
+        fund_list.extend(funds)
 
     return root
+
+
+def add_research_data_program(award_number_group, funding_reference):
+    """研究データの award_number_group にプログラム情報と研究課題名を追加する
+
+    XSDスキーマの順序（program_id、program_name、project_name）で出力する
+    """
+    stream_identifier = funding_reference.get("funding_stream_identifier") or {}
+    if stream_identifier.get("funding_stream_identifier"):
+        program_id = ET.SubElement(award_number_group, "program_id")
+        program_id.text = str(stream_identifier["funding_stream_identifier"])
+
+    program_name_text, _ = first_value(
+        funding_reference.get("funding_stream"), "funding_stream"
+    )
+    if program_name_text:
+        program_name = ET.SubElement(award_number_group, "program_name")
+        program_name.text = program_name_text
+
+    project_name_text, _ = first_value(
+        funding_reference.get("award_title"), "award_title"
+    )
+    if project_name_text:
+        project_name = ET.SubElement(award_number_group, "project_name")
+        project_name.text = project_name_text
 
 
 def iso_639_1(lang):

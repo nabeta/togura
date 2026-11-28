@@ -336,3 +336,109 @@ def test_generate_thesis_without_contributors(project):
     xml_path = generate_jalc(project, entry)
     assert ET.parse(xml_path).find("body/content/contributor_list") is None
     validate_with_schema_if_available(xml_path)
+
+
+# --- 助成情報 ---
+
+
+def funds_of(xml_path: Path) -> list:
+    return ET.parse(xml_path).findall("body/content/fund_list/fund")
+
+
+def test_generate_article_fund(project):
+    """論文の助成情報が fund_list に出力される"""
+    xml_path = generate_jalc(project, load_sample("01_departmental_bulletin_paper_oa"))
+    funds = funds_of(xml_path)
+    assert len(funds) == 1
+    fund = funds[0]
+    assert [e.tag for e in fund] == [
+        "funder_name",
+        "funder_identifier",
+        "award_number_group",
+    ]
+    assert fund.find("funder_name").attrib == {"lang": "ja"}
+    assert fund.findtext("funder_name") == "日本学術振興会"
+    assert fund.find("funder_identifier").attrib == {"type": "Other"}
+    assert fund.findtext("funder_identifier") == "1025"
+    # 論文ではプログラム情報と研究課題名は出力しない
+    assert [e.tag for e in fund.find("award_number_group")] == ["award_number"]
+    award_number = fund.find("award_number_group/award_number")
+    assert (award_number.get("type"), award_number.text) == ("JGN", "JP18049069")
+    validate_with_schema_if_available(xml_path)
+
+
+def test_generate_dataset_fund(project):
+    """研究データではプログラム情報と研究課題名も出力される"""
+    entry = load_sample("07_dataset")
+    entry["funding_reference"][0]["funding_stream_identifier"] = {
+        "funding_stream_identifier": "JP-PROGRAM-1",
+        "funding_stream_identifier_type": "JGN_fundingStream",
+    }
+    xml_path = generate_jalc(project, entry)
+    group = funds_of(xml_path)[0].find("award_number_group")
+    # XSDスキーマの順序で出力される
+    assert [(e.tag, e.text) for e in group] == [
+        ("program_id", "JP-PROGRAM-1"),
+        ("program_name", "科学研究費助成事業"),
+        ("project_name", "情報爆発時代の情報検索基盤技術"),
+        ("award_number", "JP18049069"),
+    ]
+    validate_with_schema_if_available(xml_path)
+
+
+@pytest.mark.parametrize(
+    ("identifier_type", "expected"),
+    [
+        ("Crossref Funder", "FundRef"),
+        ("GRID", "GRID"),
+        ("ISNI", "ISNI"),
+        ("ROR", "ROR"),
+        ("e-Rad_funder", "Other"),
+        ("Other", "Other"),
+        (None, "Other"),
+    ],
+)
+def test_generate_funder_identifier_type(project, identifier_type, expected):
+    """助成機関識別子のタイプをJaLCで使用できる type に変換する"""
+    entry = load_sample("01_departmental_bulletin_paper_oa")
+    funder_identifier = entry["funding_reference"][0]["funder_identifier"]
+    if identifier_type is None:
+        del funder_identifier["funder_identifier_type"]
+    else:
+        funder_identifier["funder_identifier_type"] = identifier_type
+    xml_path = generate_jalc(project, entry)
+    assert funds_of(xml_path)[0].find("funder_identifier").get("type") == expected
+    validate_with_schema_if_available(xml_path)
+
+
+def test_generate_fund_first_funder_name(project):
+    """funder_name は1件のみ記述できるため、最初の名称を出力する"""
+    entry = load_sample("01_departmental_bulletin_paper_oa")
+    entry["funding_reference"][0]["funder_name"].append(
+        {"funder_name": "Japan Society for the Promotion of Science", "lang": "en"}
+    )
+    xml_path = generate_jalc(project, entry)
+    funder_names = funds_of(xml_path)[0].findall("funder_name")
+    assert [e.text for e in funder_names] == ["日本学術振興会"]
+    validate_with_schema_if_available(xml_path)
+
+
+def test_generate_fund_without_optional_items(project):
+    """助成機関識別子と研究課題番号がなくても出力できる"""
+    entry = load_sample("07_dataset")
+    del entry["funding_reference"][0]["funder_identifier"]
+    del entry["funding_reference"][0]["award_number"]
+    xml_path = generate_jalc(project, entry)
+    fund = funds_of(xml_path)[0]
+    # award_number_group には award_number が必須のため、出力しない
+    assert [e.tag for e in fund] == ["funder_name"]
+    validate_with_schema_if_available(xml_path)
+
+
+def test_generate_fund_without_funder_name(project):
+    """助成機関名がない助成情報は出力しない"""
+    entry = load_sample("01_departmental_bulletin_paper_oa")
+    del entry["funding_reference"][0]["funder_name"]
+    xml_path = generate_jalc(project, entry)
+    assert ET.parse(xml_path).find("body/content/fund_list") is None
+    validate_with_schema_if_available(xml_path)
