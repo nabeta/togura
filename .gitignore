@@ -8,3 +8,6 @@ dist/
 *.egg-info/
 *.code-workspace
 config.yaml
+
+# JaLCのXSDスキーマ（テスト用、ローカルのみ）
+tests/jalc/

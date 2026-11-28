@@ -128,6 +128,11 @@ def load_sample(name: str) -> dict:
         return YAML().load(file)
 
 
+# JaLCのXSDスキーマはリポジトリに含めていないため、tests/jalc に置いた場合のみ検証する
+@pytest.mark.skipif(
+    not JALC_SCHEMA_DIR.is_dir(),
+    reason="JaLCのXSDスキーマが tests/jalc にありません",
+)
 @pytest.mark.parametrize("name", JALC_SAMPLES)
 def test_generate_valid_against_schema(project, name):
     """出力したJaLC XMLがJaLCのXSDスキーマに適合する"""
