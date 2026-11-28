@@ -161,6 +161,7 @@ def generate(data_dir, output_dir, base_url):
         last_page.text = entry["page_end"]
 
     add_funding_reference(entry, root, content, content_classification)
+    add_keyword_list(entry, content, content_classification)
 
     # JaLC XMLを出力する
     with open(f"{output_dir}/{entry_id!s}/jalc.xml", "w", encoding="utf-8") as file:
@@ -474,6 +475,35 @@ def add_research_data_program(award_number_group, funding_reference):
     if project_name_text:
         project_name = ET.SubElement(award_number_group, "project_name")
         project_name.text = project_name_text
+
+
+# 分類記号を値とする主題のスキーム。キーワードではないため keyword_list に出力しない
+CLASSIFICATION_SUBJECT_SCHEMES = {"NDC", "NDLC", "DDC", "UDC", "LCC"}
+
+
+def add_keyword_list(entry, content, content_classification):
+    """主題を keyword_list として追加する
+
+    JaLCのXSDスキーマで keyword_list を記述できるのは論文（01）と教材（04）のみ
+    """
+    if content_classification.text not in ("01", "04"):
+        return
+
+    subjects = [
+        d
+        for d in entry.get("subject") or []
+        if d.get("subject")
+        and d.get("subject_scheme") not in CLASSIFICATION_SUBJECT_SCHEMES
+    ]
+    if not subjects:
+        return
+
+    keyword_list = ET.SubElement(content, "keyword_list")
+    for i, d in enumerate(subjects):
+        keyword = ET.SubElement(keyword_list, "keyword", {"sequence": str(i)})
+        if d.get("lang"):
+            keyword.set("lang", iso_639_1(d["lang"]))
+        keyword.text = str(d["subject"])
 
 
 def iso_639_1(lang):

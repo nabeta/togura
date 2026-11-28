@@ -527,3 +527,103 @@ def test_generate_dataset_without_source(project):
     assert root.find(".//journal_id_list") is None
     assert root.find(".//series_title") is None
     validate_with_schema_if_available(xml_path)
+
+
+# --- 主題 ---
+
+
+def keywords_of(xml_path: Path) -> list:
+    return ET.parse(xml_path).findall("body/content/keyword_list/keyword")
+
+
+def test_generate_article_keyword_list(project):
+    """論文の主題が keyword_list に出力される"""
+    xml_path = generate_jalc(project, load_sample("01_departmental_bulletin_paper_oa"))
+    assert [(e.attrib, e.text) for e in keywords_of(xml_path)] == [
+        ({"sequence": "0", "lang": "ja"}, "情報爆発"),
+        ({"sequence": "1", "lang": "ja"}, "データマイニング"),
+    ]
+    validate_with_schema_if_available(xml_path)
+
+
+def test_generate_keyword_list_items(project):
+    """言語は2文字のコードにし、主題のない項目は出力しない"""
+    entry = load_sample("01_departmental_bulletin_paper_oa")
+    entry["subject"] = [
+        {"subject": "情報爆発", "lang": "ja", "subject_scheme": "Other"},
+        {"subject": "", "lang": "ja"},
+        {"subject": "ジョウホウ バクハツ", "lang": "ja-Kana"},
+        {"subject": "Data mining"},
+    ]
+    xml_path = generate_jalc(project, entry)
+    assert [(e.attrib, e.text) for e in keywords_of(xml_path)] == [
+        ({"sequence": "0", "lang": "ja"}, "情報爆発"),
+        ({"sequence": "1", "lang": "ja"}, "ジョウホウ バクハツ"),
+        ({"sequence": "2"}, "Data mining"),
+    ]
+    validate_with_schema_if_available(xml_path)
+
+
+def test_generate_learning_material_keyword_list(project):
+    """教材の主題も keyword_list に出力される
+
+    教材のXMLは巻号・ページを出力し出版者を出力しないため、
+    現在は e-learning.xsd に適合しない。ここではスキーマで検証しない
+    """
+    entry = load_sample("01_departmental_bulletin_paper_oa")
+    entry["type"] = "learning material"
+    xml_path = generate_jalc(project, entry)
+    assert ET.parse(xml_path).findtext("head/content_classification") == "04"
+    assert [e.text for e in keywords_of(xml_path)] == ["情報爆発", "データマイニング"]
+
+
+@pytest.mark.parametrize("subject", [None, []])
+def test_generate_without_subject(project, subject):
+    """主題がなければ keyword_list を出力しない"""
+    entry = load_sample("01_departmental_bulletin_paper_oa")
+    if subject is None:
+        del entry["subject"]
+    else:
+        entry["subject"] = subject
+    xml_path = generate_jalc(project, entry)
+    assert ET.parse(xml_path).find("body/content/keyword_list") is None
+    validate_with_schema_if_available(xml_path)
+
+
+@pytest.mark.parametrize("name", ["05_doctoral_thesis_oa", "07_dataset"])
+def test_generate_keyword_list_not_allowed(project, name):
+    """XSDスキーマに keyword_list がない学位論文・研究データには出力しない"""
+    entry = load_sample(name)
+    entry["subject"] = [{"subject": "情報爆発", "lang": "ja"}]
+    xml_path = generate_jalc(project, entry)
+    assert ET.parse(xml_path).find("body/content/keyword_list") is None
+    validate_with_schema_if_available(xml_path)
+
+
+def test_generate_keyword_list_without_classification(project):
+    """分類記号のスキームの主題は keyword_list に出力しない"""
+    entry = load_sample("01_departmental_bulletin_paper_oa")
+    entry["subject"] = [
+        {"subject": "007", "subject_scheme": "NDC"},
+        {"subject": "情報爆発", "lang": "ja", "subject_scheme": "BSH"},
+        {"subject": "UM115", "subject_scheme": "NDLC"},
+        {"subject": "004", "subject_scheme": "DDC"},
+        {"subject": "Data mining", "lang": "en", "subject_scheme": "LCSH"},
+        {"subject": "004.6", "subject_scheme": "UDC"},
+        {"subject": "QA76.9", "subject_scheme": "LCC"},
+    ]
+    xml_path = generate_jalc(project, entry)
+    # 番号は出力する主題だけで振り直す
+    assert [(e.attrib, e.text) for e in keywords_of(xml_path)] == [
+        ({"sequence": "0", "lang": "ja"}, "情報爆発"),
+        ({"sequence": "1", "lang": "en"}, "Data mining"),
+    ]
+    validate_with_schema_if_available(xml_path)
+
+
+def test_generate_keyword_list_only_classification(project):
+    """分類記号の主題しかなければ keyword_list を出力しない"""
+    entry = load_sample("01_departmental_bulletin_paper_oa")
+    entry["subject"] = [{"subject": "007", "subject_scheme": "NDC"}]
+    xml_path = generate_jalc(project, entry)
+    assert ET.parse(xml_path).find("body/content/keyword_list") is None
