@@ -190,107 +190,103 @@ def generate(data_dir, output_dir, base_url):
         file.write(ET.tostring(root, encoding="unicode", xml_declaration=True))
 
 
+# JaLCの affiliation_identifier の type に使用できる値
+JALC_AFFILIATION_IDENTIFIER_TYPES = {
+    "FundRef",
+    "GRID",
+    "ISNI",
+    "ROR",
+    "NID",
+    "WIKIDATA",
+    "RINGGOLD",
+}
+
+
+def affiliation_identifier_type(scheme):
+    """JPCOARの所属機関識別子のスキームをJaLCの type に変換する"""
+    scheme = (scheme or "").upper()
+    if scheme in JALC_AFFILIATION_IDENTIFIER_TYPES:
+        return scheme
+    # kakenhi などJaLCにないスキームは Other とする
+    return "Other"
+
+
+def add_person(parent, tag, sequence, person, name_key):
+    """作成者・寄与者の要素を追加する
+
+    JaLCのXSDスキーマでは names、affiliations、researcher_id の順に出力する
+    """
+    elem_person = ET.SubElement(parent, tag, {"sequence": str(sequence)})
+    for name in person.get(name_key) or []:
+        names = ET.SubElement(elem_person, "names")
+        if name.get("lang"):
+            names.set("lang", iso_639_1(name["lang"]))
+        first_name = ET.SubElement(names, "first_name")
+        first_name.text = name["name"]
+
+    if person.get("affiliation"):
+        affiliations = ET.SubElement(elem_person, "affiliations")
+        for i, affiliation in enumerate(person["affiliation"]):
+            elem_affiliation = ET.SubElement(
+                affiliations, "affiliation", {"sequence": str(i)}
+            )
+            for affiliation_name in affiliation.get("affiliation_name") or []:
+                elem_affiliation_name = ET.SubElement(
+                    elem_affiliation, "affiliation_name"
+                )
+                elem_affiliation_name.text = affiliation_name["name"]
+                if affiliation_name.get("lang"):
+                    elem_affiliation_name.set(
+                        "lang", iso_639_1(affiliation_name["lang"])
+                    )
+            for affiliation_identifier in affiliation.get("name_identifier") or []:
+                elem_affiliation_identifier = ET.SubElement(
+                    elem_affiliation,
+                    "affiliation_identifier",
+                    {
+                        "type": affiliation_identifier_type(
+                            affiliation_identifier.get("identifier_scheme")
+                        )
+                    },
+                )
+                elem_affiliation_identifier.text = affiliation_identifier["identifier"]
+
+    if person.get("name_identifier"):
+        researcher_id = ET.SubElement(elem_person, "researcher_id")
+        for identifier in person["name_identifier"]:
+            id_code = ET.SubElement(
+                researcher_id,
+                "id_code",
+                {"type": identifier.get("identifier_scheme", "")},
+            )
+            id_code.text = identifier["identifier"]
+
+    return elem_person
+
+
 def add_creator(entry, root, content):
     creator_list = ET.SubElement(content, "creator_list")
-    for i, c in enumerate(entry["creator"]):
-        creator = ET.SubElement(creator_list, "creator", {"sequence": str(i)})
-        for name in c["creator_name"]:
-            names = ET.SubElement(creator, "names")
-            if name.get("lang"):
-                names.set("lang", iso_639_1(name["lang"]))
-            first_name = ET.SubElement(names, "first_name")
-            first_name.text = name["name"]
-
-        if c.get("affiliation"):
-            affiliations = ET.SubElement(creator, "affiliations")
-            for i, affiliation in enumerate(c["affiliation"]):
-                elem_affiliation = ET.SubElement(
-                    affiliations, "affiliation", {"sequence": str(i)}
-                )
-                for affiliation_name in affiliation["affiliation_name"]:
-                    elem_affiliation_name = ET.SubElement(
-                        elem_affiliation, "affiliation_name"
-                    )
-                    elem_affiliation_name.text = affiliation_name["name"]
-                    if affiliation_name.get("lang"):
-                        elem_affiliation_name.set(
-                            "lang", iso_639_1(affiliation_name["lang"])
-                        )
-                for affiliation_identifier in affiliation["name_identifier"]:
-                    elem_affiliation_identifier = ET.SubElement(
-                        elem_affiliation, "affiliation_identifier"
-                    )
-                    elem_affiliation_identifier.set(
-                        "type", affiliation_identifier["identifier_scheme"]
-                    )
-                    elem_affiliation_identifier.text = affiliation_identifier[
-                        "identifier"
-                    ]
-
-        if c.get("name_identifier"):
-            researcher_id = ET.SubElement(creator, "researcher_id")
-            for identifier in c["name_identifier"]:
-                id_code = ET.SubElement(
-                    researcher_id,
-                    "id_code",
-                    {"type": identifier.get("identifier_scheme", "")},
-                )
-                id_code.text = identifier["identifier"]
+    for i, creator in enumerate(entry["creator"]):
+        add_person(creator_list, "creator", i, creator, "creator_name")
 
     return root
 
 
 def add_contributor(entry, root, content, content_classification):
+    """寄与者を追加する
+
+    JaLCのXSDスキーマで寄与者（contributor_list）を記述できるのは研究データのみ
+    """
     if entry.get("contributor") and content_classification.text == "03":
         contributor_list = ET.SubElement(content, "contributor_list")
-        for i, c in enumerate(entry["contributor"]):
-            contributor = ET.SubElement(
-                contributor_list, "contributor", {"sequence": str(i)}
+        for i, contributor in enumerate(entry["contributor"]):
+            elem_contributor = add_person(
+                contributor_list, "contributor", i, contributor, "contributor_name"
             )
-            if c.get("contributor_type"):
-                contributor.set("contributor_type", c["contributor_type"])
-            for name in c["contributor_name"]:
-                names = ET.SubElement(contributor, "names")
-                if name.get("lang"):
-                    names.set("lang", iso_639_1(name["lang"]))
-                first_name = ET.SubElement(names, "first_name")
-                first_name.text = name["name"]
-
-            if c.get("affiliation"):
-                affiliations = ET.SubElement(contributor, "affiliations")
-                for i, affiliation in enumerate(c["affiliation"]):
-                    elem_affiliation = ET.SubElement(
-                        affiliations, "affiliation", {"sequence": str(i)}
-                    )
-                    for affiliation_name in affiliation["affiliation_name"]:
-                        elem_affiliation_name = ET.SubElement(
-                            elem_affiliation, "affiliation_name"
-                        )
-                        elem_affiliation_name.text = affiliation_name["name"]
-                        if affiliation_name.get("lang"):
-                            elem_affiliation_name.set(
-                                "lang", iso_639_1(affiliation_name["lang"])
-                            )
-                    for affiliation_identifier in affiliation["name_identifier"]:
-                        elem_affiliation_identifier = ET.SubElement(
-                            elem_affiliation, "affiliation_identifier"
-                        )
-                        elem_affiliation_identifier.set(
-                            "type", affiliation_identifier["identifier_scheme"]
-                        )
-                        elem_affiliation_identifier.text = affiliation_identifier[
-                            "identifier"
-                        ]
-
-            if c.get("name_identifier"):
-                researcher_id = ET.SubElement(contributor, "researcher_id")
-                for identifier in c["name_identifier"]:
-                    id_code = ET.SubElement(
-                        researcher_id,
-                        "id_code",
-                        {"type": identifier.get("identifier_scheme", "")},
-                    )
-                    id_code.text = identifier["identifier"]
+            # contributor_type は必須のため、記述がなければ Other とする
+            elem_contributor.set(
+                "contributor_type", contributor.get("contributor_type") or "Other"
+            )
 
     return root
 
