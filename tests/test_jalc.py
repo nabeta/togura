@@ -627,3 +627,71 @@ def test_generate_keyword_list_only_classification(project):
     entry["subject"] = [{"subject": "007", "subject_scheme": "NDC"}]
     xml_path = generate_jalc(project, entry)
     assert ET.parse(xml_path).find("body/content/keyword_list") is None
+
+
+def subjects_of(xml_path: Path) -> list:
+    return ET.parse(xml_path).findall("body/content/subject_list/subject")
+
+
+def test_generate_dataset_subject_list(project):
+    """研究データの主題が subject_list に出力される"""
+    xml_path = generate_jalc(project, load_sample("07_dataset"))
+    assert [(e.attrib, e.text) for e in subjects_of(xml_path)] == [
+        ({"lang": "ja", "subject_scheme": "e-Rad_field"}, "自然科学一般"),
+        ({"lang": "en", "subject_scheme": "e-Rad_field"}, "Natural Science"),
+        ({"lang": "en", "subject_scheme": "Other"}, "Climatology"),
+        ({"lang": "en", "subject_scheme": "Other"}, "Meteorology"),
+        ({"lang": "en", "subject_scheme": "Other"}, "Atmosphere"),
+    ]
+    # 研究データのXSDスキーマには keyword_list がない
+    assert ET.parse(xml_path).find("body/content/keyword_list") is None
+    validate_with_schema_if_available(xml_path)
+
+
+def test_generate_subject_list_items(project):
+    """分類記号の主題も出力し、主題のない項目は出力しない"""
+    entry = load_sample("07_dataset")
+    entry["subject"] = [
+        {"subject": "007", "subject_scheme": "NDC"},
+        {"subject": "", "lang": "ja"},
+        {"subject": "キコウガク", "lang": "ja-Kana"},
+        {
+            "subject": "Climatology",
+            "lang": "en",
+            "subject_scheme": "LCSH",
+            "subject_uri": "https://id.loc.gov/authorities/subjects/sh85027525",
+        },
+    ]
+    xml_path = generate_jalc(project, entry)
+    # subject_uri は主題の値のURIのため、スキームのURI（scheme_uri）には出力しない
+    assert [(e.attrib, e.text) for e in subjects_of(xml_path)] == [
+        ({"subject_scheme": "NDC"}, "007"),
+        ({"lang": "ja"}, "キコウガク"),
+        ({"lang": "en", "subject_scheme": "LCSH"}, "Climatology"),
+    ]
+    validate_with_schema_if_available(xml_path)
+
+
+@pytest.mark.parametrize("subject", [None, [], [{"subject": ""}]])
+def test_generate_dataset_without_subject(project, subject):
+    """出力する主題がなければ subject_list を出力しない"""
+    entry = load_sample("07_dataset")
+    if subject is None:
+        del entry["subject"]
+    else:
+        entry["subject"] = subject
+    xml_path = generate_jalc(project, entry)
+    assert ET.parse(xml_path).find("body/content/subject_list") is None
+    validate_with_schema_if_available(xml_path)
+
+
+@pytest.mark.parametrize(
+    "name", ["01_departmental_bulletin_paper_oa", "05_doctoral_thesis_oa"]
+)
+def test_generate_subject_list_not_allowed(project, name):
+    """XSDスキーマに subject_list がない論文・学位論文には出力しない"""
+    entry = load_sample(name)
+    entry["subject"] = [{"subject": "情報爆発", "lang": "ja"}]
+    xml_path = generate_jalc(project, entry)
+    assert ET.parse(xml_path).find("body/content/subject_list") is None
+    validate_with_schema_if_available(xml_path)
