@@ -147,7 +147,8 @@ def test_show_renders_sample(env, sample):
     assert_dl_structure(doc)
 
     # タイトルはすべての言語の値が言語ごとに表示される
-    [titles] = field_values(doc, "タイトル")
+    # （カタログにもタイトルがあるため、最初のタイトルを確認する）
+    titles = field_values(doc, "タイトル")[0]
     assert [dt.text() for dt in titles.iter("dt")] == [
         t["lang"] for t in entry["title"]
     ]
@@ -204,6 +205,22 @@ def test_show_omits_optional_fields(env):
         "収録物識別子",
         "収録物名",
         "学位授与番号",
+        "権利者情報",
+        "バージョン情報",
+        "出版者情報",
+        "日付（リテラル）",
+        "時間的範囲",
+        "位置情報",
+        "ページ数",
+        "会議記述",
+        "版",
+        "部編名",
+        "原文の言語",
+        "大きさ",
+        "物理的形態",
+        "所蔵機関",
+        "データセットシリーズ",
+        "カタログ",
     ]:
         assert label not in labels
     assert "jalc.xml" not in [a.attrs.get("href") for a in doc.iter("a")]
@@ -517,3 +534,169 @@ def test_generate(tmp_path, monkeypatch):
     assert "./fulltext.pdf" in [a.attrs.get("href") for a in doc.iter("a")]
     assert "./jpcoar20.yaml" not in [a.attrs.get("href") for a in doc.iter("a")]
     assert_dl_structure(doc)
+
+
+# 詳細画面（show.j2）: これまで表示していなかった項目
+
+
+@pytest.mark.parametrize(
+    ("label", "fields_", "expected"),
+    [
+        ("バージョン情報", {"version": "1.01"}, "1.01"),
+        (
+            "日付（リテラル）",
+            {"dcterms_date": [{"date": "安永6-文政13", "lang": "ja"}]},
+            "ja 安永6-文政13",
+        ),
+        (
+            "時間的範囲",
+            {"temporal": [{"temporal": "江戸時代", "lang": "ja"}]},
+            "ja 江戸時代",
+        ),
+        ("ページ数", {"num_pages": 24}, "24"),
+        ("版", {"edition": [{"edition": "第2版", "lang": "ja"}]}, "ja 第2版"),
+        (
+            "部編名",
+            {"volume_title": [{"volume_title": "前編", "lang": "ja"}]},
+            "ja 前編",
+        ),
+        ("原文の言語", {"original_language": ["jpn", "eng"]}, "jpn eng"),
+        ("大きさ", {"extent": [{"extent": "34冊", "lang": "ja"}]}, "ja 34冊"),
+        ("物理的形態", {"format": [{"format": "袋綴"}]}, "袋綴"),
+        ("データセットシリーズ", {"dataset_series": True}, "True"),
+        ("データセットシリーズ", {"dataset_series": False}, "False"),
+    ],
+)
+def test_show_simple_fields(env, label, fields_, expected):
+    doc = render_show(env, minimal_entry(**fields_))
+    assert_dl_structure(doc)
+    assert [dd.text() for dd in field_values(doc, label)] == [expected]
+
+
+def test_show_rights_holder(env):
+    entry = minimal_entry(
+        rights_holder=[
+            {
+                "name_identifier": [
+                    {
+                        "identifier_scheme": "ORCID",
+                        "identifier": "https://orcid.org/0000-0001-0002-0003",
+                    }
+                ],
+                "rights_holder_name": [{"name": "鳥座大学", "lang": "ja"}],
+            }
+        ]
+    )
+    doc = render_show(env, entry)
+    assert_dl_structure(doc)
+    [dd] = field_values(doc, "権利者情報")
+    assert "ja 鳥座大学" in dd.text()
+    assert "https://orcid.org/0000-0001-0002-0003" in [
+        a.attrs.get("href") for a in dd.iter("a")
+    ]
+
+
+def test_show_jpcoar_publisher(env):
+    entry = minimal_entry(
+        jpcoar_publisher=[
+            {
+                "publisher_name": [{"publisher_name": "須原屋, 茂兵衞", "lang": "ja"}],
+                "publisher_description": [
+                    {"publisher_description": "巻之一三", "lang": "ja"}
+                ],
+                "location": [{"location": "江戸", "lang": "ja"}],
+                "publication_place": [{"publication_place": "JPN"}],
+            }
+        ]
+    )
+    doc = render_show(env, entry)
+    assert_dl_structure(doc)
+    [dd] = field_values(doc, "出版者情報")
+    assert dd.text() == (
+        "ja 須原屋, 茂兵衞 出版者注記 巻之一三 出版地 江戸 出版地（国名コード） JPN"
+    )
+
+
+def test_show_geo_location(env):
+    entry = minimal_entry(
+        geo_location=[
+            {"geo_location_point": {"point_longitude": 139.7, "point_latitude": 35.6}},
+            {
+                "geo_location_box": {
+                    "west_bound_longitude": -140.4875,
+                    "east_bound_longitude": 109.618333,
+                    "south_bound_latitude": 60.255,
+                    "north_bound_latitude": 75.589167,
+                }
+            },
+            {"geo_location_place": ["東京", "京都"]},
+        ]
+    )
+    doc = render_show(env, entry)
+    assert_dl_structure(doc)
+    [dd] = field_values(doc, "位置情報")
+    assert [dt.text() for dt in dd.iter("dt")] == [
+        "位置情報（点）",
+        "位置情報（空間）",
+        "位置情報（自由記述）",
+        "位置情報（自由記述）",
+    ]
+    assert [d.text() for d in dd.iter("dd")] == [
+        "経度 139.7、緯度 35.6",
+        "西端経度 -140.4875、東端経度 109.618333、 南端緯度 60.255、北端緯度 75.589167",
+        "東京",
+        "京都",
+    ]
+
+
+def test_show_conference(env):
+    entry = load_sample(PACKAGE_DIR / "samples" / "08_conference_object")
+    doc = render_show(env, entry)
+    assert_dl_structure(doc)
+    [dd] = field_values(doc, "会議記述")
+    assert [(dt.text(), d.text()) for dt, d in zip(dd.iter("dt"), dd.iter("dd"))] == [
+        ("en", "RDA Seventh Plenary Meeting"),
+        ("回次", "7"),
+        ("主催機関", "The Research Data Alliance"),
+        ("開催期間", "February 29th to March 4th, 2016 (2016-2-29 - 2016-3-4)"),
+        ("開催会場", "Hitotsubashi Hall"),
+        ("開催地", "Tokyo"),
+        ("開催国", "JPN"),
+    ]
+
+
+def test_show_holding_agent(env):
+    entry = load_sample(PACKAGE_DIR / "samples" / "12_digital_archive")
+    doc = render_show(env, entry)
+    [dd] = field_values(doc, "所蔵機関")
+    assert [(dt.text(), d.text()) for dt, d in zip(dd.iter("dt"), dd.iter("dd"))] == [
+        ("ROR", "https://ror.org/01464wm64"),
+        ("ja", "人間文化研究機構 国文学研究資料館"),
+        ("en", "National Institute of Japanese Literature"),
+    ]
+    assert [a.attrs["href"] for a in dd.iter("a")] == ["https://ror.org/01464wm64"]
+
+
+def test_show_catalog(env):
+    entry = load_sample(PACKAGE_DIR / "samples" / "12_digital_archive")
+    doc = render_show(env, entry)
+    assert_dl_structure(doc)
+    [dd] = field_values(doc, "カタログ")
+    catalog = dd.elements()[0]
+    labels = [dt.text() for dt in catalog.elements()[::2]]
+    assert labels == [
+        "提供機関",
+        "識別子",
+        "タイトル",
+        "内容記述",
+        "主題",
+        "ライセンス",
+        "権利情報",
+        "アクセス権",
+        "代表画像",
+    ]
+    hrefs = [a.attrs["href"] for a in dd.iter("a")]
+    assert "https://kokusho.nijl.ac.jp" in hrefs
+    assert "https://kokusho.nijl.ac.jp/page/usage.html" in hrefs
+    assert "国書データベース" in dd.text()
+    assert "open access" in dd.text()
