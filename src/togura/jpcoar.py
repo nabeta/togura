@@ -1179,6 +1179,8 @@ def add_file(entry, root):
                 elem_file_uri = ET.SubElement(elem_file, ET.QName(ns["jpcoar"], "URI"))
                 if file.get("object_type"):
                     elem_file_uri.set("objectType", file["object_type"])
+                if file.get("label"):
+                    elem_file_uri.set("label", file["label"])
                 elem_file_uri.text = file["uri"]
 
             # ファイルフォーマット
