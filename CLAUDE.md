@@ -28,8 +28,7 @@ The project uses `uv` (`uv.lock`, `.python-version`). There is no `dev` extra; `
 
 ## Architecture
 
-- `src/togura/cli.py` — CLI entry point (`togura = "togura.cli:app"`). Commands: `init`, `setup`, `generate`, `migrate`, `check-expired-embargo`, `validate`, and the `work-file` sub-app.
-- `src/togura/togura.py` — implementations behind `setup` / `generate` / `check-expired-embargo`.
+- `src/togura/cli.py` — CLI entry point (`togura = "togura.cli:app"`) and the implementation of its commands: `init`, `setup`, `generate`, `migrate`, `check-expired-embargo`, `validate`, and the `work-file` sub-app.
 - `src/togura/migrate.py` — harvests JPCOAR XML over OAI-PMH (`oaipmh_scythe.Scythe`) and writes one `jpcoar20.yaml` per record. Inverse of `jpcoar.py`.
 - `src/togura/jpcoar.py` — converts `jpcoar20.yaml` to JPCOAR 2.0 XML.
 - `src/togura/jalc.py`, `ro_crate.py`, `resourcesync.py`, `html.py` — other output formats; `templates/` holds the HTML templates.

@@ -17,7 +17,7 @@ from ruamel.yaml import YAML
 
 import togura.migrate as migrate_repository
 from togura import html, importer, jalc, jpcoar, resourcesync, ro_crate
-from togura.config import Config
+from togura.config import Config, write_config
 
 __version__ = metadata.version("togura")
 app = typer.Typer()
@@ -44,103 +44,90 @@ def main(
     pass
 
 
+PACKAGE_DIR = Path(__file__).parent
+# init で作成する空のディレクトリ
+INIT_DIRS = ["archive", "public/.well-known", "schema", "trash", "work"]
+# init でパッケージからコピーするディレクトリ
+INIT_COPY_DIRS = ["samples", "templates", ".vscode"]
+
+
 @app.command()
-def init(dir_name: Path = typer.Argument()):
+def init(
+    dir_name: Annotated[
+        Path, typer.Argument(help="作成するフォルダ。省略時は現在のフォルダ")
+    ] = Path("."),
+):
     """
     Toguraのフォルダ（ディレクトリ）を設定します。
     """
 
-    if dir_name is None:
-        dest_dir = Path.cwd()
-    else:
-        dest_dir = dir_name
-
     # 初期ディレクトリを作成する
-    os.makedirs(dest_dir, exist_ok=True)
-    os.makedirs(f"{dest_dir}/archive", exist_ok=True)
-    os.makedirs(f"{dest_dir}/public/.well-known", exist_ok=True)
-    os.makedirs(f"{dest_dir}/schema", exist_ok=True)
-    os.makedirs(f"{dest_dir}/trash", exist_ok=True)
-    os.makedirs(f"{dest_dir}/work", exist_ok=True)
-    shutil.copy(
-        f"{Path(__file__).parent}/schema/jpcoar.json", f"{dest_dir}/schema/jpcoar.json"
-    )
-    shutil.copytree(
-        f"{Path(__file__).parent}/samples", f"{dest_dir}/samples", dirs_exist_ok=True
-    )
-    shutil.copytree(
-        f"{Path(__file__).parent}/templates",
-        f"{dest_dir}/templates",
-        dirs_exist_ok=True,
-    )
-    shutil.copytree(
-        f"{Path(__file__).parent}/.vscode", f"{dest_dir}/.vscode", dirs_exist_ok=True
-    )
+    for name in INIT_DIRS:
+        (dir_name / name).mkdir(parents=True, exist_ok=True)
 
-    # テンプレートのヘッダーファイルをコピーする
-    if not os.path.isfile(f"{Path.cwd()}/templates/head_custom.html"):
-        shutil.copyfile(
-            f"{Path(__file__).parent}/templates/bootstrap.html",
-            f"{dest_dir}/templates/head_custom.html",
-        )
+    shutil.copy(PACKAGE_DIR / "schema" / "jpcoar.json", dir_name / "schema")
+    for name in INIT_COPY_DIRS:
+        shutil.copytree(PACKAGE_DIR / name, dir_name / name, dirs_exist_ok=True)
+
+    # テンプレートのヘッダーファイルをコピーする。編集済みのファイルは上書きしない
+    head_custom = dir_name / "templates" / "head_custom.html"
+    if not head_custom.exists():
+        shutil.copyfile(PACKAGE_DIR / "templates" / "bootstrap.html", head_custom)
 
 
-# 設定ファイルを作成する
+DEFAULT_ORGANIZATION = "鳥座大学"
+DEFAULT_BASE_URL = "https://togura.example.jp"
+DEFAULT_JALC_SITE_ID = "SI/togura.dummy"
+DEFAULT_LOGO_FILENAME = "logo.png"
+
+
+def ask(message: str, default: str = "") -> str:
+    """入力を受け付け、空欄の場合は初期値を返す"""
+    return input(message).strip() or default
+
+
 @app.command()
 def setup():
     """
     Toguraの初期設定を行います。
     """
 
-    organization = (
-        input("組織名を入力してください（初期値: 鳥座大学）:").strip() or "鳥座大学"
+    organization = ask(
+        f"組織名を入力してください（初期値: {DEFAULT_ORGANIZATION}）:",
+        DEFAULT_ORGANIZATION,
     )
     default_site_name = f"{organization}機関リポジトリ"
-    default_base_url = "https://togura.example.jp"
-    default_jalc_site_id = "SI/togura.dummy"
-
-    site_name = (
-        input(
-            f"機関リポジトリの名称を入力してください（初期値: {default_site_name}）:"
-        ).strip()
-        or default_site_name
+    site_name = ask(
+        f"機関リポジトリの名称を入力してください（初期値: {default_site_name}）:",
+        default_site_name,
     )
-
-    base_url = (
-        input(
-            f"機関リポジトリのトップページのURLを入力してください（初期値: {default_base_url}）:"
-        ).strip()
-        or default_base_url
+    base_url = ask(
+        f"機関リポジトリのトップページのURLを入力してください（初期値: {DEFAULT_BASE_URL}）:",
+        DEFAULT_BASE_URL,
     )
-
-    email = input("メールアドレスを入力してください。空欄でもかまいません:").strip()
-
+    email = ask("メールアドレスを入力してください。空欄でもかまいません:")
+    # APIキーは画面に表示しない
     openalex_api_key = pwinput.pwinput(
         "OpenAlexのWebAPIキーを入力してください。OpenAlexからの書誌情報の取得を行わない場合は、空欄のままでかまいません:",
         mask="*",
     ).strip()
-
-    jalc_site_id = (
-        input(
-            f"JaLCのサイトIDを入力してください（JaLC正会員のみ。初期値: {default_jalc_site_id}）:"
-        ).strip()
-        or default_jalc_site_id
+    jalc_site_id = ask(
+        f"JaLCのサイトIDを入力してください（JaLC正会員のみ。初期値: {DEFAULT_JALC_SITE_ID}）:",
+        DEFAULT_JALC_SITE_ID,
     )
 
-    yaml = YAML()
-    with open(f"{Path.cwd()}/config.yaml", "w", encoding="utf-8") as file:
-        yaml.dump(
-            {
-                "organization": organization,
-                "site_name": site_name,
-                "base_url": base_url,
-                "email": email,
-                "openalex_api_key": openalex_api_key,
-                "jalc_site_id": jalc_site_id,
-                "logo_filename": "logo.png",
-            },
-            file,
-        )
+    write_config(
+        Path.cwd() / "config.yaml",
+        {
+            "organization": organization,
+            "site_name": site_name,
+            "base_url": base_url,
+            "email": email,
+            "openalex_api_key": openalex_api_key,
+            "jalc_site_id": jalc_site_id,
+            "logo_filename": DEFAULT_LOGO_FILENAME,
+        },
+    )
 
 
 @app.command()
