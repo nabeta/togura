@@ -90,3 +90,23 @@ def test_generate_missing_metadata(project):
     result = runner.invoke(app, ["generate"])
     assert result.exit_code == 1
     assert "'type'にエラーがあります" in result.output
+
+
+def test_generate_too_long_abstract(project):
+    """JaLCの文字数の上限を超える抄録があればエラーを表示して終了する"""
+    work = add_work(project, "1_bulletin")
+    yaml = YAML()
+    with open(work / "jpcoar20.yaml", encoding="utf-8") as f:
+        entry = yaml.load(f)
+    entry["description"] = [
+        {"description": "あ" * 4001, "lang": "ja", "description_type": "Abstract"}
+    ]
+    with open(work / "jpcoar20.yaml", "w", encoding="utf-8") as f:
+        yaml.dump(entry, f)
+    result = runner.invoke(app, ["generate"])
+    assert result.exit_code == 1
+    assert (
+        "エラー: 抄録（ja）が4001文字あります。JaLCでは4000文字以内で記述してください。"
+        in result.output
+    )
+    assert str(work / "jpcoar20.yaml") in result.output

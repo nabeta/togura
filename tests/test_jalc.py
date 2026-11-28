@@ -695,3 +695,224 @@ def test_generate_subject_list_not_allowed(project, name):
     xml_path = generate_jalc(project, entry)
     assert ET.parse(xml_path).find("body/content/subject_list") is None
     validate_with_schema_if_available(xml_path)
+
+
+# --- 内容記述 ---
+
+
+def abstracts_of(xml_path: Path) -> list:
+    return ET.parse(xml_path).findall("body/content/abstract_list/abstract")
+
+
+def test_generate_article_abstract_list(project):
+    """論文の抄録が abstract_list に出力される"""
+    entry = load_sample("01_departmental_bulletin_paper_oa")
+    entry["description"] = [
+        {
+            "description": "情報爆発時代の研究基盤について述べる。",
+            "lang": "ja",
+            "description_type": "Abstract",
+        },
+        {
+            "description": "This paper describes a research infrastructure.",
+            "lang": "en",
+            "description_type": "Abstract",
+        },
+        {
+            "description": "ジョウホウ バクハツ",
+            "lang": "ja-Kana",
+            "description_type": "Abstract",
+        },
+        {"description": "No language", "description_type": "Abstract"},
+    ]
+    xml_path = generate_jalc(project, entry)
+    # 言語は2文字のコードにする
+    assert [(e.attrib, e.text) for e in abstracts_of(xml_path)] == [
+        ({"lang": "ja"}, "情報爆発時代の研究基盤について述べる。"),
+        ({"lang": "en"}, "This paper describes a research infrastructure."),
+        ({"lang": "ja"}, "ジョウホウ バクハツ"),
+        ({}, "No language"),
+    ]
+    validate_with_schema_if_available(xml_path)
+
+
+def test_generate_abstract_list_only_abstract(project):
+    """内容記述の種別が Abstract のものだけを出力する"""
+    entry = load_sample("01_departmental_bulletin_paper_oa")
+    entry["description"] = [
+        {"description": "目次", "lang": "ja", "description_type": "TableOfContents"},
+        {"description": "抄録", "lang": "ja", "description_type": "Abstract"},
+        {"description": "手法", "lang": "ja", "description_type": "Methods"},
+        {"description": "技術情報", "lang": "ja", "description_type": "TechnicalInfo"},
+        {"description": "その他", "lang": "ja", "description_type": "Other"},
+        {"description": "種別なし", "lang": "ja"},
+        {"description": "", "lang": "ja", "description_type": "Abstract"},
+    ]
+    xml_path = generate_jalc(project, entry)
+    assert [e.text for e in abstracts_of(xml_path)] == ["抄録"]
+    validate_with_schema_if_available(xml_path)
+
+
+@pytest.mark.parametrize(
+    "description",
+    [None, [], [{"description": "その他", "description_type": "Other"}]],
+)
+def test_generate_without_abstract(project, description):
+    """抄録がなければ abstract_list を出力しない"""
+    entry = load_sample("01_departmental_bulletin_paper_oa")
+    if description is None:
+        entry.pop("description", None)
+    else:
+        entry["description"] = description
+    xml_path = generate_jalc(project, entry)
+    assert ET.parse(xml_path).find("body/content/abstract_list") is None
+    validate_with_schema_if_available(xml_path)
+
+
+@pytest.mark.parametrize("name", ["05_doctoral_thesis_oa", "07_dataset"])
+def test_generate_abstract_list_not_allowed(project, name):
+    """XSDスキーマに abstract_list がない学位論文・研究データには出力しない"""
+    entry = load_sample(name)
+    entry["description"] = [
+        {"description": "抄録", "lang": "ja", "description_type": "Abstract"}
+    ]
+    xml_path = generate_jalc(project, entry)
+    assert ET.parse(xml_path).find("body/content/abstract_list") is None
+    validate_with_schema_if_available(xml_path)
+
+
+def descriptions_of(xml_path: Path) -> list:
+    return ET.parse(xml_path).findall("body/content/description_list/description")
+
+
+def test_generate_dataset_description_list(project):
+    """研究データの内容記述が種別とともに description_list に出力される"""
+    entry = load_sample("07_dataset")
+    entry["description"] = [
+        {"description": "気候データ", "lang": "ja", "description_type": "Abstract"},
+        {"description": "Observation", "lang": "en", "description_type": "Methods"},
+        {"description": "目次", "lang": "ja", "description_type": "TableOfContents"},
+        {"description": "CSV", "description_type": "TechnicalInfo"},
+        {"description": "その他", "lang": "ja-Kana", "description_type": "Other"},
+    ]
+    xml_path = generate_jalc(project, entry)
+    # 言語は2文字のコードにする
+    assert [(e.attrib, e.text) for e in descriptions_of(xml_path)] == [
+        ({"type": "Abstract", "lang": "ja"}, "気候データ"),
+        ({"type": "Methods", "lang": "en"}, "Observation"),
+        ({"type": "TableOfContents", "lang": "ja"}, "目次"),
+        ({"type": "TechnicalInfo"}, "CSV"),
+        ({"type": "Other", "lang": "ja"}, "その他"),
+    ]
+    # 研究データのXSDスキーマには abstract_list がない
+    assert ET.parse(xml_path).find("body/content/abstract_list") is None
+    validate_with_schema_if_available(xml_path)
+
+
+@pytest.mark.parametrize("description_type", [None, "Unknown"])
+def test_generate_description_type_other(project, description_type):
+    """種別がない、またはJaLCにない種別は、必須の type に Other を出力する"""
+    entry = load_sample("07_dataset")
+    description = {"description": "説明", "lang": "ja"}
+    if description_type is not None:
+        description["description_type"] = description_type
+    entry["description"] = [description]
+    xml_path = generate_jalc(project, entry)
+    assert [e.get("type") for e in descriptions_of(xml_path)] == ["Other"]
+    validate_with_schema_if_available(xml_path)
+
+
+@pytest.mark.parametrize(
+    "description",
+    [None, [], [{"description": "", "description_type": "Abstract"}]],
+)
+def test_generate_dataset_without_description(project, description):
+    """出力する内容記述がなければ description_list を出力しない"""
+    entry = load_sample("07_dataset")
+    if description is None:
+        entry.pop("description", None)
+    else:
+        entry["description"] = description
+    xml_path = generate_jalc(project, entry)
+    assert ET.parse(xml_path).find("body/content/description_list") is None
+    validate_with_schema_if_available(xml_path)
+
+
+@pytest.mark.parametrize(
+    "name", ["01_departmental_bulletin_paper_oa", "05_doctoral_thesis_oa"]
+)
+def test_generate_description_list_not_allowed(project, name):
+    """XSDスキーマに description_list がない論文・学位論文には出力しない"""
+    entry = load_sample(name)
+    entry["description"] = [
+        {"description": "抄録", "lang": "ja", "description_type": "Abstract"}
+    ]
+    xml_path = generate_jalc(project, entry)
+    assert ET.parse(xml_path).find("body/content/description_list") is None
+    validate_with_schema_if_available(xml_path)
+
+
+# --- 文字数の上限 ---
+
+
+def article_with_abstract(text: str, lang: str | None = "ja") -> dict:
+    entry = load_sample("01_departmental_bulletin_paper_oa")
+    description = {"description": text, "description_type": "Abstract"}
+    if lang:
+        description["lang"] = lang
+    entry["description"] = [description]
+    return entry
+
+
+def dataset_with_description(text: str) -> dict:
+    entry = load_sample("07_dataset")
+    entry["description"] = [
+        {"description": text, "lang": "ja", "description_type": "Methods"}
+    ]
+    return entry
+
+
+def test_generate_abstract_max_length(project):
+    """4000文字の抄録は出力できる"""
+    xml_path = generate_jalc(project, article_with_abstract("あ" * 4000))
+    assert len(abstracts_of(xml_path)[0].text) == 4000
+    validate_with_schema_if_available(xml_path)
+
+
+@pytest.mark.parametrize(("lang", "target"), [("ja", "抄録（ja）"), (None, "抄録")])
+def test_generate_abstract_too_long(project, lang, target):
+    """4000文字を超える抄録はエラーにする"""
+    with pytest.raises(jalc.JalcError) as e:
+        generate_jalc(project, article_with_abstract("あ" * 4001, lang))
+    assert str(e.value) == (
+        f"{target}が4001文字あります。JaLCでは4000文字以内で記述してください。"
+    )
+
+
+def test_generate_description_max_length(project):
+    """5000文字の内容記述は出力できる"""
+    xml_path = generate_jalc(project, dataset_with_description("あ" * 5000))
+    assert len(descriptions_of(xml_path)[0].text) == 5000
+    validate_with_schema_if_available(xml_path)
+
+
+def test_generate_description_too_long(project):
+    """5000文字を超える内容記述はエラーにする"""
+    with pytest.raises(jalc.JalcError, match="内容記述（ja）が5001文字あります"):
+        generate_jalc(project, dataset_with_description("あ" * 5001))
+
+
+def test_generate_dataset_abstract_uses_description_limit(project):
+    """研究データの抄録は description_list に出力するため、上限は5000文字"""
+    entry = dataset_with_description("あ" * 4500)
+    entry["description"][0]["description_type"] = "Abstract"
+    xml_path = generate_jalc(project, entry)
+    assert len(descriptions_of(xml_path)[0].text) == 4500
+    validate_with_schema_if_available(xml_path)
+
+
+def test_generate_too_long_abstract_without_doi(project):
+    """ID登録がなければJaLC XMLを出力しないため、文字数は確認しない"""
+    entry = article_with_abstract("あ" * 4001)
+    del entry["identifier_registration"]
+    assert not generate_jalc(project, entry).exists()

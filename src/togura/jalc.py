@@ -11,6 +11,23 @@ from togura.config import Config
 logger = getLogger(__name__)
 logger.setLevel(DEBUG)
 
+# JaLCのXSDスキーマでの文字数の上限
+ABSTRACT_MAX_LENGTH = 4000
+DESCRIPTION_MAX_LENGTH = 5000
+
+
+class JalcError(ValueError):
+    """メタデータがJaLCのXSDスキーマに適合しない場合のエラー"""
+
+
+def check_length(text, max_length, label, lang=None):
+    """文字数がJaLCのXSDスキーマの上限を超えていればエラーにする"""
+    if len(text) > max_length:
+        target = f"{label}（{lang}）" if lang else label
+        raise JalcError(
+            f"{target}が{len(text)}文字あります。JaLCでは{max_length}文字以内で記述してください。"
+        )
+
 
 def generate(data_dir, output_dir, base_url):
     entry_id = os.path.basename(data_dir).split("_")[0]
@@ -163,6 +180,8 @@ def generate(data_dir, output_dir, base_url):
     add_funding_reference(entry, root, content, content_classification)
     add_keyword_list(entry, content, content_classification)
     add_subject_list(entry, content, content_classification)
+    add_abstract_list(entry, content, content_classification)
+    add_description_list(entry, content, content_classification)
 
     # JaLC XMLを出力する
     with open(f"{output_dir}/{entry_id!s}/jalc.xml", "w", encoding="utf-8") as file:
@@ -529,6 +548,72 @@ def add_subject_list(entry, content, content_classification):
         if d.get("subject_scheme"):
             subject.set("subject_scheme", d["subject_scheme"])
         subject.text = str(d["subject"])
+
+
+def add_abstract_list(entry, content, content_classification):
+    """内容記述のうち抄録を abstract_list として追加する（論文のみ）
+
+    JaLCのXSDスキーマで abstract_list を記述できるのは論文のみ。
+    内容記述の種別が Abstract のものだけを出力する
+    """
+    if content_classification.text != "01":
+        return
+
+    abstracts = [
+        d
+        for d in entry.get("description") or []
+        if d.get("description") and d.get("description_type") == "Abstract"
+    ]
+    if not abstracts:
+        return
+
+    abstract_list = ET.SubElement(content, "abstract_list")
+    for d in abstracts:
+        check_length(str(d["description"]), ABSTRACT_MAX_LENGTH, "抄録", d.get("lang"))
+        abstract = ET.SubElement(abstract_list, "abstract")
+        if d.get("lang"):
+            abstract.set("lang", iso_639_1(d["lang"]))
+        abstract.text = str(d["description"])
+
+
+# JaLCの description の type に使用できる値
+JALC_DESCRIPTION_TYPES = {
+    "Abstract",
+    "Methods",
+    "SeriesInformation",
+    "TableOfContents",
+    "TechnicalInfo",
+    "Other",
+}
+
+
+def add_description_list(entry, content, content_classification):
+    """内容記述を description_list として追加する（研究データのみ）
+
+    研究データでは内容記述の種別を type で記述できるため、抄録以外も出力する
+    """
+    if content_classification.text != "03":
+        return
+
+    descriptions = [d for d in entry.get("description") or [] if d.get("description")]
+    if not descriptions:
+        return
+
+    description_list = ET.SubElement(content, "description_list")
+    for d in descriptions:
+        check_length(
+            str(d["description"]), DESCRIPTION_MAX_LENGTH, "内容記述", d.get("lang")
+        )
+        # type は必須のため、種別がない、またはJaLCにない種別の場合は Other とする
+        description_type = d.get("description_type")
+        if description_type not in JALC_DESCRIPTION_TYPES:
+            description_type = "Other"
+        description = ET.SubElement(
+            description_list, "description", {"type": description_type}
+        )
+        if d.get("lang"):
+            description.set("lang", iso_639_1(d["lang"]))
+        description.text = str(d["description"])
 
 
 def iso_639_1(lang):
