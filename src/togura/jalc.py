@@ -117,31 +117,9 @@ def generate(data_dir, output_dir, base_url):
         book_c.text = book_classification
 
     if classification == "article":
-        journal_id_list = ET.SubElement(content, "journal_id_list")
-        if entry.get("source_identifier"):
-            for source_identifier in entry["source_identifier"]:
-                if (
-                    source_identifier["identifier_type"] == "PISSN"
-                    or source_identifier["identifier_type"] == "EISSN"
-                ):
-                    journal_id = ET.SubElement(
-                        journal_id_list, "journal_id", {"type": "ISSN"}
-                    )
-                else:
-                    journal_id = ET.SubElement(
-                        journal_id_list,
-                        "journal_id",
-                        {"type": source_identifier["identifier_type"]},
-                    )
-                journal_id.text = source_identifier["identifier"]
+        add_journal_id_list(entry, content)
 
-    title_list = ET.SubElement(content, "title_list")
-    for t in entry["title"]:
-        titles = ET.SubElement(title_list, "titles")
-        if t.get("lang"):
-            titles.set("lang", iso_639_1(t["lang"]))
-        title = ET.SubElement(titles, "title")
-        title.text = t["title"]
+    add_title_list(entry, content, content_classification)
 
     add_creator(entry, root, content)
     add_contributor(entry, root, content, content_classification)
@@ -188,6 +166,67 @@ def generate(data_dir, output_dir, base_url):
     with open(f"{output_dir}/{entry_id!s}/jalc.xml", "w", encoding="utf-8") as file:
         ET.indent(root, space="\t", level=0)
         file.write(ET.tostring(root, encoding="unicode", xml_declaration=True))
+
+
+# JaLCの journal_id の type に使用できる値
+JALC_JOURNAL_ID_TYPES = {
+    "DOI",
+    "ISSN",
+    "ISBN",
+    "CODEN",
+    "JID",
+    "JSTNO",
+    "NCID",
+    "MATID",
+}
+
+# JPCOARのISSNの識別子タイプとJaLCの issn_type の対応
+JALC_ISSN_TYPES = {"PISSN": "print", "EISSN": "online"}
+
+
+def add_journal_id_list(entry, content):
+    """収録物識別子を journal_id_list として追加する（論文のみ）"""
+    journal_id_list = ET.SubElement(content, "journal_id_list")
+    for source_identifier in entry.get("source_identifier") or []:
+        identifier_type = source_identifier.get("identifier_type")
+        if identifier_type in ("PISSN", "EISSN", "ISSN"):
+            attrib = {"type": "ISSN"}
+            # 冊子体（PISSN）と電子版（EISSN）を issn_type で区別する
+            if identifier_type in JALC_ISSN_TYPES:
+                attrib["issn_type"] = JALC_ISSN_TYPES[identifier_type]
+        elif identifier_type in JALC_JOURNAL_ID_TYPES:
+            attrib = {"type": identifier_type}
+        else:
+            # JaLCにない識別子タイプは出力しない
+            continue
+        journal_id = ET.SubElement(journal_id_list, "journal_id", attrib)
+        journal_id.text = str(source_identifier["identifier"])
+
+
+def add_title_list(entry, content, content_classification):
+    """タイトルを title_list として追加する
+
+    図書・学位論文（content_classification が 02）では、
+    同じ言語の収録物名をシリーズ名（series_title）として出力する
+    """
+    series_titles = {}
+    if content_classification.text == "02":
+        for source_title in entry.get("source_title") or []:
+            if source_title.get("source_title"):
+                series_titles.setdefault(
+                    source_title.get("lang"), source_title["source_title"]
+                )
+
+    title_list = ET.SubElement(content, "title_list")
+    for t in entry["title"]:
+        titles = ET.SubElement(title_list, "titles")
+        if t.get("lang"):
+            titles.set("lang", iso_639_1(t["lang"]))
+        if t.get("lang") in series_titles:
+            series_title = ET.SubElement(titles, "series_title")
+            series_title.text = series_titles[t["lang"]]
+        title = ET.SubElement(titles, "title")
+        title.text = t["title"]
 
 
 # JaLCの affiliation_identifier の type に使用できる値
