@@ -104,7 +104,7 @@ def setup():
         f"機関リポジトリのトップページのURLを入力してください（初期値: {DEFAULT_BASE_URL}）:",
         DEFAULT_BASE_URL,
     )
-    email = ask("メールアドレスを入力してください。空欄でもかまいません:")
+    email = ask("機関リポジトリの連絡担当者のメールアドレスを入力してください。空欄でもかまいません:")
     # APIキーは画面に表示しない
     openalex_api_key = pwinput.pwinput(
         "OpenAlexのWebAPIキーを入力してください。OpenAlexからの書誌情報の取得を行わない場合は、空欄のままでかまいません:",
